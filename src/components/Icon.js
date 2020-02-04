@@ -3,8 +3,8 @@ import * as Font from 'expo-font';
 import { createIconSetFromIcoMoon } from '@expo/vector-icons';
 import { Icon } from 'galio-framework';
 
-import argonConfig from '../assets/font/argon.json';
-const ArgonExtra = require('../assets/font/argon.ttf');
+import argonConfig from '../assets/fonts/argon.json';
+const ArgonExtra = require('../assets/fonts/argon.ttf');
 const IconArgonExtra = createIconSetFromIcoMoon(argonConfig, 'ArgonExtra');
 
 class IconExtra extends React.Component {

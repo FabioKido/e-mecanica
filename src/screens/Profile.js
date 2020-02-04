@@ -97,7 +97,7 @@ class Profile extends React.Component {
                 <Block flex>
                   <Block middle style={styles.nameInfo}>
                     <Text bold size={28} color="#32325D">
-                      Jessica Jones, 27
+                      Jubileu quer Pipoca, #17
                     </Text>
                     <Text size={16} color="#32325D" style={{ marginTop: 10 }}>
                       San Francisco, USA

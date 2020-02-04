@@ -145,7 +145,7 @@ const AppStack = createDrawerNavigator(
       screen: HomeStack,
       navigationOptions: navOpt => ({
         drawerLabel: ({ focused }) => (
-          <DrawerItem focused={focused} title="Home" />
+          <DrawerItem focused={focused} title="Início" />
         )
       })
     },
@@ -153,7 +153,7 @@ const AppStack = createDrawerNavigator(
       screen: ProfileStack,
       navigationOptions: navOpt => ({
         drawerLabel: ({ focused }) => (
-          <DrawerItem focused={focused} screen="Profile" title="Profile" />
+          <DrawerItem focused={focused} screen="Profile" title="Perfil" />
         )
       })
     },
@@ -161,7 +161,7 @@ const AppStack = createDrawerNavigator(
       screen: Register,
       navigationOptions: navOpt => ({
         drawerLabel: ({ focused }) => (
-          <DrawerItem focused={focused} screen="Register" title="Account" />
+          <DrawerItem focused={focused} screen="Account" title="Registrar" />
         )
       })
     },
@@ -169,7 +169,7 @@ const AppStack = createDrawerNavigator(
       screen: ElementsStack,
       navigationOptions: navOpt => ({
         drawerLabel: ({ focused }) => (
-          <DrawerItem focused={focused} screen="Elements" title="Elements" />
+          <DrawerItem focused={focused} screen="Elements" title="Elementos" />
         )
       })
     },
@@ -177,7 +177,7 @@ const AppStack = createDrawerNavigator(
       screen: ArticlesStack,
       navigationOptions: navOpt => ({
         drawerLabel: ({ focused }) => (
-          <DrawerItem focused={focused} screen="Articles" title="Articles" />
+          <DrawerItem focused={focused} screen="Articles" title="Artigos" />
         )
       })
     }

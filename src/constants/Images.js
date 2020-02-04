@@ -1,14 +1,14 @@
-// local imgs
-const Onboarding = require("../assets/imgs/bg.png");
-const Logo = require("../assets/imgs/argon-logo.png");
-const LogoOnboarding = require("../assets/imgs/argon-logo-onboarding.png");
-const ProfileBackground = require("../assets/imgs/profile-screen-bg.png");
-const RegisterBackground = require("../assets/imgs/register-bg.png");
-const Pro = require("../assets/imgs/getPro-bg.png");
-const ArgonLogo = require("../assets/imgs/argonlogo.png");
-const iOSLogo = require("../assets/imgs/ios.png");
-const androidLogo = require("../assets/imgs/android.png");
-// internet imgs
+// local images
+const Onboarding = require("../assets/images/bg.png");
+const Logo = require("../assets/images/argon-logo.png");
+const LogoOnboarding = require("../assets/images/argon-logo-onboarding.png");
+const ProfileBackground = require("../assets/images/profile-screen-bg.png");
+const RegisterBackground = require("../assets/images/register-bg.png");
+const Pro = require("../assets/images/getPro-bg.png");
+const ArgonLogo = require("../assets/images/argonlogo.png");
+const iOSLogo = require("../assets/images/ios.png");
+const androidLogo = require("../assets/images/android.png");
+// internet images
 
 const ProfilePicture = 'https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?fit=crop&w=1650&q=80';
 
