@@ -1,7 +1,16 @@
 import axios from 'axios';
+import { getToken } from "./auth";
 
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:3002',
+  baseURL: 'http://192.168.2.107:3002',
+});
+
+api.interceptors.request.use(async config => {
+  const token = await getToken();
+  if (token) {
+    config.headers['x-access-token'] = `${token}`;
+  }
+  return config;
 });
 
 export default api;

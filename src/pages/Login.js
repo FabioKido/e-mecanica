@@ -1,32 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { View, AsyncStorage, KeyboardAvoidingView, Platform, Image, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, KeyboardAvoidingView, Platform, Image, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
 import api from '../services/api';
+import { login, isAuthenticated } from '../services/auth';
 
 export default function Login({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
-    AsyncStorage.getItem('user').then(user => {
-      if (user) {
-        navigation.navigate('');
+      if (isAuthenticated()) {
+        navigation.navigate('Dashboard');
       }
-    })
   }, []);
 
   async function handleSubmit() {
-    const response = await api.post('/login', {
-      email,
-      password
-    })
+    if (!email || !password) {
+      Alert.alert("Preencha e-mail e senha para continuar!");
+    } else {
+      try {
+        const response = await api.post("/login", { email, password });
+        const { access_token } = response.data;
 
-    const { id } = response.data;
+        login(access_token);
 
-    await AsyncStorage.setItem('user', _id);
-    await AsyncStorage.setItem('password', password);
+        navigation.navigate('Dashboard');
 
-    navigation.navigate('');
+      } catch (err) {
+        Alert.alert("Houve um problema, verifique suas credenciais!");
+      }
+    }
   }
 
   return (
@@ -45,7 +48,7 @@ export default function Login({ navigation }) {
           onChangeText={setEmail}
         />
 
-        <Text style={styles.label}>SUA SENHA *</Text>
+        <Text style={styles.label}>SUA SENHA*</Text>
         <TextInput
           style={styles.input}
           placeholder="Sua senha de acesso"
@@ -53,7 +56,7 @@ export default function Login({ navigation }) {
           autoCapitalize="words"
           autoCorrect={false}
           value={password}
-          onChangeText={setTechs}
+          onChangeText={setPassword}
         />
 
         <TouchableOpacity onPress={handleSubmit} style={styles.button}>
@@ -79,7 +82,7 @@ const styles = StyleSheet.create({
 
   label: {
     fontWeight: 'bold',
-    color: '#444',
+    color: '#00c4cc',
     marginBottom: 8,
   },
 
@@ -96,7 +99,7 @@ const styles = StyleSheet.create({
 
   button: {
     height: 42,
-    backgroundColor: '#f05a5b',
+    backgroundColor: '#00c4cc',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 2,
