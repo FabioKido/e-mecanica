@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { View, KeyboardAvoidingView, Platform, Image, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, KeyboardAvoidingView, Platform, Image, Text, TextInput, TouchableOpacity, StyleSheet, Alert, AsyncStorage } from 'react-native';
 
 import api from '../services/api';
-import { login, isAuthenticated } from '../services/auth';
+import { login, TOKEN_KEY } from '../services/auth';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-      if (isAuthenticated()) {
+    AsyncStorage.getItem(TOKEN_KEY).then(user => {
+      if (user) {
         navigation.navigate('Dashboard');
       }
+    })
   }, []);
 
   async function handleSubmit() {
@@ -22,7 +24,7 @@ export default function Login({ navigation }) {
         const response = await api.post("/login", { email, password });
         const { access_token } = response.data;
 
-        login(access_token);
+        await login(access_token);
 
         navigation.navigate('Dashboard');
 

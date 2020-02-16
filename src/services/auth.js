@@ -15,5 +15,5 @@ export const login = async token => {
 };
 
 export const logout = async () => {
-  await AsyncStorage.removeItem(TOKEN_KEY);
+  await AsyncStorage.clear();
 };
