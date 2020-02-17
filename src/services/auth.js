@@ -6,9 +6,7 @@ export const isAuthenticated = async () => {
   await AsyncStorage.getItem(TOKEN_KEY) !== null;
 };
 
-export const getToken = async () => { 
-  await AsyncStorage.getItem(TOKEN_KEY);
-};
+export const getToken = () => AsyncStorage.getItem(TOKEN_KEY);
 
 export const login = async token => {
   await AsyncStorage.setItem(TOKEN_KEY, token);

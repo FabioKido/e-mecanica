@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getToken } from "./auth";
+import { getToken } from './auth';
 
 const api = axios.create({
   baseURL: 'http://192.168.2.107:3002',
