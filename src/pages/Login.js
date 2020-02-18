@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, KeyboardAvoidingView, Platform, Image, Text, TextInput, TouchableOpacity, StyleSheet, Alert, AsyncStorage } from 'react-native';
+import { View, KeyboardAvoidingView, Platform, Image, Text, TextInput, TouchableOpacity, StyleSheet, Alert, AsyncStorage, Dimensions } from 'react-native';
+import argonTheme from '../constants/Theme';
 
 import api from '../services/api';
 import { login, TOKEN_KEY } from '../services/auth';
+
+const { width, height } = Dimensions.get("screen");
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
@@ -35,7 +38,7 @@ export default function Login({ navigation }) {
   }
 
   return (
-    <KeyboardAvoidingView enabled={Platform.OS === 'ios'} behavior="padding" style={styles.container}>
+    <KeyboardAvoidingView enabled={Platform.OS === 'android'} behavior="padding" style={styles.container}>
 
       <View style={styles.form}>
         <Text style={styles.label}>SEU E-MAIL*</Text>
@@ -73,11 +76,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#00c4cc',
   },
 
   form: {
-    alignSelf: 'stretch',
+    width: width * 0.9,
+    height: height * 0.78,
+    backgroundColor: "#FFF",
+    borderRadius: 4,
+    shadowColor: argonTheme.COLORS.BLACK,
+    shadowOffset: {
+      width: 0,
+      height: 4
+    },
+    shadowRadius: 8,
+    shadowOpacity: 0.1,
+    elevation: 1,
+    overflow: "hidden",
+    justifyContent: 'center',
     paddingHorizontal: 30,
     marginTop: 30,
   },

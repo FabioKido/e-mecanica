@@ -5,6 +5,8 @@ import { Switch } from 'galio-framework';
 import api from '../services/api';
 import { logout } from '../services/auth';
 import argonTheme from '../constants/Theme';
+import Header from '../components/Header';
+import Tabs from '../components/Tabs';
 
 export default function Dashboard({navigation}) {
 
@@ -52,21 +54,22 @@ export default function Dashboard({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <Text>Logado</Text>
-        <TouchableOpacity onPress={handleLogout} style={styles.button}>
-          <Text style={styles.buttonText}>Sair</Text>
-        </TouchableOpacity>
-        <Switch
-          value={switch_1}
-          thumbColor={thumbColor}
-          onChange={setSwitch_1}
-          trackColor={{ false: argonTheme.COLORS.SWITCH_OFF, true: argonTheme.COLORS.SWITCH_ON }}
-        />
-        <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-          <Text style={styles.buttonText}>Salvar Switch</Text>
-        </TouchableOpacity>
-      </ScrollView>
+      < Header/>
+        <ScrollView>
+          <TouchableOpacity onPress={handleLogout} style={styles.button}>
+            <Text style={styles.buttonText}>Sair</Text>
+          </TouchableOpacity>
+          <Switch
+            value={switch_1}
+            thumbColor={thumbColor}
+            onChange={setSwitch_1}
+            trackColor={{ false: argonTheme.COLORS.SWITCH_OFF, true: argonTheme.COLORS.SWITCH_ON }}
+          />
+          <TouchableOpacity onPress={handleSubmit} style={styles.button}>
+            <Text style={styles.buttonText}>Salvar Switch</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      <Tabs/>  
     </SafeAreaView>
   )
 }
