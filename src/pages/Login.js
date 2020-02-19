@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { View, KeyboardAvoidingView, Platform, Image, Text, TextInput, TouchableOpacity, StyleSheet, Alert, AsyncStorage, Dimensions } from 'react-native';
-import argonTheme from '../constants/Theme';
+import React, { useEffect, useRef } from 'react';
+import { StatusBar, View, KeyboardAvoidingView, Platform, Image, Text, StyleSheet, TouchableOpacity, Alert, AsyncStorage, Dimensions } from 'react-native';
+import { Form } from '@unform/mobile';
+import * as Yup from 'yup';
 
+import argonTheme from '../constants/Theme';
 import api from '../services/api';
 import { login, TOKEN_KEY } from '../services/auth';
+import TextInput from '../components/Form/Input';
 
 const { width, height } = Dimensions.get("screen");
 
 export default function Login({ navigation }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+  const formRef = useRef(null);
 
   useEffect(() => {
     AsyncStorage.getItem(TOKEN_KEY).then(user => {
@@ -19,54 +22,74 @@ export default function Login({ navigation }) {
     })
   }, []);
 
-  async function handleSubmit() {
-    if (!email || !password) {
-      Alert.alert("Preencha e-mail e senha para continuar!");
-    } else {
-      try {
-        const response = await api.post("/login", { email, password });
-        const { access_token } = response.data;
+  async function handleSubmit(data) {
+    try{
+      const schema = Yup.object().shape({
+        email: Yup.string().email('Digite um e-mail válido').required('O email é obrigatório'),
+        password: Yup.string().required('Senha é obrigatória')
+      });
 
-        await login(access_token);
+      await schema.validate(data, {
+        abortEarly: false,
+      })
 
-        navigation.navigate('Dashboard');
+      const email = formRef.current.getFieldValue('email');
+      const password = formRef.current.getFieldValue('password');
 
-      } catch (err) {
+      const response = await api.post("/login", { email, password });
+      const { access_token } = response.data;
+
+      await login(access_token);
+
+      //formRef.current.setErrors({});
+
+      navigation.navigate('Dashboard');
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errorMessages = {};
+
+        err.inner.forEach(error => {
+          errorMessages[error.path] = error.message;
+        })
+
+        formRef.current.setErrors(errorMessages);
+      }else{
         Alert.alert("Houve um problema, verifique suas credenciais!");
       }
     }
   }
-
+  //Resolver o StatusBar
   return (
     <KeyboardAvoidingView enabled={Platform.OS === 'android'} behavior="padding" style={styles.container}>
-
       <View style={styles.form}>
-        <Text style={styles.label}>SEU E-MAIL*</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Seu e-mail"
-          placeholderTextColor="#999"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          autoCorrect={false}
-          value={email}
-          onChangeText={setEmail}
-        />
+        <StatusBar backgroundColor="#00c4cc" barStyle="dark-content" />
 
-        <Text style={styles.label}>SUA SENHA*</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Sua senha de acesso"
-          placeholderTextColor="#999"
-          autoCapitalize="words"
-          autoCorrect={false}
-          value={password}
-          onChangeText={setPassword}
-        />
+        <Form ref={formRef} onSubmit={handleSubmit}>
+          <TextInput
+            name="email"
+            label="SEU E-MAIL*"
+            style={styles.input}
+            placeholder="Seu e-mail"
+            placeholderTextColor="#999"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
 
-        <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-          <Text style={styles.buttonText}>Entrar</Text>
-        </TouchableOpacity>
+          <TextInput
+            name="password"
+            label="SUA SENHA*"
+            style={styles.input}
+            placeholder="Sua senha de acesso"
+            placeholderTextColor="#999"
+            autoCapitalize="words"
+            autoCorrect={false}
+          />
+
+          <TouchableOpacity style={styles.button} onPress={() => formRef.current.submitForm()}>
+            <Text style={styles.buttonText}>Entrar</Text>
+          </TouchableOpacity>
+        </Form>
       </View>
     </KeyboardAvoidingView>
   );
@@ -99,21 +122,15 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
 
-  label: {
-    fontWeight: 'bold',
-    color: '#00c4cc',
-    marginBottom: 8,
-  },
-
   input: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    paddingHorizontal: 20,
-    fontSize: 16,
-    color: '#444',
-    height: 44,
-    marginBottom: 20,
-    borderRadius: 2
+  borderWidth: 1,
+  borderColor: '#ddd',
+  paddingHorizontal: 20,
+  fontSize: 16,
+  color: '#444',
+  height: 44,
+  marginBottom: 20,
+  borderRadius: 2
   },
 
   button: {
