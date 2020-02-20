@@ -1,18 +1,20 @@
-import React, { useEffect, useRef } from 'react';
-import { StatusBar, View, KeyboardAvoidingView, Platform, Image, Text, StyleSheet, TouchableOpacity, Alert, AsyncStorage, Dimensions } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, KeyboardAvoidingView, Platform, Image, Text, StyleSheet, TouchableOpacity, Alert, AsyncStorage, Dimensions } from 'react-native';
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
 
-import argonTheme from '../constants/Theme';
 import api from '../services/api';
-import { login, TOKEN_KEY } from '../services/auth';
+import { Loading } from './styles';
+import argonTheme from '../constants/Theme';
 import TextInput from '../components/Form/Input';
+import { login, TOKEN_KEY } from '../services/auth';
 
 const { width, height } = Dimensions.get("screen");
 
 export default function Login({ navigation }) {
 
   const formRef = useRef(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     AsyncStorage.getItem(TOKEN_KEY).then(user => {
@@ -33,6 +35,10 @@ export default function Login({ navigation }) {
         abortEarly: false,
       })
 
+      if (loading) return;
+
+      setLoading(true);
+
       const email = formRef.current.getFieldValue('email');
       const password = formRef.current.getFieldValue('password');
 
@@ -43,6 +49,7 @@ export default function Login({ navigation }) {
 
       //formRef.current.setErrors({});
 
+      setLoading(false);
       navigation.navigate('Dashboard');
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
@@ -55,6 +62,7 @@ export default function Login({ navigation }) {
         formRef.current.setErrors(errorMessages);
       }else{
         Alert.alert("Houve um problema, verifique suas credenciais!");
+        setLoading(false);
       }
     }
   }
@@ -62,8 +70,6 @@ export default function Login({ navigation }) {
   return (
     <KeyboardAvoidingView enabled={Platform.OS === 'android'} behavior="padding" style={styles.container}>
       <View style={styles.form}>
-        <StatusBar backgroundColor="#00c4cc" barStyle="dark-content" />
-
         <Form ref={formRef} onSubmit={handleSubmit}>
           <TextInput
             name="email"
@@ -89,6 +95,7 @@ export default function Login({ navigation }) {
           <TouchableOpacity style={styles.button} onPress={() => formRef.current.submitForm()}>
             <Text style={styles.buttonText}>Entrar</Text>
           </TouchableOpacity>
+          {loading && <Loading />}
         </Form>
       </View>
     </KeyboardAvoidingView>

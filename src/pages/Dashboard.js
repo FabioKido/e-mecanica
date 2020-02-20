@@ -5,18 +5,13 @@ import { Switch } from 'galio-framework';
 import api from '../services/api';
 import { logout } from '../services/auth';
 import argonTheme from '../constants/Theme';
-import Header from '../components/Header';
 import Tabs from '../components/Tabs';
 
 export default function Dashboard({navigation}) {
 
   const [switch_1, setSwitch_1] = useState(false);
 
-  useEffect( () => {
-    loadingState();
-  }, []);
-
-  async function loadingState() {
+  async function loadDash() {
     try {
       const response = await api.get('/user/1');
       const { enable } = response.data.data;
@@ -27,6 +22,10 @@ export default function Dashboard({navigation}) {
       Alert.alert("Houve um problema, verifique suas credenciais!");
     }
   }
+
+  useEffect( () => {
+    loadDash();
+  }, []);
 
   async function handleLogout() {
     await logout();
@@ -54,7 +53,6 @@ export default function Dashboard({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-      < Header/>
         <ScrollView>
           <TouchableOpacity onPress={handleLogout} style={styles.button}>
             <Text style={styles.buttonText}>Sair</Text>
