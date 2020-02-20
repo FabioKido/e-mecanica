@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#00c4cc',
+    backgroundColor: '#0C7CC8',
   },
 
   form: {
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
 
   button: {
     height: 42,
-    backgroundColor: '#00c4cc',
+    backgroundColor: '#0C7CC8',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 2,

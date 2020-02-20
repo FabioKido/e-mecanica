@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 
 label: {
   fontWeight: 'bold',
-  color: '#00c4cc',
+  color: '#0C7CC8',
   marginBottom: 8,
 },
 

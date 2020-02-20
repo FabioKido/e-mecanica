@@ -16,7 +16,7 @@ export default {
     ACTIVE: '#5E72E4', //same as primary
     BUTTON_COLOR: '#9C26B0', //wtf
     PLACEHOLDER: '#9FA5AA',
-    SWITCH_ON: '#00c4cc',
+    SWITCH_ON: '#0C7CC8',
     SWITCH_OFF: '#D4D9DD',
     GRADIENT_START: '#6B24AA',
     GRADIENT_END: '#AC2688',

@@ -7,7 +7,7 @@ export default {
   light: '#C0C0C0',
   lighter: '#eee',
   white: '#FFF',
-  default: '#00c4cc',
+  default: '#0C7CC8',
 
   transparent: 'rgba(0, 0, 0, 0)',
 }
