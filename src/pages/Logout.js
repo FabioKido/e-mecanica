@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Image, Text, StyleSheet, TouchableOpacity, Alert, AsyncStorage, Dimensions } from 'react-native';
-import { Form } from '@unform/mobile';
-import * as Yup from 'yup';
+import { View, ImageBackground, Text, StyleSheet, TouchableOpacity, Alert, AsyncStorage, Dimensions } from 'react-native';
 
 import api from '../services/api';
 import { Loading } from './styles';
@@ -24,15 +22,19 @@ export default function Logout({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.retangule}>
-	<Text> Teste</Text>
+	<ImageBackground
+          source={require('../../assets/splash.png')}
+          style={styles.backgroundImage}
+	>
+    	</ImageBackground>
       </View>
       <View style={styles.buttonBox}>
 	  <TouchableOpacity style={styles.buttonLogin} onPress={() => {}}>
-            <Text style={styles.buttonTextLogin}>Entrar</Text>
+            <Text style={styles.buttonTextLogin}>ENTRAR</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.buttonRegister} onPress={() => {}}>
-            <Text style={styles.buttonTextRegister}>Entrar</Text>
+            <Text style={styles.buttonTextRegister}>REGISTRAR</Text>
           </TouchableOpacity>
       </View>
     </View>
@@ -45,15 +47,23 @@ const styles = StyleSheet.create({
   },
 
   retangule: {
-    flex: 5,
-    backgroundColor: "#0C7DC9"
+    flex: 5
   },
+	
+  backgroundImage:{
+    flex : 1,
+    width : '100%'
+  },	
 
   buttonBox: {
     flex: 1,
-    backgroundColor: "#FFF",
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    alignItems: 'center',
+    justifyContent: 'space-between',
+	
+    paddingLeft: 7,
+    paddingRight: 7,
+    backgroundColor: "#FFF"
   },
 
   buttonRegister: {
@@ -70,7 +80,11 @@ const styles = StyleSheet.create({
     height: 52,
     justifyContent: 'center',
     alignItems: 'center',
+
     borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderRightWidth: 1,
+    borderLeftWidth: 1,
     borderColor: '#F6AC2D',
     borderRadius: 6
   },
