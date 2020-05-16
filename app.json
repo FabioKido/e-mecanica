@@ -6,8 +6,7 @@
     "sdkVersion": "35.0.0",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
     "version": "0.1.0",
     "orientation": "portrait",
@@ -25,6 +24,9 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.quido.emecanica"
     }
   }
 }

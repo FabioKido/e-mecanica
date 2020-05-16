@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
 import { Switch } from 'galio-framework';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import api from '../services/api';
 import { logout } from '../services/auth';
@@ -10,6 +11,13 @@ import Tabs from '../components/Tabs';
 export default function Dashboard({navigation}) {
 
   const [switch_1, setSwitch_1] = useState(false);
+
+  navigation.navigationOptions = {
+    drawerLabel: 'Dashboard',
+    drawerIcon: ({ focused, tintColor }) => (
+      <Icon name="grid-outline" size={16} style={styles.mainIcon} />
+    ),
+  };
 
   async function loadDash() {
     try {
