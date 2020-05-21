@@ -1,13 +1,18 @@
 import React, { useEffect } from 'react';
-import { View, ImageBackground, Text, StyleSheet, TouchableOpacity, Alert, AsyncStorage, Dimensions } from 'react-native';
+import {
+  View,
+  ImageBackground,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  AsyncStorage,
+  Dimensions
+} from 'react-native';
 
-import api from '../services/api';
-import { Loading } from './styles';
-import argonTheme from '../constants/Theme';
-
-import { TOKEN_KEY } from '../services/auth';
-
-const { width, height } = Dimensions.get("screen");
+import api from '../../services/api';
+import argonTheme from '../../constants/Theme';
+import { TOKEN_KEY } from '../../services/auth';
 
 export default function Logout({ navigation }) {
 
@@ -23,13 +28,13 @@ export default function Logout({ navigation }) {
     <View style={styles.container}>
       <View style={styles.retangule}>
 	<ImageBackground
-          source={require('../../assets/splash.png')}
+          source={require('../../../assets/splash.png')}
           style={styles.backgroundImage}
 	>
     	</ImageBackground>
       </View>
       <View style={styles.buttonBox}>
-	  <TouchableOpacity style={styles.buttonLogin} onPress={() => {}}>
+	  <TouchableOpacity style={styles.buttonLogin} onPress={() => {navigation.navigate('Login');}}>
             <Text style={styles.buttonTextLogin}>ENTRAR</Text>
           </TouchableOpacity>
 
@@ -49,18 +54,18 @@ const styles = StyleSheet.create({
   retangule: {
     flex: 5
   },
-	
+
   backgroundImage:{
     flex : 1,
     width : '100%'
-  },	
+  },
 
   buttonBox: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-	
+
     paddingLeft: 7,
     paddingRight: 7,
     backgroundColor: "#FFF"

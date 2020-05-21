@@ -3,10 +3,10 @@ import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, Alert } f
 import { Switch } from 'galio-framework';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import api from '../services/api';
-import { logout } from '../services/auth';
-import argonTheme from '../constants/Theme';
-import Tabs from '../components/Tabs';
+import api from '../../services/api';
+import { logout } from '../../services/auth';
+import argonTheme from '../../constants/Theme';
+import Tabs from '../../components/Tabs';
 
 export default function Dashboard({navigation}) {
 
@@ -23,7 +23,7 @@ export default function Dashboard({navigation}) {
     try {
       const response = await api.get('/user/1');
       const { enable } = response.data.data;
-         
+
       setSwitch_1(enable);
     } catch (err) {
       console.log(err);
@@ -45,7 +45,7 @@ export default function Dashboard({navigation}) {
       const enable = switch_1 === false ? 0 : 1;
 
       const response = await api.put('/user/1', { enable });
-      const { message } = response.data;      
+      const { message } = response.data;
 
       Alert.alert(message);
 
@@ -75,7 +75,7 @@ export default function Dashboard({navigation}) {
             <Text style={styles.buttonText}>Salvar Switch</Text>
           </TouchableOpacity>
         </ScrollView>
-      <Tabs/>  
+      <Tabs/>
     </SafeAreaView>
   )
 }

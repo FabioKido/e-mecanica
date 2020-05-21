@@ -7,8 +7,8 @@ import Dashboard from '../pages/Dashboard';
 
 const Routes = createAppContainer(
   createSwitchNavigator({
-    Logout,
     Login,
+    Logout,
     Dashboard,
   })
 );
