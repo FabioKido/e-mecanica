@@ -12,7 +12,7 @@ export const Wrapper = styled.SafeAreaView`
   flex: 1;
 `;
 
-export const Container = styled.ScrollView``;
+export const Container = styled.View``;
 
 export const Header = styled.View`
   height: 50px;
@@ -23,28 +23,16 @@ export const Header = styled.View`
 `;
 
 export const Title = styled.Text`
-  padding: 0 16px;
+  padding: 0 5% 20px 5%;
   line-height: 40px;
   font-size: 36px;
   color: #0C7DC9;
 `;
 
-export const FormInput = styled.TextInput.attrs({
-  placeholderTextColor: '#000',
-})`
-  margin: 20px 16px;
-  padding-left: 16px;
-  border-radius: 6px;
-  color: #000;
-  width: 100%;
-  height: 52px;
-  border: 1px solid #000;
-  font-size: 15px;
-  line-height: 18px;
-`;
-
 export const FormButton = styled.TouchableOpacity`
+  margin: 10px 5%;
   height: 52px;
+  width: 90%;
   background: #0C7DC9;
   justify-content: center;
   align-items: center;
@@ -55,13 +43,17 @@ export const FormButton = styled.TouchableOpacity`
 export const ButtonText = styled.Text`
   color: #FFF;
   font-size: 16;
+  font-weight: bold
 `;
 
 export const HelpText = styled.Text`
-  color: #ddd;
-  font-size: 16;
+  color: #000;
+  font-size: 15;
+  line-height: 18px;
+  margin: 10px 5%;
 `;
 
 export const Underline = styled.Text`
   font-weight: bold;
+  text-decoration-line: underline;
 `;

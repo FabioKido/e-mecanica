@@ -1,37 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  View,
-  KeyboardAvoidingView,
-  Platform,
-  Image,
-  Text,
-  TouchableOpacity,
-  Alert,
-  AsyncStorage,
-  Dimensions
-} from 'react-native';
+import { Link } from 'react-navigation';
+import { Alert } from 'react-native';
+
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
 
 import api from '../../services/api';
+import { login } from '../../services/auth';
 import argonTheme from '../../constants/Theme';
 import TextInput from '../../components/Form/Input';
-import { login } from '../../services/auth';
 
 import {
   Wrapper,
   Container,
   Header,
   Title,
-  FormInput,
   ButtonText,
   FormButton,
   HelpText,
   Underline,
   Loading
 } from './styles';
-
-const { width, height } = Dimensions.get("screen");
 
 export default function Login({ navigation }) {
 
@@ -56,7 +45,7 @@ export default function Login({ navigation }) {
       const email = formRef.current.getFieldValue('email');
       const password = formRef.current.getFieldValue('password');
 
-      const response = await api.post("/login", { email, password });
+      const response = await api.post("/session/signin", { email, password });
       const { access_token } = response.data;
 
       await login(access_token);
@@ -85,11 +74,11 @@ export default function Login({ navigation }) {
   //Resolver o StatusBar
   return (
     <Wrapper>
+      <Header />
       <Container>
-        <Header />
         <Title>Autenticar</Title>
         <Form ref={formRef} onSubmit={handleSubmit}>
-          <FormInput
+          <TextInput
             name="email"
             placeholder="Seu e-mail"
             keyboardType="email-address"
@@ -97,7 +86,7 @@ export default function Login({ navigation }) {
             autoCorrect={false}
           />
 
-          <FormInput
+          <TextInput
             name="password"
             placeholder="Sua senha de acesso"
             autoCapitalize="words"
@@ -107,9 +96,9 @@ export default function Login({ navigation }) {
           <FormButton onPress={() => formRef.current.submitForm()}>
             <ButtonText>ENTRAR</ButtonText>
           </FormButton>
-          {loading && <Loading />}
         </Form>
-        <HelpText>Não consigo entrar: <Underline>Esqueci a senha</Underline> ou <Underline>Suporte</Underline></HelpText>
+        <HelpText><Underline>Esqueci a Senha</Underline> ou <Underline onPress={() => {navigation.navigate('Logout');}}>Registrar</Underline></HelpText>
+        {loading && <Loading />}
       </Container>
     </Wrapper>
   );
