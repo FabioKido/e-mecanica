@@ -6,13 +6,16 @@ import { Transition } from 'react-native-reanimated';
 import Login from '../pages/Login';
 import Logout from '../pages/Logout';
 import Dashboard from '../pages/Dashboard';
+import Step1 from '../pages/Register/step1';
+import Step2 from '../pages/Register/step2';
 
 const Routes = createAppContainer(
   createAnimatedSwitchNavigator(
     {
       Logout,
       Login,
-      Dashboard
+      Step1,
+      Step2
     },
     {
       transition: (

@@ -26,7 +26,7 @@ export default function Login({ navigation }) {
   const formRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(data) {
+  async function handleNextSubmit(data) {
     try{
       const schema = Yup.object().shape({
         email: Yup.string().email('Digite um e-mail válido').required('O email é obrigatório'),
@@ -44,15 +44,8 @@ export default function Login({ navigation }) {
       const email = formRef.current.getFieldValue('email');
       const password = formRef.current.getFieldValue('password');
 
-      const response = await api.post("/session/signin", { email, password });
-      const { access_token } = response.data;
-
-      await login(access_token);
-
-      //formRef.current.setErrors({});
-
       setLoading(false);
-      navigation.navigate('Dashboard');
+      navigation.navigate('Step2');
 
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
@@ -75,11 +68,11 @@ export default function Login({ navigation }) {
     <Wrapper>
       <Header />
       <Container>
-        <Title>Autenticar</Title>
-        <Form ref={formRef} onSubmit={handleSubmit}>
+        <Title>Registrar</Title>
+        <Form ref={formRef} onSubmit={handleNextSubmit}>
           <TextInput
             name="email"
-            placeholder="Seu e-mail"
+            placeholder="Digite seu melhor e-mail"
             keyboardType="email-address"
             autoCapitalize="none"
             autoCorrect={false}
@@ -87,17 +80,16 @@ export default function Login({ navigation }) {
 
           <TextInput
             name="password"
-            placeholder="Sua senha de acesso"
+            placeholder="Crie uma senha forte aqui"
             autoCapitalize="words"
             autoCorrect={false}
           />
 
           <FormButton onPress={() => formRef.current.submitForm()}>
-            <ButtonText>ENTRAR</ButtonText>
+            <ButtonText>PROXÍMO</ButtonText>
           </FormButton>
         </Form>
-        <HelpText><Underline>Esqueci a Senha</Underline> ou <Underline onPress={() => {navigation.navigate('Step1');}}>Registrar</Underline></HelpText>
-        {loading && <Loading />}
+        <HelpText>Esqueci a Senha ou Registrar</HelpText>
       </Container>
     </Wrapper>
   );

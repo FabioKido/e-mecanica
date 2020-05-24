@@ -38,7 +38,7 @@ export default function Logout({ navigation }) {
             <Text style={styles.buttonTextLogin}>ENTRAR</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.buttonRegister} onPress={() => {}}>
+          <TouchableOpacity style={styles.buttonRegister} onPress={() => {navigation.navigate('Step1');}}>
             <Text style={styles.buttonTextRegister}>REGISTRAR</Text>
           </TouchableOpacity>
       </View>
