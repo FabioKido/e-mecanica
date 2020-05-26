@@ -21,7 +21,7 @@ export default function Dashboard({navigation}) {
 
   async function loadDash() {
     try {
-      const response = await api.get('/user/1');
+      const response = await api.get('/user/info');
       const { enable } = response.data.data;
 
       setSwitch_1(enable);

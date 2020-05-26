@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import api from '../../services/api';
 import { login } from '../../services/auth';
 import TextInput from '../../components/Form/Input';
+import Loading from '../../components/Loading';
 
 import {
   Wrapper,
@@ -17,8 +18,7 @@ import {
   ButtonText,
   FormButton,
   HelpText,
-  Underline,
-  Loading
+  Underline
 } from './styles';
 
 export default function Login({ navigation }) {

@@ -13,3 +13,17 @@ export const FormInput = styled.TextInput.attrs({
   font-size: 15px;
   line-height: 18px;
 `;
+
+export const ErrorInput = styled.TextInput.attrs({
+  placeholderTextColor: 'red'
+})`
+  margin: 10px 5%;
+  padding-left: 16px;
+  border-radius: 6px;
+  color: red;
+  width: 90%;
+  height: 52px;
+  border: 1px solid red;
+  font-size: 15px;
+  line-height: 18px;
+`;

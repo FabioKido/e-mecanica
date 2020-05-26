@@ -14,6 +14,7 @@ const Routes = createAppContainer(
     {
       Logout,
       Login,
+      Dashboard,
       Step1,
       Step2
     },

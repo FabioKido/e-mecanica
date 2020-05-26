@@ -2,7 +2,7 @@ import React, { useRef, useEffect }  from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { useField } from '@unform/core';
 
-import { FormInput } from './styles';
+import { FormInput, ErrorInput } from './styles';
 
 function Input({ name, label, ...rest }) {
   const inputRef = useRef(null);
@@ -28,7 +28,13 @@ function Input({ name, label, ...rest }) {
   }, [fieldName, registerField]);
 
   return (
-  	  <FormInput ref={ inputRef } defaultValue={defaultValue} { ...rest } />
+    <>
+      {error ?
+        (<ErrorInput ref={ inputRef } defaultValue={defaultValue} { ...rest } />)
+        :
+        (<FormInput ref={ inputRef } defaultValue={defaultValue} { ...rest } />)
+      }
+    </>
   );
 }
 
