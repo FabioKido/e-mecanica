@@ -1,5 +1,12 @@
 import styled from 'styled-components/native';
 
+export const Loading = styled.ActivityIndicator.attrs({
+  size: 'small',
+  color: '#F6AC2D'
+})`
+  margin: 30px 0;
+`;
+
 export const Wrapper = styled.SafeAreaView`
   background: #fff;
   flex: 1;

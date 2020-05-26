@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-navigation';
 import { Alert } from 'react-native';
+import Lottie from "lottie-react-native";
 
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
@@ -8,7 +9,6 @@ import * as Yup from 'yup';
 import api from '../../services/api';
 import { login } from '../../services/auth';
 import TextInput from '../../components/Form/Input';
-import Loading from '../../components/Loading';
 
 import {
   Wrapper,
@@ -18,7 +18,8 @@ import {
   ButtonText,
   FormButton,
   HelpText,
-  Underline
+  Underline,
+  Loading
 } from './styles';
 
 export default function Login({ navigation }) {

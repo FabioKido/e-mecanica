@@ -44,7 +44,7 @@ export default function Dashboard({navigation}) {
     try {
       const enable = switch_1 === false ? 0 : 1;
 
-      const response = await api.put('/user/1', { enable });
+      const response = await api.put('/user/info/3', { enable });
       const { message } = response.data;
 
       Alert.alert(message);
