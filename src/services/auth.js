@@ -1,17 +1,12 @@
-import { AsyncStorage } from 'react-native';
+import api from './api';
 
+// Não funciona sem isso aqui!!!
 export const TOKEN_KEY = "x-access-token";
 
-export const isAuthenticated = async () => {
-  await AsyncStorage.getItem(TOKEN_KEY) !== null;
-};
+export function signin(email, password) {
+  return api.post('/session/signin', { email, password });
+}
 
-export const getToken = () => AsyncStorage.getItem(TOKEN_KEY);
-
-export const login = async token => {
-  await AsyncStorage.setItem(TOKEN_KEY, token);
-};
-
-export const logout = async () => {
-  await AsyncStorage.clear();
-};
+export function resetPassword(email) {
+  return api.post('/forgot', { email });
+}

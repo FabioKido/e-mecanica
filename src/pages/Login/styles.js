@@ -1,59 +1,97 @@
 import styled from 'styled-components/native';
+import { MaterialIcons } from '@expo/vector-icons';
+import { StyleSheet } from 'react-native';
 
-export const Loading = styled.ActivityIndicator.attrs({
-  size: 'small',
-  color: '#F6AC2D'
-})`
-  margin: 30px 0;
+import logoImage from '../../assets/logo.png';
+
+export const Container = styled.SafeAreaView`
+  flex: 1;
+  background: #999;
+  justify-content: center;
 `;
 
-export const Wrapper = styled.SafeAreaView`
-  background: #fff;
+export const Logo = styled.Image.attrs({
+  source: logoImage,
+})`
+  align-self: center;
+  margin-bottom: 50px;
+`;
+
+export const FormContainer = styled.View`
+  padding: 0 30px;
+`;
+
+export const InputTitle = styled.Text`
+  color: #000;
+  font-weight: bold;
+`;
+
+export const InputContainer = styled.View`
+  flex-direction: row;
+  border-bottom-width: ${StyleSheet.hairlineWidth};
+  border-color: rgba(255, 255, 255, 0.2);
+  justify-content: space-between;
+  margin-bottom: 30px;
+`;
+
+export const Input = styled.TextInput.attrs({
+  placeholderTextColor: '#000',
+})`
+  height: 48px;
+  font-size: 17px;
+  color: #fff;
   flex: 1;
 `;
 
-export const Container = styled.View``;
+export const EnvelopeIcon = styled(MaterialIcons).attrs({
+  name: 'mail-outline',
+})`
+  color: #000;
+  font-size: 20px;
+`;
 
-export const Header = styled.View`
+export const LockIcon = styled(MaterialIcons).attrs({
+  name: 'lock-outline',
+})`
+  color: #000;
+  font-size: 20px;
+`;
+
+export const SubmitButton = styled.TouchableOpacity`
   height: 50px;
-  padding: 0 16px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-export const Title = styled.Text`
-  padding: 0 5% 20px 5%;
-  line-height: 40px;
-  font-size: 36px;
-  color: #0C7DC9;
-`;
-
-export const FormButton = styled.TouchableOpacity`
-  margin: 10px 5%;
-  height: 52px;
-  width: 90%;
-  background: #0C7DC9;
+  background-color: #0C7DC9;
   justify-content: center;
   align-items: center;
-  border: 2px solid #0C7DC9;
-  border-radius: 6px;
 `;
 
-export const ButtonText = styled.Text`
-  color: #FFF;
-  font-size: 16;
-  font-weight: bold
-`;
-
-export const HelpText = styled.Text`
-  color: #000;
-  font-size: 15;
-  line-height: 18px;
-  margin: 10px 5%;
-`;
-
-export const Underline = styled.Text`
+export const SubmitButtonText = styled.Text`
+  color: #fff;
+  font-size: 14px;
   font-weight: bold;
-  text-decoration-line: underline;
+  letter-spacing: 2.8px;
+`;
+
+export const NewAccountButton = styled.TouchableOpacity`
+  height: 42px;
+  background-color: #F6AC2D;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+`;
+
+export const NewAccountButtonText = styled.Text`
+  color: #fff;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 2.8px;
+`;
+
+export const ForgotPasswordButton = styled.TouchableOpacity`
+  margin: 30px 0 50px;
+  align-items: center;
+`;
+
+export const ForgotPasswordButtonText = styled.Text`
+  color: #000;
+  font-size: 16px;
 `;

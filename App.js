@@ -1,14 +1,19 @@
 import React from 'react';
-import { YellowBox, StatusBar } from 'react-native';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { StatusBar } from 'react-native';
 
-import Routes from './src/routes/routes';
+import { store, persistor } from './src/store';
 
-YellowBox.ignoreWarnings([
-  'Unrecognized WebSocket'
-]);
+import App from './src';
 
-export default function App() {
+export default function Index() {
   return (
-    <Routes /> 
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <StatusBar barStyle="light-content" />
+        <App />
+      </PersistGate>
+    </Provider>
   );
 }

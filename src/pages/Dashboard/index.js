@@ -8,7 +8,11 @@ import { logout } from '../../services/auth';
 import argonTheme from '../../constants/Theme';
 import Tabs from '../../components/Tabs';
 
+import { signOutRequest } from '../../store/modules/auth/actions';
+import { useDispatch } from 'react-redux';
+
 export default function Dashboard({navigation}) {
+  const dispatch = useDispatch();
 
   const [switch_1, setSwitch_1] = useState(false);
 
@@ -36,8 +40,7 @@ export default function Dashboard({navigation}) {
   }, []);
 
   async function handleLogout() {
-    await logout();
-    navigation.navigate('Login');
+    dispatch(signOutRequest());
   }
 
   async function handleSubmit() {

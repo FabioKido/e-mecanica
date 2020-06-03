@@ -1,105 +1,120 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-navigation';
-import { Alert } from 'react-native';
-import Lottie from "lottie-react-native";
+import React, { useState, useRef } from 'react';
+import {
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform,
+  ActivityIndicator,
+} from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { Form } from '@unform/mobile';
-import * as Yup from 'yup';
-
-import api from '../../services/api';
-import { login } from '../../services/auth';
-import TextInput from '../../components/Form/Input';
+import { signInRequest } from '../../store/modules/auth/actions';
 
 import {
-  Wrapper,
   Container,
-  Header,
-  Title,
-  ButtonText,
-  FormButton,
-  HelpText,
-  Underline,
-  Loading
+  Logo,
+  FormContainer,
+  InputContainer,
+  InputTitle,
+  Input,
+  EnvelopeIcon,
+  LockIcon,
+  SubmitButton,
+  SubmitButtonText,
+  NewAccountButton,
+  NewAccountButtonText,
+  ForgotPasswordButton,
+  ForgotPasswordButtonText,
 } from './styles';
 
 export default function Login({ navigation }) {
+  const loading = useSelector(state => state.auth.loading);
 
-  const formRef = useRef(null);
-  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
 
-  async function handleSubmit(data) {
-    try{
-      const schema = Yup.object().shape({
-        email: Yup.string().email('Digite um e-mail válido').required('O email é obrigatório'),
-        password: Yup.string().required('Senha é obrigatória')
-      });
+  const passwordInputRef = useRef();
 
-      await schema.validate(data, {
-        abortEarly: false,
-      })
+  const dispatch = useDispatch();
 
-      if(loading) return;
+  async function handleSubmit() {
+    if (!email || !password) return;
 
-      setLoading(true);
+    Keyboard.dismiss();
 
-      const email = formRef.current.getFieldValue('email');
-      const password = formRef.current.getFieldValue('password');
-
-      const response = await api.post("/session/signin", { email, password });
-      const { access_token } = response.data;
-
-      await login(access_token);
-
-      //formRef.current.setErrors({});
-
-      setLoading(false);
-      navigation.navigate('Dashboard');
-
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        const errorMessages = {};
-
-        err.inner.forEach(error => {
-          errorMessages[error.path] = error.message;
-        })
-
-        formRef.current.setErrors(errorMessages);
-      }else{
-        Alert.alert("Houve um problema, verifique suas credenciais!");
-        setLoading(false);
-      }
-    }
+    dispatch(signInRequest(email, password));
   }
 
-  //Resolver o StatusBar
+  function handleCreateAccount() {
+    navigation.navigate('CreateAccount');
+  }
+
   return (
-    <Wrapper>
-      <Header />
-      <Container>
-        <Title>Autenticar</Title>
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <TextInput
-            name="email"
-            placeholder="Seu e-mail"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
+    <TouchableWithoutFeedback
+      onPress={Keyboard.dismiss}
+      enabled={Platform.OS === 'ios'}
+    >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : null}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          {/* {<Logo />} */}
 
-          <TextInput
-            name="password"
-            placeholder="Sua senha de acesso"
-            autoCapitalize="words"
-            autoCorrect={false}
-          />
+          <FormContainer>
+          {/* {<InputTitle>E-MAIL</InputTitle>} */}
+            <InputContainer>
+              <Input
+                placeholder="Digite seu e-mail"
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="email-address"
+                onChangeText={text => setEmail(text)}
+                value={email}
+                returnKeyType="next"
+                onSubmitEditing={() => passwordInputRef.current.focus()}
+              />
+              <EnvelopeIcon />
+            </InputContainer>
 
-          <FormButton onPress={() => formRef.current.submitForm()}>
-            <ButtonText>ENTRAR</ButtonText>
-          </FormButton>
-        </Form>
-        <HelpText><Underline>Esqueci a Senha</Underline> ou <Underline onPress={() => {navigation.navigate('Step1');}}>Registrar</Underline></HelpText>
-        {loading && <Loading />}
-      </Container>
-    </Wrapper>
+            {/* {<InputTitle>SENHA</InputTitle>} */}
+            <InputContainer>
+              <Input
+                placeholder="Sua senha secreta"
+                autoCapitalize="none"
+                autoCorrect={false}
+                secureTextEntry
+                onChangeText={text => setPassword(text)}
+                value={password}
+                ref={passwordInputRef}
+                returnKeyType="send"
+                onSubmitEditing={handleSubmit}
+              />
+              <LockIcon />
+            </InputContainer>
+
+            <SubmitButton onPress={handleSubmit}>
+              {loading ? (
+                <ActivityIndicator color="#FFF" size="small" />
+              ) : (
+                <SubmitButtonText>ENTRAR</SubmitButtonText>
+              )}
+            </SubmitButton>
+
+            <NewAccountButton onPress={handleCreateAccount}>
+              <NewAccountButtonText>AINDA NÃO TENHO CONTA</NewAccountButtonText>
+            </NewAccountButton>
+
+            <ForgotPasswordButton
+              onPress={() => navigation.navigate('ForgotPassword')}
+            >
+              <ForgotPasswordButtonText>
+                Esqueci minha senha
+              </ForgotPasswordButtonText>
+            </ForgotPasswordButton>
+          </FormContainer>
+        </Container>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 }
