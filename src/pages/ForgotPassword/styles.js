@@ -6,8 +6,8 @@ import logoImage from '../../assets/logo.png';
 
 export const Container = styled.SafeAreaView`
   flex: 1;
-  background: #000;
   justify-content: center;
+  background: #000;
 `;
 
 export const Logo = styled.Image.attrs({
@@ -39,7 +39,7 @@ export const Input = styled.TextInput.attrs({
 })`
   height: 48px;
   font-size: 17px;
-  color: #999;
+  color: #fff;
   flex: 1;
 `;
 
@@ -50,50 +50,28 @@ export const EnvelopeIcon = styled(MaterialIcons).attrs({
   font-size: 20px;
 `;
 
-export const LockIcon = styled(MaterialIcons).attrs({
-  name: 'lock-outline',
-})`
-  color: #999;
-  font-size: 20px;
-`;
-
 export const SubmitButton = styled.TouchableOpacity`
   height: 50px;
-  background-color: #38b6ff;
+  background-color: #f8a920;
   justify-content: center;
   align-items: center;
   border-radius: 6;
 `;
 
 export const SubmitButtonText = styled.Text`
-  color: #fff;
+  color: #000;
   font-size: 14px;
   font-weight: bold;
   letter-spacing: 2.8px;
 `;
 
-export const NewAccountButton = styled.TouchableOpacity`
-  height: 42px;
-  background-color: #f8a920;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-  border-radius: 6;
-`;
-
-export const NewAccountButtonText = styled.Text`
-  color: #000;
-  font-size: 13px;
-  font-weight: bold;
-  letter-spacing: 2.8px;
-`;
-
-export const ForgotPasswordButton = styled.TouchableOpacity`
-  margin: 30px 0 50px;
+export const BackToLoginButton = styled.TouchableOpacity`
+  margin-top: 30px;
+  margin-bottom: 50px;
   align-items: center;
 `;
 
-export const ForgotPasswordButtonText = styled.Text`
+export const BackToLoginButtonText = styled.Text`
   color: #999;
   font-size: 16px;
 `;

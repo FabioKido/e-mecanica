@@ -59,10 +59,10 @@ export default function Login({ navigation }) {
         style={{ flex: 1 }}
       >
         <Container>
-          {/* {<Logo />} */}
+          <Logo />
 
           <FormContainer>
-          {/* {<InputTitle>E-MAIL</InputTitle>} */}
+            <InputTitle>E-MAIL</InputTitle>
             <InputContainer>
               <Input
                 placeholder="Digite seu e-mail"
@@ -77,7 +77,7 @@ export default function Login({ navigation }) {
               <EnvelopeIcon />
             </InputContainer>
 
-            {/* {<InputTitle>SENHA</InputTitle>} */}
+            <InputTitle>SENHA</InputTitle>
             <InputContainer>
               <Input
                 placeholder="Sua senha secreta"
@@ -102,7 +102,7 @@ export default function Login({ navigation }) {
             </SubmitButton>
 
             <NewAccountButton onPress={handleCreateAccount}>
-              <NewAccountButtonText>AINDA NÃO TENHO CONTA</NewAccountButtonText>
+              <NewAccountButtonText>CRIAR UMA CONTA</NewAccountButtonText>
             </NewAccountButton>
 
             <ForgotPasswordButton

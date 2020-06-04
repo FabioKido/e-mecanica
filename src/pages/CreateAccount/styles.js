@@ -1,24 +1,38 @@
 import styled from 'styled-components/native';
-import { MaterialIcons } from '@expo/vector-icons';
 import { StyleSheet } from 'react-native';
+import Constants from 'expo-constants';
 
-import logoImage from '../../assets/logo.png';
-
-export const Container = styled.SafeAreaView`
+export const Container = styled.View`
   flex: 1;
-  background: #000;
   justify-content: center;
+  background: #000;
+  padding-top: ${Constants.statusBarHeight}px;
 `;
 
-export const Logo = styled.Image.attrs({
-  source: logoImage,
-})`
+export const Title = styled.Text`
+  font-size: 18px;
+  color: #fff;
+  font-weight: bold;
+  letter-spacing: 2.8px;
+  text-transform: uppercase;
+  text-align: center;
+`;
+
+export const Description = styled.Text`
+  text-align: center;
+  color: #999;
+  font-size: 15px;
+  margin: 5px 0 30px;
+  max-width: 260px;
   align-self: center;
-  margin-bottom: 50px;
 `;
 
-export const FormContainer = styled.View`
+export const FormContainer = styled.ScrollView.attrs({
+  // contentContainerStyle: { justifyContent: 'center' },
+})`
+  flex: 1;
   padding: 0 30px;
+  margin-top: 30px;
 `;
 
 export const InputTitle = styled.Text`
@@ -39,51 +53,21 @@ export const Input = styled.TextInput.attrs({
 })`
   height: 48px;
   font-size: 17px;
-  color: #999;
+  color: #fff;
   flex: 1;
-`;
-
-export const EnvelopeIcon = styled(MaterialIcons).attrs({
-  name: 'mail-outline',
-})`
-  color: #999;
-  font-size: 20px;
-`;
-
-export const LockIcon = styled(MaterialIcons).attrs({
-  name: 'lock-outline',
-})`
-  color: #999;
-  font-size: 20px;
 `;
 
 export const SubmitButton = styled.TouchableOpacity`
   height: 50px;
-  background-color: #38b6ff;
+  background-color: #f8a920;
   justify-content: center;
   align-items: center;
   border-radius: 6;
 `;
 
 export const SubmitButtonText = styled.Text`
-  color: #fff;
-  font-size: 14px;
-  font-weight: bold;
-  letter-spacing: 2.8px;
-`;
-
-export const NewAccountButton = styled.TouchableOpacity`
-  height: 42px;
-  background-color: #f8a920;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-  border-radius: 6;
-`;
-
-export const NewAccountButtonText = styled.Text`
   color: #000;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: bold;
   letter-spacing: 2.8px;
 `;

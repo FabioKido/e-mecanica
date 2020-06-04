@@ -11,46 +11,20 @@ import { Transition } from 'react-native-reanimated';
 // Public Routes
 
 import Login from '../pages/Login';
-import PasswordRecover from '../pages/PasswordRecover';
+import ForgotPassword from '../pages/ForgotPassword';
 import Logout from '../pages/Logout';
-import Step1 from '../pages/Register/step1';
-import Step2 from '../pages/Register/step2';
+import CreateAccount from '../pages/CreateAccount';
 
 // Private Routes
 
 import Dashboard from '../pages/Dashboard';
-
-// Não é esse navigation é o Stack com header(com opção voltar).
-// Adicionar um Tab navigation também...
-
-// const Routes = createAppContainer(
-//   createAnimatedSwitchNavigator(
-//     {
-//       Logout,
-//       Login,
-//       PasswordRecover,
-//       Dashboard,
-//       Step1,
-//       Step2
-//     },
-//     {
-//       transition: (
-//         <Transition.Together>
-//           <Transition.Out type="fade" durationMs={200} interpolation="easeIn" />
-//           <Transition.In type="fade" durationMs={500} />
-//         </Transition.Together>
-//       ),
-//     }
-//   )
-// );
-
-// export default Routes;
+import Profile from '../pages/Profile';
 
 const SignRoutes = createAnimatedSwitchNavigator(
   {
-    Logout,
     Login,
-    PasswordRecover,
+    CreateAccount,
+    ForgotPassword,
   },
   {
     transition: (
@@ -64,6 +38,7 @@ const SignRoutes = createAnimatedSwitchNavigator(
 
 const BottomRoutes = createBottomTabNavigator(
   {
+    Profile,
     Dashboard,
   },
   {
@@ -74,7 +49,7 @@ const BottomRoutes = createBottomTabNavigator(
       style: {
         height: 54,
         paddingVertical: 5,
-        backgroundColor: '#222',
+        backgroundColor: '#000',
         borderTopColor: 'rgba(255, 255, 255, 0.4)',
       },
       labelStyle: {
