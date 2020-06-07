@@ -8,5 +8,5 @@ export function signin(email, password) {
 }
 
 export function resetPassword(email) {
-  return api.post('/forgot', { email });
+  return api.post('/session/forgot', { email });
 }

@@ -20,6 +20,8 @@ export default function auth(state = INITIAL_STATE, action) {
       };
     case types.SIGN_IN_FAILURE:
       return { ...state, loading: false };
+    case types.UPDATE_PROFILE_SUCCESS:
+      return { ...state, user: { ...state.user, ...action.payload.data } };
     case types.SIGN_OUT_REQUEST:
       return INITIAL_STATE;
     default:

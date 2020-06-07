@@ -14,6 +14,13 @@ export function signInSuccess(token, user) {
   };
 }
 
+export function updateProfileSuccess(data) {
+  return {
+    type: types.UPDATE_PROFILE_SUCCESS,
+    payload: { data },
+  };
+}
+
 export function signInFailure() {
   return {
     type: types.SIGN_IN_FAILURE,

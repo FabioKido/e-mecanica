@@ -12,24 +12,26 @@ export const Container = styled.KeyboardAvoidingView.attrs({
 
 export const Content = styled.ScrollView``;
 
-export const AvatarInput = styled.Image`
-  width: 140px;
-  height: 140px;
-  border-radius: 70px;
-  align-self: center;
-  margin-top: 30px;
-  background: #333;
-`;
-
-export const AvatarDesc = styled.Text`
-  color: #fff;
-  font-size: 13px;
-  text-align: center;
-  margin-top: 10px;
-`;
-
 export const FormContainer = styled.View`
   padding: 30px;
+`;
+
+export const Title = styled.Text`
+  font-size: 18px;
+  color: #fff;
+  font-weight: bold;
+  letter-spacing: 2.8px;
+  text-transform: uppercase;
+  text-align: center;
+`;
+
+export const Description = styled.Text`
+  text-align: center;
+  color: #999;
+  font-size: 15px;
+  margin: 5px 0 30px;
+  max-width: 260px;
+  align-self: center;
 `;
 
 export const InputTitle = styled.Text`

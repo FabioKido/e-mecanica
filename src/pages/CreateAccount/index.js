@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
@@ -7,6 +7,8 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
+
+import * as Yup from 'yup';
 
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 
@@ -29,30 +31,39 @@ import {
 export default function CreateAccount({ navigation }) {
   const [loading, setLoading] = useState(false);
 
-  const [order_id, setOrderId] = useState('');
-  const [ticket_number, setTicketNumber] = useState('');
-  const [buyer_email, setBuyerEmail] = useState('');
-  const [app_email, setAppEmail] = useState('');
-  const [app_password, setAppPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [password_confirmation, setPasswordConfirmation] = useState('');
 
-  const ticketIdInputRef = useRef();
-  const buyerEmailInputRef = useRef();
-  const appEmailInputRef = useRef();
-  const appPasswordInputRef = useRef();
+  const emailInputRef = useRef();
+  const passwordInputRef = useRef();
+  const confirmPasswordInputRef = useRef();
 
-  async function handleCreateAccount() {
+  const handleCreateAccount = useCallback(async () => {
     Keyboard.dismiss();
 
     try {
       setLoading(true);
 
-      await api.post('/integration', {
-        order_id,
-        ticket_number,
-        buyer_email,
-        app_email,
-        app_password,
+      const schema = Yup.object().shape({
+        username: Yup.string().required('Senha é obrigatória'),
+        email: Yup.string().email('Digite um e-mail válido').required('O email é obrigatório'),
+        password: Yup.string().required('Senha é obrigatória'),
+        password_confirmation: Yup.string().required('Confirme sua senha')
       });
+
+      await schema.validate({username, email, password, password_confirmation}, {
+        abortEarly: false,
+      });
+
+      if (password !== password_confirmation) {
+        setLoading(false);
+
+        return;
+      }
+
+      await api.post('/session/signup', { username, email, password });
 
       Alert.alert(
         'Sucesso!',
@@ -64,6 +75,7 @@ export default function CreateAccount({ navigation }) {
           },
         ]
       );
+      
     } catch (err) {
       console.log(err);
 
@@ -78,7 +90,13 @@ export default function CreateAccount({ navigation }) {
 
       setLoading(false);
     }
-  }
+
+  }, [
+    username,
+    email,
+    password,
+    password_confirmation,
+  ]);
 
   return (
     <TouchableWithoutFeedback
@@ -93,92 +111,56 @@ export default function CreateAccount({ navigation }) {
           <FormContainer keyboardShouldPersistTaps="handled">
             <Title>CRIE SUA CONTA</Title>
             <Description>
-              Para criar sua conta no app você precisará de algumas informações
-              que pode obter através da compra do ingresso no Sympla.
+              Digite suas informações para criar sua conta no app.
             </Description>
 
-            <InputTitle>ID do pedido (obtido no Sympla)</InputTitle>
+            <InputTitle>Nome de Usuário</InputTitle>
             <InputContainer>
               <Input
-                placeholder="Digite o ID do pedido"
-                autoCapitalize="characters"
-                autoCorrect={false}
-                onChangeText={setOrderId}
-                value={order_id}
-                returnKeyType="next"
-                onSubmitEditing={() => ticketIdInputRef.current.focus()}
-              />
-              <MaterialCommunityIcons
-                name="ticket-outline"
-                size={20}
-                color="#999"
-              />
-            </InputContainer>
-
-            <InputTitle>Nº do ingresso (obtido no Sympla)</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite o Nº do ingresso"
-                autoCapitalize="characters"
-                autoCorrect={false}
-                onChangeText={setTicketNumber}
-                value={ticket_number}
-                ref={ticketIdInputRef}
-                returnKeyType="next"
-                onSubmitEditing={() => buyerEmailInputRef.current.focus()}
-              />
-              <MaterialCommunityIcons
-                name="ticket-outline"
-                size={20}
-                color="#999"
-              />
-            </InputContainer>
-
-            <InputTitle>E-mail do comprador (obtido no Sympla)</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite o e-mail do comprador"
+                placeholder="Digite o nome de usuário"
                 autoCapitalize="none"
                 autoCorrect={false}
-                keyboardType="email-address"
-                onChangeText={setBuyerEmail}
-                value={buyer_email}
-                ref={buyerEmailInputRef}
+                onChangeText={setUsername}
+                value={username}
                 returnKeyType="next"
-                onSubmitEditing={() => appEmailInputRef.current.focus()}
+                onSubmitEditing={() => emailInputRef.current.focus()}
               />
-              <MaterialIcons name="mail-outline" size={20} color="#999" />
+              <MaterialIcons
+                name="person-pin"
+                size={20}
+                color="#999"
+              />
             </InputContainer>
 
             <InputTitle>E-mail de acesso</InputTitle>
             <InputContainer>
               <Input
-                placeholder="Digite seu e-mail para login"
+                placeholder="Digite seu e-mail"
                 autoCapitalize="none"
                 autoCorrect={false}
                 keyboardType="email-address"
-                onChangeText={setAppEmail}
-                value={app_email}
-                ref={appEmailInputRef}
+                onChangeText={setEmail}
+                value={email}
+                ref={emailInputRef}
                 returnKeyType="next"
-                onSubmitEditing={() => appPasswordInputRef.current.focus()}
+                onSubmitEditing={() => passwordInputRef.current.focus()}
               />
               <MaterialIcons name="mail-outline" size={20} color="#999" />
             </InputContainer>
 
             <InputTitle>Senha de acesso</InputTitle>
             <InputContainer>
-              <Input
-                placeholder="Digite sua senha para login"
+            <Input
+                placeholder="Digite sua senha forte"
                 autoCapitalize="none"
                 autoCorrect={false}
                 secureTextEntry
-                onChangeText={setAppPassword}
-                value={app_password}
-                ref={appPasswordInputRef}
-                returnKeyType="send"
-                textContentType="oneTimeCode"
-                onSubmitEditing={handleCreateAccount}
+                ref={passwordInputRef}
+                onChangeText={setPassword}
+                value={password}
+                returnKeyType="next"
+                onSubmitEditing={() =>
+                  confirmPasswordInputRef.current.focus()}
               />
               <MaterialCommunityIcons
                 name="lock-outline"
@@ -186,6 +168,27 @@ export default function CreateAccount({ navigation }) {
                 color="#999"
               />
             </InputContainer>
+
+            <InputTitle>Confirmar Senha</InputTitle>
+            <InputContainer>
+                <Input
+                  placeholder="Confirme a nova senha"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  secureTextEntry
+                  ref={confirmPasswordInputRef}
+                  onChangeText={setPasswordConfirmation}
+                  value={password_confirmation}
+                  returnKeyType="send"
+                  textContentType="oneTimeCode"
+                  onSubmitEditing={handleCreateAccount}
+                />
+                <MaterialCommunityIcons
+                  name="lock-outline"
+                  size={20}
+                  color="#999"
+                />
+              </InputContainer>
 
             <SubmitButton onPress={handleCreateAccount}>
               {loading ? (

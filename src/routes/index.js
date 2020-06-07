@@ -8,14 +8,13 @@ import {
 import createAnimatedSwitchNavigator from 'react-navigation-animated-switch';
 import { Transition } from 'react-native-reanimated';
 
-// Public Routes
+// Sign Routes
 
 import Login from '../pages/Login';
 import ForgotPassword from '../pages/ForgotPassword';
-import Logout from '../pages/Logout';
 import CreateAccount from '../pages/CreateAccount';
 
-// Private Routes
+// App Routes
 
 import Dashboard from '../pages/Dashboard';
 import Profile from '../pages/Profile';
