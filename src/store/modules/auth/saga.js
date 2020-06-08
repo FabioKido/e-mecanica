@@ -15,7 +15,9 @@ export function* signInRequest({ payload }) {
 
     const response = yield call(signin, email, password);
 
-    const { token, user } = response.data;
+    const { access_token, user } = response.data;
+
+    const token = access_token;
 
     api.defaults.headers.Authorization = `bearer ${token}`;
 

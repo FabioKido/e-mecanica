@@ -9,10 +9,12 @@ import argonTheme from '../../constants/Theme';
 import Tabs from '../../components/Tabs';
 
 import { signOutRequest } from '../../store/modules/auth/actions';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 export default function Dashboard({navigation}) {
   const dispatch = useDispatch();
+
+  const profile = useSelector(state => state.auth.user);
 
   const [switch_1, setSwitch_1] = useState(false);
 
@@ -47,7 +49,7 @@ export default function Dashboard({navigation}) {
     try {
       const enable = switch_1 === false ? 0 : 1;
 
-      const response = await api.put('/user/info/3', { enable });
+      const response = await api.put(`/user/info/${profile.id}`, { enable });
       const { message } = response.data;
 
       Alert.alert(message);

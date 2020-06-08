@@ -18,6 +18,7 @@ import CreateAccount from '../pages/CreateAccount';
 
 import Dashboard from '../pages/Dashboard';
 import Profile from '../pages/Profile';
+import OrderService from '../pages/OrderService';
 
 const SignRoutes = createAnimatedSwitchNavigator(
   {
@@ -37,8 +38,8 @@ const SignRoutes = createAnimatedSwitchNavigator(
 
 const BottomRoutes = createBottomTabNavigator(
   {
-    Profile,
     Dashboard,
+    Profile,
   },
   {
     tabBarOptions: {
@@ -61,6 +62,7 @@ const BottomRoutes = createBottomTabNavigator(
 const AppRoutes = createStackNavigator(
   {
     BottomRoutes,
+    OrderService,
   },
   {
     headerMode: 'none',

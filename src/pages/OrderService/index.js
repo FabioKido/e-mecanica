@@ -1,17 +1,12 @@
-import React, { useRef, useCallback, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Switch,
   ActivityIndicator,
   Alert,
 } from 'react-native';
 
-import * as Yup from 'yup';
-
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
-
-import { updateProfileSuccess } from '../../store/modules/auth/actions';
-import api from '../../services/api';
 
 import {
   Container,
@@ -28,8 +23,7 @@ import {
   SubmitButtonText,
 } from './styles';
 
-export default function Profile() {
-  const dispatch = useDispatch();
+export default function OrderService() {
 
   const eMailInputRef = useRef();
   const passwordInputRef = useRef();
@@ -46,60 +40,26 @@ export default function Profile() {
   const [changePassword, setChangePassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSaveProfile = useCallback(async () => {
-    try {
-      setLoading(true);
+  const handleSaveProfile = () => {
+    setLoading(true);
 
-      const schema = Yup.object().shape({
-        username: Yup.string().required('Nome de usuário é obrigatório'),
-        email: Yup.string().email('Digite um e-mail válido').required('e-mail é obrigatório'),
-        password: Yup.string(),
-        password_confirmation: Yup.string()
-      });
-
-      await schema.validate({username, email, password, password_confirmation}, {
-        abortEarly: false,
-      });
-
-      if (password !== password_confirmation) {
-        setLoading(false);
-
-        return;
-      }
-
-      await api.put(`/user/info/${profile.id}`, { username, email, password, password_confirmation });
-
-      dispatch(
-        updateProfileSuccess({
-          username,
-          email,
-        })
-      );
-
-      Alert.alert('Sucesso!', 'Perfil atualizado com sucesso.');
-    } catch (err) {
-      const message =
-        err.response && err.response.data && err.response.data.error;
-
-      Alert.alert(
-        'Ooopsss',
-        message || 'Falha na atualização do perfil, confira seus dados.'
-      );
-    } finally {
-      setLoading(false);
-    }
-  }, [
-    username,
-    email,
-    password,
-    password_confirmation,
-  ]);
+    Alert.alert(
+      'CHegou aqui!!!', 
+      [
+        {
+          text: 'OK!',
+          onPress: () => setLoading(false),
+        },
+      ]  
+    );
+    
+  }
 
   return (
     <Container>
       <Content keyboardShouldPersistTaps="handled">
         <FormContainer>
-          <Title>CONFIGURAÇÃO</Title>
+          <Title>ORDENS DE SERVIÇO</Title>
           <Description>
             Configure sua conta editando os campos abaixo, logo depois, clique em Salvar. 
           </Description>
@@ -207,10 +167,3 @@ export default function Profile() {
     </Container>
   );
 }
-
-Profile.navigationOptions = {
-  tabBarLabel: 'Configuração',
-  tabBarIcon: ({ tintColor }) => (
-    <MaterialIcons name="settings" size={24} color={tintColor} />
-  ),
-};

@@ -36,7 +36,7 @@ export default function CreateAccount({ navigation }) {
   const [password, setPassword] = useState('');
   const [password_confirmation, setPasswordConfirmation] = useState('');
 
-  const emailInputRef = useRef();
+  const eMailInputRef = useRef();
   const passwordInputRef = useRef();
   const confirmPasswordInputRef = useRef();
 
@@ -47,7 +47,7 @@ export default function CreateAccount({ navigation }) {
       setLoading(true);
 
       const schema = Yup.object().shape({
-        username: Yup.string().required('Senha é obrigatória'),
+        username: Yup.string().required('Nome de usuário é obrigatório'),
         email: Yup.string().email('Digite um e-mail válido').required('O email é obrigatório'),
         password: Yup.string().required('Senha é obrigatória'),
         password_confirmation: Yup.string().required('Confirme sua senha')
@@ -123,7 +123,7 @@ export default function CreateAccount({ navigation }) {
                 onChangeText={setUsername}
                 value={username}
                 returnKeyType="next"
-                onSubmitEditing={() => emailInputRef.current.focus()}
+                onSubmitEditing={() => eMailInputRef.current.focus()}
               />
               <MaterialIcons
                 name="person-pin"
@@ -141,7 +141,7 @@ export default function CreateAccount({ navigation }) {
                 keyboardType="email-address"
                 onChangeText={setEmail}
                 value={email}
-                ref={emailInputRef}
+                ref={eMailInputRef}
                 returnKeyType="next"
                 onSubmitEditing={() => passwordInputRef.current.focus()}
               />
