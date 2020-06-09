@@ -12,7 +12,7 @@ import * as Yup from 'yup';
 
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 
-import api from '../../services/api';
+import api from '../../../services/api';
 
 import {
   Container,

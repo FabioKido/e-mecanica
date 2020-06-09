@@ -3,12 +3,12 @@ import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, Alert } f
 import { Switch } from 'galio-framework';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import api from '../../services/api';
-import { logout } from '../../services/auth';
-import argonTheme from '../../constants/Theme';
-import Tabs from '../../components/Tabs';
+import api from '../../../services/api';
+import { logout } from '../../../services/auth';
+import argonTheme from '../../../constants/Theme';
+import Tabs from '../../../components/Tabs';
 
-import { signOutRequest } from '../../store/modules/auth/actions';
+import { signOutRequest } from '../../../store/modules/auth/actions';
 import { useSelector, useDispatch } from 'react-redux';
 
 export default function Dashboard({navigation}) {

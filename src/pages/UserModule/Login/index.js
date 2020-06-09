@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { signInRequest } from '../../store/modules/auth/actions';
+import { signInRequest } from '../../../store/modules/auth/actions';
 
 import {
   Container,

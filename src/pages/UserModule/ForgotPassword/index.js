@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import { resetPassword } from '../../services/auth';
+import { resetPassword } from '../../../services/auth';
 
 import {
   Container,

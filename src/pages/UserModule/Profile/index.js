@@ -10,8 +10,8 @@ import * as Yup from 'yup';
 import { useSelector, useDispatch } from 'react-redux';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
-import { updateProfileSuccess } from '../../store/modules/auth/actions';
-import api from '../../services/api';
+import { updateProfileSuccess } from '../../../store/modules/auth/actions';
+import api from '../../../services/api';
 
 import {
   Container,
@@ -207,10 +207,3 @@ export default function Profile() {
     </Container>
   );
 }
-
-Profile.navigationOptions = {
-  tabBarLabel: 'Configuração',
-  tabBarIcon: ({ tintColor }) => (
-    <MaterialIcons name="settings" size={24} color={tintColor} />
-  ),
-};
