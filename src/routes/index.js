@@ -15,14 +15,18 @@ import CustomDrawer from '../components/Drawer';
 
 // Sign Routes
 
-import Login from '../pages/UserModule/Login';
-import ForgotPassword from '../pages/UserModule/ForgotPassword';
-import CreateAccount from '../pages/UserModule/CreateAccount';
+import Login from '../pages/SessionModule/Login';
+import ForgotPassword from '../pages/SessionModule/ForgotPassword';
+import CreateAccount from '../pages/SessionModule/CreateAccount';
 
 // App Routes
 
-import Dashboard from '../pages/ServiceModule/Dashboard';
+import Account from '../pages/UserModule/Account';
 import Profile from '../pages/UserModule/Profile';
+import Contact from '../pages/UserModule/Contact';
+import Address from '../pages/UserModule/Address';
+
+import Dashboard from '../pages/ServiceModule/Dashboard';
 import OrderService from '../pages/ServiceModule/OrderService';
 
 const SignRoutes = createAnimatedSwitchNavigator(
@@ -41,10 +45,34 @@ const SignRoutes = createAnimatedSwitchNavigator(
   }
 );
 
+const SettingBottomRoutes = createBottomTabNavigator(
+  {
+    Profile,
+    Contact,
+    Address,
+    Account,
+  },
+  {
+    tabBarOptions: {
+      keyboardHidesTabBar: true,
+      inactiveTintColor: 'rgba(255, 2555, 255, 0.5)',
+      activeTintColor: '#fff',
+      style: {
+        height: 54,
+        paddingVertical: 5,
+        backgroundColor: '#000',
+        borderTopColor: 'rgba(255, 255, 255, 0.4)',
+      },
+      labelStyle: {
+        fontSize: 13,
+      },
+    },
+  }
+);
+
 const ManagementRoutes = createStackNavigator(
   {
-    OrderService,
-    Dashboard
+    Dashboard,
   },
   {
     headerMode: 'none',
@@ -53,7 +81,7 @@ const ManagementRoutes = createStackNavigator(
 
 const RelationshipRoutes = createStackNavigator(
   {
-    Profile,
+    Dashboard,
   },
   {
     headerMode: 'none',
@@ -62,8 +90,7 @@ const RelationshipRoutes = createStackNavigator(
 
 const StockRoutes = createStackNavigator(
   {
-    OrderService,
-    Dashboard
+    Dashboard,
   },
   {
     headerMode: 'none',
@@ -72,7 +99,7 @@ const StockRoutes = createStackNavigator(
 
 const FinanceRoutes = createStackNavigator(
   {
-    Profile,
+    Dashboard,
   },
   {
     headerMode: 'none',
@@ -81,17 +108,16 @@ const FinanceRoutes = createStackNavigator(
 
 const CustomerRoutes = createStackNavigator(
   {
-    OrderService,
-    Dashboard
+    Dashboard,
   },
   {
     headerMode: 'none',
   }
 );
 
-const ProfileRoutes = createStackNavigator(
+const SettingsRoutes = createStackNavigator(
   {
-    Profile,
+    SettingBottomRoutes,
   },
   {
     headerMode: 'none',
@@ -100,35 +126,12 @@ const ProfileRoutes = createStackNavigator(
 
 const OrderRoutes = createStackNavigator(
   {
-    OrderService,
-    Dashboard
+    Dashboard,
   },
   {
     headerMode: 'none',
   }
 );
-
-// const AppRoutes = createBottomTabNavigator(
-//   {
-
-//   },
-//   {
-//     tabBarOptions: {
-//       keyboardHidesTabBar: true,
-//       inactiveTintColor: 'rgba(255, 2555, 255, 0.5)',
-//       activeTintColor: '#fff',
-//       style: {
-//         height: 54,
-//         paddingVertical: 5,
-//         backgroundColor: '#000',
-//         borderTopColor: 'rgba(255, 255, 255, 0.4)',
-//       },
-//       labelStyle: {
-//         fontSize: 13,
-//       },
-//     },
-//   }
-// );
 
 const AppRoutes = createDrawerNavigator(
   {
@@ -182,12 +185,12 @@ const AppRoutes = createDrawerNavigator(
       navigationOptions: {
         drawerLabel: 'Finanças',
         drawerIcon: ({ tintColor }) => (
-          <FontAwesome5 name="dollar-sign" size={19} color={tintColor} />
+          <FontAwesome5 name="file-invoice-dollar" size={19} color={tintColor} />
         ),
       },
     },
     Settings: {
-      screen: ProfileRoutes,
+      screen: SettingsRoutes,
       navigationOptions: {
         drawerLabel: 'Configurações',
         drawerIcon: ({ tintColor }) => (
@@ -197,7 +200,7 @@ const AppRoutes = createDrawerNavigator(
     },
   },
   {
-    initialRouteName: 'Management',
+    initialRouteName: 'Settings',
     contentComponent: CustomDrawer,
     drawerType: 'back',
     lazy: true,

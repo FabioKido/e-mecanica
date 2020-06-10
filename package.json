@@ -30,6 +30,7 @@
     "expo-permissions": "~7.0.0",
     "galio-framework": "^0.6.3",
     "lottie-react-native": "~2.6.1",
+    "polished": "^3.4.1",
     "prop-types": "^15.7.2",
     "react": "16.8.3",
     "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",

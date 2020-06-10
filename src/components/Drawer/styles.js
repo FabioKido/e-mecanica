@@ -35,6 +35,7 @@ export const Logout = styled.TouchableOpacity`
   flex-direction: row;
   margin-left: 16px;
   margin-bottom: 15px;
+  align-items: center;
 `;
 
 export const LogoutText = styled.Text`

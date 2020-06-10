@@ -99,9 +99,9 @@ export default function Profile() {
     <Container>
       <Content keyboardShouldPersistTaps="handled">
         <FormContainer>
-          <Title>PERFIL</Title>
+          <Title>ENDEREÇO</Title>
           <Description>
-            Atualize suas informaçoes pessoais editando os campos abaixo, logo depois, clique em Salvar. 
+            Atualize suas informaçoes de endereço editando os campos abaixo, logo depois, clique em Salvar. 
           </Description>
 
           <InputTitle>USUÁRIO</InputTitle>
@@ -209,8 +209,8 @@ export default function Profile() {
 }
 
 Profile.navigationOptions = {
-  tabBarLabel: 'Meu Perfil',
+  tabBarLabel: 'Endereço',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-edit" size={22} color={tintColor} />
+    <FontAwesome5 name="shipping-fast" size={22} color={tintColor} />
   ),
 };
