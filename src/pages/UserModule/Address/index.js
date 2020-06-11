@@ -1,17 +1,18 @@
-import React, { useRef, useCallback, useState } from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 import {
-  Switch,
+  Keyboard,
   ActivityIndicator,
   Alert,
 } from 'react-native';
 
 import * as Yup from 'yup';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
-import { updateProfileSuccess } from '../../../store/modules/auth/actions';
 import api from '../../../services/api';
+import { getUserInfo } from '../../../services/infos';
 
 import {
   Container,
@@ -22,77 +23,89 @@ import {
   Description,
   InputTitle,
   Input,
-  SwitchContainer,
-  SwitchText,
   SubmitButton,
   SubmitButtonText,
 } from './styles';
 
 export default function Profile() {
-  const dispatch = useDispatch();
 
-  const eMailInputRef = useRef();
-  const passwordInputRef = useRef();
-  const confirmPasswordInputRef = useRef();
+  const numberInputRef = useRef();
+  const neighborhoodInputRef = useRef();
+  const complementInputRef = useRef();
+  const cityInputRef = useRef();
+  const ufInputRef = useRef();
 
   const profile = useSelector(state => state.auth.user);
+  
+  const [street, setStreet] = useState('');
+  const [number, setNumber] = useState('');
+  const [neighborhood, setNeighborhood] = useState('');
+  const [complement, setComplement] = useState('');
+  const [city, setCity] = useState('');
+  const [uf, setUf] = useState('');
 
-  const [username, setUsername] = useState(profile.username);
-  const [email, setEmail] = useState(profile.email);
-
-  const [password, setPassword] = useState('');
-  const [password_confirmation, setPasswordConfirmation] = useState('');
-
-  const [changePassword, setChangePassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    async function getInfos() {
+      try{
+        setLoading(true);
+
+        const response = await getUserInfo();
+        const { address } = response.data.data; 
+
+        setStreet(address.street);
+        setNumber(address.number)
+        setNeighborhood(address.neighborhood);
+        setComplement(address.complement),
+        setCity(address.city),
+        setUf(address.uf);
+      }catch(err) {
+        console.log(err);
+      }finally{
+        setLoading(false);
+      }
+    }
+    
+    getInfos();
+  }, []);
+
   const handleSaveProfile = useCallback(async () => {
+    Keyboard.dismiss();
+
     try {
       setLoading(true);
 
       const schema = Yup.object().shape({
-        username: Yup.string().required('Nome de usuário é obrigatório'),
-        email: Yup.string().email('Digite um e-mail válido').required('e-mail é obrigatório'),
-        password: Yup.string(),
-        password_confirmation: Yup.string()
+        city: Yup.string().required('Cidade é obrigatória'),
+        uf: Yup.string().required('Estado é obrigatório')
       });
 
-      await schema.validate({username, email, password, password_confirmation}, {
+      await schema.validate({ number, city, uf }, {
         abortEarly: false,
       });
 
-      if (password !== password_confirmation) {
-        setLoading(false);
+      await api.put(`/user/info/${profile.id}`, { street, number, neighborhood, complement, city, uf });
 
-        return;
-      }
-
-      await api.put(`/user/info/${profile.id}`, { username, email, password, password_confirmation });
-
-      dispatch(
-        updateProfileSuccess({
-          username,
-          email,
-        })
-      );
-
-      Alert.alert('Sucesso!', 'Perfil atualizado com sucesso.');
+      Alert.alert('Sucesso!', 'Endereço atualizado com sucesso.');
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;
 
       Alert.alert(
         'Ooopsss',
-        message || 'Falha na atualização do perfil, confira seus dados.'
+        message || 'Falha na atualização do endereço, confira seus dados.'
       );
     } finally {
       setLoading(false);
     }
   }, [
-    username,
-    email,
-    password,
-    password_confirmation,
+    street,
+    number,
+    neighborhood,
+    complement,
+    city,
+    uf
   ]);
 
   return (
@@ -104,96 +117,96 @@ export default function Profile() {
             Atualize suas informaçoes de endereço editando os campos abaixo, logo depois, clique em Salvar. 
           </Description>
 
-          <InputTitle>USUÁRIO</InputTitle>
+          <InputTitle>LOGRADOURO</InputTitle>
           <InputContainer>
             <Input
-              placeholder="Digite nome de usuário"
-              autoCapitalize="words"
+              placeholder="Digite uma rua/av/outros"
+              autoCapitalize="none"
               autoCorrect={false}
-              onChangeText={setUsername}
-              value={username}
+              onChangeText={setStreet}
+              value={street}
               returnKeyType="next"
-              onSubmitEditing={() => eMailInputRef.current.focus()}
+              onSubmitEditing={() => numberInputRef.current.focus()}
             />
             <MaterialIcons name="person-pin" size={20} color="#999" />
           </InputContainer>
 
-          <InputTitle>E-MAIL</InputTitle>
+          <InputTitle>NÚMERO</InputTitle>
           <InputContainer>
             <Input
-              placeholder="Seu endereço de e-mail"
+              placeholder="Digite o nº do local"
               autoCapitalize="none"
               autoCorrect={false}
-              keyboardType="url"
-              ref={eMailInputRef}
-              onChangeText={setEmail}
-              value={email}
-              returnKeyType={changePassword ? 'next' : 'send'}
-              onSubmitEditing={() =>
-                changePassword
-                  ? oldPasswordInputRef.current.focus()
-                  : handleSaveProfile()
-              }
+              keyboardType="phone-pad"
+              ref={numberInputRef}
+              onChangeText={setNumber}
+              value={number === null ? '' : String(number)}
+              returnKeyType="next"
+              onSubmitEditing={() => neighborhoodInputRef.current.focus()}
+            />
+            <MaterialIcons name="person-pin" size={20} color="#999" />
+          </InputContainer>
+
+          <InputTitle>BAIRRO</InputTitle>
+          <InputContainer>
+            <Input
+              placeholder="Digite o nome do bairro"
+              autoCapitalize="none"
+              autoCorrect={false}
+              ref={neighborhoodInputRef}
+              onChangeText={setNeighborhood}
+              value={neighborhood}
+              returnKeyType="next"
+              onSubmitEditing={() => complementInputRef.current.focus()}
+            />
+            <MaterialIcons name="lock" size={20} color="#999" />
+          </InputContainer>
+
+          <InputTitle>COMPLEMENTO</InputTitle>
+          <InputContainer>
+            <Input
+              placeholder="Complemente se necessário"
+              autoCapitalize="none"
+              autoCorrect={false}
+              ref={complementInputRef}
+              onChangeText={setComplement}
+              value={complement}
+              returnKeyType="next"
+              onSubmitEditing={() => cityInputRef.current.focus()}
+            />
+            <MaterialIcons name="person-pin" size={20} color="#999" />
+          </InputContainer>
+
+          <InputTitle>CIDADE</InputTitle>
+          <InputContainer>
+            <Input
+              placeholder="Sua cidade atual"
+              autoCapitalize="none"
+              autoCorrect={false}
+              ref={cityInputRef}
+              onChangeText={setCity}
+              value={city}
+              returnKeyType="next"
+              onSubmitEditing={() => ufInputRef.current.focus()}
+            />
+            <MaterialIcons name="person-pin" size={20} color="#999" />
+          </InputContainer>
+
+          <InputTitle>UF</InputTitle>
+          <InputContainer>
+            <Input
+              placeholder="Seu estado federativo atual"
+              autoCapitalize="words"
+              autoCorrect={false}
+              maxLength={2}
+              ref={ufInputRef}
+              onChangeText={setUf}
+              value={uf}
+              returnKeyType={'send'}
+              onSubmitEditing={handleSaveProfile}
             />
             <MaterialIcons name="mail-outline" size={20} color="#999" />
           </InputContainer>
-
-          <InputTitle>ACESSO</InputTitle>
-          <InputContainer>
-            <Input
-              editable={false}
-              style={{color: '#f8a920'}}
-              value={String(profile.id_access_plan)}
-            />
-            <FontAwesome5 name="file-invoice-dollar" size={20} color="#999" />
-          </InputContainer>
-
-          <SwitchContainer>
-            <SwitchText>Alterar senha</SwitchText>
-            <Switch
-              thumbColor="#38b6ff"
-              trackColor={{ true: '#38b6ff', false: '#333' }}
-              value={changePassword}
-              onValueChange={setChangePassword}
-            />
-          </SwitchContainer>
-
-          {changePassword && (
-            <>
-              <InputTitle>NOVA SENHA</InputTitle>
-              <InputContainer>
-                <Input
-                  placeholder="Sua nova senha"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  secureTextEntry
-                  ref={passwordInputRef}
-                  onChangeText={setPassword}
-                  value={password}
-                  returnKeyType="next"
-                  onSubmitEditing={() =>
-                    confirmPasswordInputRef.current.focus()}
-                />
-                <MaterialIcons name="lock" size={20} color="#999" />
-              </InputContainer>
-
-              <InputTitle>CONFIRMAR SENHA</InputTitle>
-              <InputContainer>
-                <Input
-                  placeholder="Confirme a nova senha"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  secureTextEntry
-                  ref={confirmPasswordInputRef}
-                  onChangeText={setPasswordConfirmation}
-                  value={password_confirmation}
-                  returnKeyType="send"
-                  onSubmitEditing={handleSaveProfile}
-                />
-                <MaterialIcons name="lock" size={20} color="#999" />
-              </InputContainer>
-            </>
-          )}
 
           <SubmitButton onPress={handleSaveProfile}>
             {loading ? (
