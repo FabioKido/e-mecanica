@@ -6,6 +6,7 @@ import {
   Platform,
   ActivityIndicator,
   Alert,
+  Switch
 } from 'react-native';
 
 import * as Yup from 'yup';
@@ -26,6 +27,8 @@ import {
   SubmitButtonText,
   ForgotPasswordButton,
   ForgotPasswordButtonText,
+  SwitchContainer,
+  SwitchText
 } from './styles';
 
 export default function CreateAccount({ navigation }) {
@@ -33,6 +36,7 @@ export default function CreateAccount({ navigation }) {
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [company, setCompany] = useState('');
   const [password, setPassword] = useState('');
   const [password_confirmation, setPasswordConfirmation] = useState('');
 
@@ -63,7 +67,7 @@ export default function CreateAccount({ navigation }) {
         return;
       }
 
-      await api.post('/session/signup', { username, email, password });
+      await api.post('/session/signup', { username, email, password, company });
 
       Alert.alert(
         'Sucesso!',
@@ -114,7 +118,7 @@ export default function CreateAccount({ navigation }) {
               Digite suas informações para criar sua conta no app.
             </Description>
 
-            <InputTitle>Nome de Usuário</InputTitle>
+            <InputTitle>NOME DE USUÁRIO</InputTitle>
             <InputContainer>
               <Input
                 placeholder="Digite o nome de usuário"
@@ -132,7 +136,7 @@ export default function CreateAccount({ navigation }) {
               />
             </InputContainer>
 
-            <InputTitle>E-mail de acesso</InputTitle>
+            <InputTitle>E-MAIL DE ACESSO</InputTitle>
             <InputContainer>
               <Input
                 placeholder="Digite seu e-mail"
@@ -148,7 +152,17 @@ export default function CreateAccount({ navigation }) {
               <MaterialIcons name="mail-outline" size={20} color="#999" />
             </InputContainer>
 
-            <InputTitle>Senha de acesso</InputTitle>
+            <SwitchContainer>
+              <SwitchText>PESSOA JURIDICA?</SwitchText>
+              <Switch
+                thumbColor="#f8a920"
+                trackColor={{ true: '#f8a920', false: '#333' }}
+                value={company}
+                onValueChange={setCompany}
+              />
+            </SwitchContainer>
+
+            <InputTitle>SENHA DE ACESSO</InputTitle>
             <InputContainer>
             <Input
                 placeholder="Digite sua senha forte"
@@ -169,7 +183,7 @@ export default function CreateAccount({ navigation }) {
               />
             </InputContainer>
 
-            <InputTitle>Confirmar Senha</InputTitle>
+            <InputTitle>CONFIMAR SENHA</InputTitle>
             <InputContainer>
                 <Input
                   placeholder="Confirme a nova senha"

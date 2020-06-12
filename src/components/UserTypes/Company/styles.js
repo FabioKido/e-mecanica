@@ -1,12 +1,19 @@
 import styled from 'styled-components/native';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import Constants from 'expo-constants';
 
-export const Container = styled.View`
+export const Container = styled.KeyboardAvoidingView.attrs({
+  behavior: Platform.OS === 'ios' ? 'padding' : null,
+})`
   flex: 1;
-  justify-content: center;
   background: #000;
   padding-top: ${Constants.statusBarHeight}px;
+`;
+
+export const Content = styled.ScrollView``;
+
+export const FormContainer = styled.View`
+  padding: 30px;
 `;
 
 export const Title = styled.Text`
@@ -25,14 +32,6 @@ export const Description = styled.Text`
   margin: 5px 0 30px;
   max-width: 260px;
   align-self: center;
-`;
-
-export const FormContainer = styled.ScrollView.attrs({
-  // contentContainerStyle: { justifyContent: 'center' },
-})`
-  flex: 1;
-  padding: 0 30px;
-  margin-top: 30px;
 `;
 
 export const InputTitle = styled.Text`
@@ -74,25 +73,16 @@ export const SwitchText = styled.Text`
 
 export const SubmitButton = styled.TouchableOpacity`
   height: 50px;
-  background-color: #f8a920;
+  background-color: #38b6ff;
   justify-content: center;
   align-items: center;
   border-radius: 6;
 `;
 
 export const SubmitButtonText = styled.Text`
-  color: #000;
+  color: #fff;
   font-size: 14px;
   font-weight: bold;
   letter-spacing: 2.8px;
-`;
-
-export const ForgotPasswordButton = styled.TouchableOpacity`
-  margin: 30px 0 50px;
-  align-items: center;
-`;
-
-export const ForgotPasswordButtonText = styled.Text`
-  color: #999;
-  font-size: 16px;
+  text-transform: uppercase;
 `;
