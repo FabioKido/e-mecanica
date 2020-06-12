@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/bin/node /usr/share/yarn/bin/yarn.js
+  /usr/bin/node /usr/share/yarn/bin/yarn.js add react-native-datepicker --save
 
 PATH: 
   /home/kido/bin:/home/kido/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/kido/Android/Sdk/tools:/home/kido/Android/Sdk/platform-tools
@@ -14,8 +14,11 @@ Platform:
   linux x64
 
 Trace: 
-  Error: getaddrinfo EAI_AGAIN registry.yarnpkg.com
-      at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:60:26)
+  Error: certificate has expired
+      at TLSSocket.onConnectSecure (_tls_wrap.js:1317:34)
+      at TLSSocket.emit (events.js:209:13)
+      at TLSSocket._finishInit (_tls_wrap.js:792:8)
+      at TLSWrap.ssl.onhandshakedone (_tls_wrap.js:606:12)
 
 npm manifest: 
   {
@@ -36,6 +39,8 @@ npm manifest:
     },
     "dependencies": {
       "@expo/react-native-action-sheet": "^3.4.0",
+      "@react-native-community/checkbox": "^0.4.1",
+      "@react-native-community/datetimepicker": "^2.4.1",
       "@unform/core": "^2.0.0",
       "@unform/mobile": "^2.0.0",
       "axios": "^0.19.2",
@@ -50,6 +55,7 @@ npm manifest:
       "expo-permissions": "~7.0.0",
       "galio-framework": "^0.6.3",
       "lottie-react-native": "~2.6.1",
+      "polished": "^3.4.1",
       "prop-types": "^15.7.2",
       "react": "16.8.3",
       "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
@@ -932,7 +938,7 @@ Lockfile:
     dependencies:
       regenerator-runtime "^0.13.2"
   
-  "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.3":
+  "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.3", "@babel/runtime@^7.9.2":
     version "7.10.2"
     resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.10.2.tgz#d103f21f2602497d38348a32e008637d506db839"
     integrity sha512-6sF3uQw2ivImfVIl62RZ7MXhO2tap69WeWK57vAaimT6AZbE4FbqjdEJIN1UqoD6wI6B+1n9UiagafH1sxjOtg==
@@ -1015,6 +1021,11 @@ Lockfile:
       pouchdb-collections "^1.0.1"
       tiny-queue "^0.2.1"
   
+  "@react-native-community/checkbox@^0.4.1":
+    version "0.4.1"
+    resolved "https://registry.yarnpkg.com/@react-native-community/checkbox/-/checkbox-0.4.1.tgz#63a8682d7b60d205d539427c2c9bd8951c70673c"
+    integrity sha512-4sDmMj+yV4ti4+CSAOHx7To3g1nEZ7n8hpoIGuUHkJjp+CKOd2dXbdkhGPPFvOGlEeeSkaB6ayGxD4VqevnfOQ==
+  
   "@react-native-community/cli@^1.2.1":
     version "1.12.0"
     resolved "https://registry.yarnpkg.com/@react-native-community/cli/-/cli-1.12.0.tgz#f4cbc2204af63a87d5736d2fa6a018c1fd5efd44"
@@ -1054,6 +1065,13 @@ Lockfile:
       ws "^1.1.0"
       xcode "^2.0.0"
       xmldoc "^0.4.0"
+  
+  "@react-native-community/datetimepicker@^2.4.1":
+    version "2.4.1"
+    resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-2.4.1.tgz#fc8b0d037ee7bb11c4b4c31504eb523709a0c1b9"
+    integrity sha512-tOLm4GBLvDJlRbroeF/QCkBDvMpETBDiJ8auBN9AiUVCziXrDl8R/UCSAcbaWqiRKuo4Tc0L8hwqm3/rvJWayA==
+    dependencies:
+      invariant "^2.2.4"
   
   "@react-navigation/core@~3.5.1":
     version "3.5.2"
@@ -2261,19 +2279,12 @@ Lockfile:
       path-browserify "^1.0.0"
       url-parse "^1.4.4"
   
-  expo-blur@~6.0.0:
-    version "6.0.0"
-    resolved "https://registry.yarnpkg.com/expo-blur/-/expo-blur-6.0.0.tgz#c63e7c464e1a8137dae8a71f893426a538eb9ed9"
-    integrity sha512-UqMaE2G2DfoeEJCYFfFLXq9nBeD0m3G1IISpxmdLXHDvzQuFl0kzNAZXX81a9sByWTV85KsxxnxoLImbfxV33A==
+  expo-blur@~7.0.0:
+    version "7.0.0"
+    resolved "https://registry.yarnpkg.com/expo-blur/-/expo-blur-7.0.0.tgz#0e21355d5bff27e07ae24d1cd74b64cd20dc2f61"
+    integrity sha512-ZTjg9sM/t9JaV5Hqxqt6xprFcw0871H55uYcvlqxkuMlBRTGM698t5ZVrYHmTbRq7w5bvxkZ47e/gm2gbOKyPA==
     dependencies:
       prop-types "^15.6.0"
-  
-  expo-constants@~6.0.0:
-    version "6.0.0"
-    resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-6.0.0.tgz#ff4598985ba006e24949be3f05be7429e5bedacf"
-    integrity sha512-O0yL3Ok0YUEWpAqsWjOdgFD/lMfg8PUGH/nq31CZ1s7cuFUlksD42i5YhIRlb0Pa/btK8X9LpfY3eWhx9eTmbg==
-    dependencies:
-      ua-parser-js "^0.7.19"
   
   expo-constants@~7.0.0:
     version "7.0.1"
@@ -2296,25 +2307,20 @@ Lockfile:
     dependencies:
       fontfaceobserver "^2.1.0"
   
-  expo-image-manipulator@~6.0.0:
-    version "6.0.0"
-    resolved "https://registry.yarnpkg.com/expo-image-manipulator/-/expo-image-manipulator-6.0.0.tgz#f638691cb0d30a653a9234bb5d2e804d844a0fe8"
-    integrity sha512-kZL7m5I3XCBDzupUJyuVsBQrdbp1Z9RwJaE8fbPH/lZRM7iX++0Vnx0jhE5KR6adI22sBqIkd5Gd/Cc2Nk1fLA==
+  expo-image-manipulator@~7.0.0:
+    version "7.0.0"
+    resolved "https://registry.yarnpkg.com/expo-image-manipulator/-/expo-image-manipulator-7.0.0.tgz#2306213b30e306e87ddb02f15e35c4f1f4d36a12"
+    integrity sha512-N6DV6QQ4fwppRgntXTk2zydyuSBkpkJCbU/VWohhhP26Pp2Z6ay0OfXz08OdQN2UEStAisx+W1St7cWqwq7tjA==
   
-  expo-image-picker@~6.0.0:
-    version "6.0.0"
-    resolved "https://registry.yarnpkg.com/expo-image-picker/-/expo-image-picker-6.0.0.tgz#776f4487d986ba9cc82169a47445e8c13ca3108b"
-    integrity sha512-7IW4WxDe0xQclGhTnX3DOgTkMvt2kF/MNOPbk2y9fS5k/8am9I8jErjURPxRUGH7+TvYLEWPy63DRAJP7TYyEg==
+  expo-image-picker@~7.0.0:
+    version "7.0.0"
+    resolved "https://registry.yarnpkg.com/expo-image-picker/-/expo-image-picker-7.0.0.tgz#e4a5a52bd6f9655f75ecf3cc866aa9bb0c99e24b"
+    integrity sha512-LeGdAqbeuB2KsT369ns1kDtCGbyDCmY2gIFlf/rsD3+UmagRFX9emZLGPEnUNdCWXoctSejjFwxDnCUtpvL6yw==
   
   expo-keep-awake@~7.0.0:
     version "7.0.0"
     resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-7.0.0.tgz#131f56bc1ed8dd66e64a159afd7eaef26939d929"
     integrity sha512-LjIudbftcZnoviujJUZEzLMdE3m9A2NOvxrRszYHUjySpNN1bAKKyx1gLJbg/yZIWcdEIQ+6uCYtLbuK74Wk2Q==
-  
-  expo-linear-gradient@~6.0.0:
-    version "6.0.0"
-    resolved "https://registry.yarnpkg.com/expo-linear-gradient/-/expo-linear-gradient-6.0.0.tgz#5fb0fb955dd22ef4ab032e543cb1c249885bf0b5"
-    integrity sha512-TGHSK7MsoU1wZXx9uEivMggAR/KT4wTSE0xBfhB8qsziGXoHZdoT79/tZ3HyWtCG7+JVUEFXfUOBxtOlZOu5tg==
   
   expo-linear-gradient@~7.0.0:
     version "7.0.1"
@@ -2327,11 +2333,6 @@ Lockfile:
     integrity sha512-7iWg0j6+DXeO/bVLJEbGBmvebPSbIJNOewfHoyhvdo+13Q7L94SflcggT349WbqNsFJHVcAGC6Unr8VvXcUDbw==
     dependencies:
       invariant "^2.2.4"
-  
-  expo-permissions@~6.0.0:
-    version "6.0.0"
-    resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-6.0.0.tgz#2943f1aa98de833b88cea73cf03d18d08957cb68"
-    integrity sha512-O+RdyfGiq7i+5Vi9fE38DgKn436lNWiqhnS5/Z7CC00bmKahhjVMNDbZvNn/nrdRGyaPneJk1Co1s1sexSnv0A==
   
   expo-permissions@~7.0.0:
     version "7.0.0"
@@ -4353,6 +4354,13 @@ Lockfile:
     version "1.0.1"
     resolved "https://registry.yarnpkg.com/point-in-polygon/-/point-in-polygon-1.0.1.tgz#d59b64e8fee41c49458aac82b56718c5957b2af7"
     integrity sha1-1Ztk6P7kHElFiqyCtWcYxZV7Kvc=
+  
+  polished@^3.4.1:
+    version "3.6.4"
+    resolved "https://registry.yarnpkg.com/polished/-/polished-3.6.4.tgz#cec6bc0fbffc5d6ce5799c85bcc1bca5e63f1dee"
+    integrity sha512-21moJXCm/7EvjeKQz5w89QDDKNPCoimc83CqwZZGJluFdMXsFlMQl9lPA/OMRkoceZ19kU0anKlMgZmY7LJSJw==
+    dependencies:
+      "@babel/runtime" "^7.9.2"
   
   posix-character-classes@^0.1.0:
     version "0.1.1"

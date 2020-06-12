@@ -168,7 +168,7 @@ export default function Company() {
             <InputTitle>IE</InputTitle>
             <InputContainer>
             <Input
-                placeholder="Digite o seu IE"
+                placeholder="Digite a sua Inscrição Estadual"
                 autoCapitalize="none"
                 autoCorrect={false}
                 maxLength={13}

@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { FontAwesome5 } from '@expo/vector-icons';
 
-import { Owner, Company } from '../../../components/UserTypes';
+import Owner from '../../../components/UserTypes/Owner';
+import Company from '../../../components/UserTypes/Company';
 
 export default function Profile() {
 
