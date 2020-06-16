@@ -23,15 +23,14 @@ import {
   SubmitButtonText,
   CancelarButton,
   CancelarButtonText,
-  WorkshopCards,
-  WorkshopCard,
-  WorkshopInfo,
-  WorkshopTitle,
-  WorkshopInstructorContainer,
-  WorkshopInstructorName,
-  WorkshopCompanyName,
-  WorkshopStatus,
-  TechColor,
+  CategoryCards,
+  CategoryCard,
+  CategoryInfo,
+  CategoryTitle,
+  CategoryContainer,
+  CategoryName,
+  CategoryIndicatorName,
+  CategoryStatus,
   Empty
 } from './styles';
 
@@ -71,15 +70,7 @@ export default function Category() {
     loadCategories();
   }, []);
 
-  useEffect(() => {
-    setLoading(true);
-
-    reloadWorkshops().then(() => {
-      setLoading(false);
-    });
-  }, [add_category]);
-
-  async function reloadWorkshops() {
+  async function reloadCategories() {
     try {
       setRefreshing(true);
 
@@ -100,7 +91,7 @@ export default function Category() {
     try {
       await api.delete(`/finance/category/${id}`);
 
-      Alert.alert('Sucesso!', 'Categoria deletada com sucesso.');
+      Alert.alert('Excluída!', 'Categoria deletada com sucesso.');
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;
@@ -110,7 +101,7 @@ export default function Category() {
         message || 'Falha na exclusão da categoria.'
       );
     } finally {
-      reloadWorkshops();
+      reloadCategories();
     }
   }
 
@@ -140,6 +131,7 @@ export default function Category() {
         message || 'Falha no registro da nova categoria, confira seus dados.'
       );
     } finally {
+      reloadCategories();
       setLoading(false);
     }
   }, [
@@ -169,12 +161,12 @@ export default function Category() {
           {loading ? (
             <Placeholder />
           ) : (
-              <WorkshopCards
+              <CategoryCards
                 data={categories}
-                renderItem={renderWorkshops}
+                renderItem={renderCategories}
                 keyExtractor={categories => `category-${categories.id}`}
                 showsVerticalScrollIndicator={false}
-                onRefresh={reloadWorkshops}
+                onRefresh={reloadCategories}
                 refreshing={refreshing}
                 ListFooterComponent={<View style={{ height: 20 }} />}
                 ListEmptyComponent={<Empty>Nenhuma categoria encontrada.</Empty>}
@@ -188,30 +180,24 @@ export default function Category() {
     }
   }
 
-  function renderWorkshops({ item: workshop }) {
+  function renderCategories({ item: category }) {
     return (
-      <WorkshopCard
-        onPress={() => handleDeleteCategory(workshop)}
+      <CategoryCard
+        onPress={() => handleDeleteCategory(category)}
       >
-        <TechColor
-          colors={
-            ['#7159c1', '#c759e0']
-          }
-        />
-
-        <WorkshopInfo>
-          <WorkshopTitle numberOfLines={2}>{workshop.description}</WorkshopTitle>
-          <WorkshopInstructorContainer>
-            <WorkshopInstructorName>
+        <CategoryInfo>
+          <CategoryTitle numberOfLines={2}>{category.description}</CategoryTitle>
+          <CategoryContainer>
+            <CategoryName>
               Indicador{' '}
-              <WorkshopCompanyName>({workshop.indicator})</WorkshopCompanyName>
-            </WorkshopInstructorName>
+              <CategoryIndicatorName>({category.indicator})</CategoryIndicatorName>
+            </CategoryName>
 
-            <WorkshopStatus>Excluir</WorkshopStatus>
+            <CategoryStatus>Excluir</CategoryStatus>
 
-          </WorkshopInstructorContainer>
-        </WorkshopInfo>
-      </WorkshopCard>
+          </CategoryContainer>
+        </CategoryInfo>
+      </CategoryCard>
     );
   }
 

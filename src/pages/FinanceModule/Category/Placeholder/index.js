@@ -13,7 +13,7 @@ import {
 
 export default function WorkshopsPlaceholder() {
   function renderCards() {
-    const cardsNumber = 3;
+    const cardsNumber = 5;
     let cards = [];
 
     for (i = 0; i < cardsNumber; i++) {

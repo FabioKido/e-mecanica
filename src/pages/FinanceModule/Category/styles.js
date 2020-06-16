@@ -99,9 +99,7 @@ export const CancelarButtonText = styled.Text`
   font-size: 16px;
 `;
 
-export const WorkshopCards = styled.FlatList`
-  margin: 20px 0 0 10%;
-`;
+export const CategoryCards = styled.FlatList``;
 
 export const Empty = styled.Text`
   text-align: center;
@@ -110,63 +108,53 @@ export const Empty = styled.Text`
   font-size: 15px;
 `;
 
-export const WorkshopCard = styled.TouchableOpacity.attrs({
+export const CategoryCard = styled.TouchableOpacity.attrs({
   activeOpacity: 0.7,
 })`
   width: 100%;
-  height: 106px;
+  height: 86px;
   align-items: stretch;
   background: #202020;
   margin-bottom: 15px;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
   flex-direction: row;
+  border-radius: 6;
   overflow: hidden;
 `;
 
-export const TechColor = styled(LinearGradient).attrs({
-  colors: ['#111', '#333'],
-  start: { x: 0, y: 0.75 },
-  end: { x: 1, y: 0.25 },
-  locations: [0, 1],
-})`
-  align-self: stretch;
-  width: 8px;
-`;
-
-export const WorkshopInfo = styled.View`
+export const CategoryInfo = styled.View`
   flex: 1;
   justify-content: space-between;
   padding: 15px 0;
 `;
 
-export const WorkshopTitle = styled.Text`
+export const CategoryTitle = styled.Text`
   margin: 0 15px 5px;
   color: #38b6ff;
   font-size: 16px;
   font-weight: bold;
 `;
 
-export const WorkshopInstructorContainer = styled.View`
+export const CategoryContainer = styled.View`
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   margin-left: 15px;
 `;
 
-export const WorkshopInstructorName = styled.Text`
+export const CategoryName = styled.Text`
   color: #fff;
   font-size: 13px;
   font-weight: bold;
 `;
 
-export const WorkshopCompanyName = styled.Text`
+export const CategoryIndicatorName = styled.Text`
   font-weight: normal;
   color: #999;
 `;
 
-export const WorkshopStatus = styled.Text`
+export const CategoryStatus = styled.Text`
   color: #f8a920;
   font-size: 12px;
   font-weight: bold;
-  margin-left: 10px;
+  margin-right: 15px;
 `;

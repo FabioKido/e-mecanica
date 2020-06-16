@@ -7,24 +7,13 @@ const Placeholder = styled(ShimmerPlaceHolder).attrs({
   duration: 1000
 })``;
 
-export const SessionsContainer = styled.View`
-  flex-direction: row;
-  border-bottom-width: 1px;
-  border-color: rgba(255, 255, 255, 0.1);
-  padding-bottom: 10px;
-`;
-
-export const WorkshopCards = styled.ScrollView`
-  margin: 20px 0 0 10%;
-`;
+export const WorkshopCards = styled.ScrollView``;
 
 export const WorkshopsContainer = styled.View`
   width: 100%;
-  height: 106px;
+  height: 86px;
   margin-bottom: 15px;
 
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
   overflow: hidden;
 `;
 
@@ -35,7 +24,8 @@ export const WorkshopCard = styled(LinearGradient).attrs({
   locations: [0, 1]
 })`
   width: 100%;
-  height: 106px;
+  height: 86px;
+  border-radius: 6;
   justify-content: center;
   padding: 30px 0 30px 8px;
 `;
