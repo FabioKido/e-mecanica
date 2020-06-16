@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
 import { Switch } from 'galio-framework';
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import CheckBox from '@react-native-community/checkbox';
 import api from '../../../services/api';
 import { logout } from '../../../services/auth';
 import argonTheme from '../../../constants/Theme';
@@ -11,12 +11,13 @@ import Tabs from '../../../components/Tabs';
 import { signOutRequest } from '../../../store/modules/auth/actions';
 import { useSelector, useDispatch } from 'react-redux';
 
-export default function Dashboard({navigation}) {
+export default function Dashboard({ navigation }) {
   const dispatch = useDispatch();
 
   const profile = useSelector(state => state.auth.user);
 
   const [switch_1, setSwitch_1] = useState(false);
+  const [company, setCompany] = useState(false);
 
   navigation.navigationOptions = {
     drawerLabel: 'Dashboard',
@@ -37,7 +38,7 @@ export default function Dashboard({navigation}) {
     }
   }
 
-  useEffect( () => {
+  useEffect(() => {
     loadDash();
   }, []);
 
@@ -66,21 +67,29 @@ export default function Dashboard({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-        <ScrollView>
-          <TouchableOpacity onPress={handleLogout} style={styles.button}>
-            <Text style={styles.buttonText}>Sair</Text>
-          </TouchableOpacity>
-          <Switch
-            value={switch_1}
-            thumbColor={thumbColor}
-            onChange={setSwitch_1}
-            trackColor={{ false: argonTheme.COLORS.SWITCH_OFF, true: argonTheme.COLORS.SWITCH_ON }}
-          />
-          <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-            <Text style={styles.buttonText}>Salvar Switch</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      <Tabs/>
+      <ScrollView>
+        <TouchableOpacity onPress={handleLogout} style={styles.button}>
+          <Text style={styles.buttonText}>Sair</Text>
+        </TouchableOpacity>
+        <Switch
+          value={switch_1}
+          thumbColor={thumbColor}
+          onChange={setSwitch_1}
+          trackColor={{ false: argonTheme.COLORS.SWITCH_OFF, true: argonTheme.COLORS.SWITCH_ON }}
+        />
+        <TouchableOpacity onPress={handleSubmit} style={styles.button}>
+          <Text style={styles.buttonText}>Salvar Switch</Text>
+        </TouchableOpacity>
+      </ScrollView>
+      <View style={{ height: 50, width: 50, color: '#000' }}>
+        <CheckBox
+          disabled={false}
+          value={company}
+          onValueChange={() => company ? setCompany(false) : setCompany(true)}
+          tintColors={{ true: '#f8a920', false: '#333' }}
+        />
+      </View>
+      <Tabs />
     </SafeAreaView>
   )
 }

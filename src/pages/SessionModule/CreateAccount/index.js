@@ -57,7 +57,7 @@ export default function CreateAccount({ navigation }) {
         password_confirmation: Yup.string().required('Confirme sua senha')
       });
 
-      await schema.validate({username, email, password, password_confirmation}, {
+      await schema.validate({ username, email, password, password_confirmation }, {
         abortEarly: false,
       });
 
@@ -79,7 +79,7 @@ export default function CreateAccount({ navigation }) {
           },
         ]
       );
-      
+
     } catch (err) {
       console.log(err);
 
@@ -89,7 +89,7 @@ export default function CreateAccount({ navigation }) {
       Alert.alert(
         'Ooopsss',
         message ||
-          'Falha na criação de conta, verifique seus dados e tente novamente!'
+        'Falha na criação de conta, verifique seus dados e tente novamente!'
       );
 
       setLoading(false);
@@ -164,7 +164,7 @@ export default function CreateAccount({ navigation }) {
 
             <InputTitle>SENHA DE ACESSO</InputTitle>
             <InputContainer>
-            <Input
+              <Input
                 placeholder="Digite sua senha forte"
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -185,31 +185,31 @@ export default function CreateAccount({ navigation }) {
 
             <InputTitle>CONFIMAR SENHA</InputTitle>
             <InputContainer>
-                <Input
-                  placeholder="Confirme a nova senha"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  secureTextEntry
-                  ref={confirmPasswordInputRef}
-                  onChangeText={setPasswordConfirmation}
-                  value={password_confirmation}
-                  returnKeyType="send"
-                  textContentType="oneTimeCode"
-                  onSubmitEditing={handleCreateAccount}
-                />
-                <MaterialCommunityIcons
-                  name="lock-outline"
-                  size={20}
-                  color="#999"
-                />
-              </InputContainer>
+              <Input
+                placeholder="Confirme a nova senha"
+                autoCapitalize="none"
+                autoCorrect={false}
+                secureTextEntry
+                ref={confirmPasswordInputRef}
+                onChangeText={setPasswordConfirmation}
+                value={password_confirmation}
+                returnKeyType="send"
+                textContentType="oneTimeCode"
+                onSubmitEditing={handleCreateAccount}
+              />
+              <MaterialCommunityIcons
+                name="lock-outline"
+                size={20}
+                color="#999"
+              />
+            </InputContainer>
 
             <SubmitButton onPress={handleCreateAccount}>
               {loading ? (
                 <ActivityIndicator color="#FFF" size="small" />
               ) : (
-                <SubmitButtonText>CRIAR MINHA CONTA</SubmitButtonText>
-              )}
+                  <SubmitButtonText>CRIAR MINHA CONTA</SubmitButtonText>
+                )}
             </SubmitButton>
 
             <ForgotPasswordButton onPress={() => navigation.navigate('Login')}>

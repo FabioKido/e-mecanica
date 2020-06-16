@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@expo/react-native-action-sheet": "^3.4.0",
-    "@react-native-community/checkbox": "^0.4.1",
+    "@react-native-community/checkbox": "^0.2.0",
     "@react-native-community/datetimepicker": "^2.4.1",
     "@unform/core": "^2.0.0",
     "@unform/mobile": "^2.0.0",
