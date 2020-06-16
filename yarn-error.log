@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/bin/node /usr/share/yarn/bin/yarn.js add react-native-datepicker --save
+  /usr/bin/node /usr/share/yarn/bin/yarn.js install
 
 PATH: 
   /home/kido/bin:/home/kido/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/kido/Android/Sdk/tools:/home/kido/Android/Sdk/platform-tools
@@ -14,11 +14,8 @@ Platform:
   linux x64
 
 Trace: 
-  Error: certificate has expired
-      at TLSSocket.onConnectSecure (_tls_wrap.js:1317:34)
-      at TLSSocket.emit (events.js:209:13)
-      at TLSSocket._finishInit (_tls_wrap.js:792:8)
-      at TLSWrap.ssl.onhandshakedone (_tls_wrap.js:606:12)
+  Error: getaddrinfo EAI_AGAIN registry.yarnpkg.com
+      at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:60:26)
 
 npm manifest: 
   {
@@ -60,11 +57,14 @@ npm manifest:
       "react": "16.8.3",
       "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
       "react-native-chart-kit": "^4.5.0",
+      "react-native-datepicker": "^1.7.2",
+      "react-native-expo-image-cache": "^4.1.0",
       "react-native-gesture-handler": "~1.3.0",
       "react-native-material-ui": "^1.30.1",
       "react-native-modal-dropdown": "^0.6.2",
       "react-native-reanimated": "~1.2.0",
       "react-native-screens": "^1.0.0-alpha.23",
+      "react-native-shimmer-placeholder": "https://github.com/tomzaku/react-native-shimmer-placeholder.git#expo",
       "react-native-vector-icons": "^6.6.0",
       "react-navigation": "^3.11.0",
       "react-navigation-animated-switch": "^0.3.2",
@@ -3904,6 +3904,11 @@ Lockfile:
     dependencies:
       minimist "0.0.8"
   
+  moment@^2.22.0:
+    version "2.26.0"
+    resolved "https://registry.yarnpkg.com/moment/-/moment-2.26.0.tgz#5e1f82c6bafca6e83e808b30c8705eed0dcbd39a"
+    integrity sha512-oIixUO+OamkUkwjhAVE18rAMfRJNsNe/Stid/gwHSOfHrOtw9EhAY2AHvdKZ/k/MggcYELFCJz/Sn2pL8b8JMw==
+  
   morgan@^1.9.0:
     version "1.9.1"
     resolved "https://registry.yarnpkg.com/morgan/-/morgan-1.9.1.tgz#0a8d16734a1d9afbc824b99df87e738e58e2da59"
@@ -4521,6 +4526,13 @@ Lockfile:
       lodash "^4.17.13"
       paths-js "^0.4.10"
       point-in-polygon "^1.0.1"
+  
+  react-native-datepicker@^1.7.2:
+    version "1.7.2"
+    resolved "https://registry.yarnpkg.com/react-native-datepicker/-/react-native-datepicker-1.7.2.tgz#58d0822591a0ac9b32aba082650222a0ee29669d"
+    integrity sha1-WNCCJZGgrJsyq6CCZQIioO4pZp0=
+    dependencies:
+      moment "^2.22.0"
   
   react-native-gesture-handler@~1.3.0:
     version "1.3.0"

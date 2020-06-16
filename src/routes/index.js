@@ -26,6 +26,8 @@ import Profile from '../pages/UserModule/Profile';
 import Contact from '../pages/UserModule/Contact';
 import Address from '../pages/UserModule/Address';
 
+import Category from '../pages/FinanceModule/Category';
+
 import Dashboard from '../pages/ServiceModule/Dashboard';
 import OrderService from '../pages/ServiceModule/OrderService';
 
@@ -51,6 +53,28 @@ const SettingBottomRoutes = createBottomTabNavigator(
     Contact,
     Address,
     Account,
+  },
+  {
+    tabBarOptions: {
+      keyboardHidesTabBar: true,
+      inactiveTintColor: 'rgba(255, 2555, 255, 0.5)',
+      activeTintColor: '#fff',
+      style: {
+        height: 54,
+        paddingVertical: 5,
+        backgroundColor: '#000',
+        borderTopColor: 'rgba(255, 255, 255, 0.4)',
+      },
+      labelStyle: {
+        fontSize: 13,
+      },
+    },
+  }
+);
+
+const FinanceBottomRoutes = createBottomTabNavigator(
+  {
+    Category,
   },
   {
     tabBarOptions: {
@@ -99,7 +123,7 @@ const StockRoutes = createStackNavigator(
 
 const FinanceRoutes = createStackNavigator(
   {
-    Dashboard,
+    FinanceBottomRoutes,
   },
   {
     headerMode: 'none',
