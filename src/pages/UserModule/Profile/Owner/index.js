@@ -11,7 +11,7 @@ import DatePicker from 'react-native-datepicker';
 import { useSelector } from 'react-redux';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
-import api from '../../../services/api';
+import api from '../../../../services/api';
 
 import {
   Container,

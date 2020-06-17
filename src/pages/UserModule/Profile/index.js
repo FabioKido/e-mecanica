@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { FontAwesome5 } from '@expo/vector-icons';
 
-import Owner from '../../../components/UserTypes/Owner';
-import Company from '../../../components/UserTypes/Company';
+import Owner from './Owner';
+import Company from './Company';
 
 export default function Profile() {
 
@@ -12,9 +12,9 @@ export default function Profile() {
 
   const [user_type, setUserType] = useState(profile.type);
 
-  if(user_type === 'PF'){
+  if (user_type === 'PF') {
     return <Owner />
-  }else {
+  } else {
     return <Company />
   }
 }

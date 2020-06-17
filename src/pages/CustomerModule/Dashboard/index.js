@@ -82,6 +82,7 @@ export default function Dashboard({ navigation }) {
         </TouchableOpacity>
       </ScrollView>
       <View style={{ height: 50, width: 50, color: '#000' }}>
+        {/* FIXME Resolver o chekbox */}
         <CheckBox
           disabled={false}
           value={company}
