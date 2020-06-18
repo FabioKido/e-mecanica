@@ -8,6 +8,7 @@ import {
   Alert,
   Switch
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import * as Yup from 'yup';
 
@@ -25,8 +26,8 @@ import {
   Input,
   SubmitButton,
   SubmitButtonText,
-  ForgotPasswordButton,
-  ForgotPasswordButtonText,
+  BackToLoginButton,
+  BackToLoginButtonText,
   SwitchContainer,
   SwitchText
 } from './styles';
@@ -107,117 +108,124 @@ export default function CreateAccount({ navigation }) {
       onPress={Keyboard.dismiss}
       enabled={Platform.OS === 'ios'}
     >
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+
+      <LinearGradient
+        colors={['#2b475c', '#000']}
         style={{ flex: 1 }}
       >
-        <Container>
-          <FormContainer keyboardShouldPersistTaps="handled">
-            <Title>CRIE SUA CONTA</Title>
-            <Description>
-              Digite suas informações para criar sua conta no app.
+
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{ flex: 1 }}
+        >
+          <Container>
+            <FormContainer keyboardShouldPersistTaps="handled">
+              <Title>Registro</Title>
+              <Description>
+                Digite suas informações para criar sua conta no app.
             </Description>
 
-            <InputTitle>NOME DE USUÁRIO</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite o nome de usuário"
-                autoCapitalize="none"
-                autoCorrect={false}
-                onChangeText={setUsername}
-                value={username}
-                returnKeyType="next"
-                onSubmitEditing={() => eMailInputRef.current.focus()}
-              />
-              <MaterialIcons
-                name="person-pin"
-                size={20}
-                color="#999"
-              />
-            </InputContainer>
+              <InputTitle>Nome de Usuário</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Digite o nome de usuário"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  onChangeText={setUsername}
+                  value={username}
+                  returnKeyType="next"
+                  onSubmitEditing={() => eMailInputRef.current.focus()}
+                />
+                <MaterialIcons
+                  name="person-pin"
+                  size={20}
+                  color="#999"
+                />
+              </InputContainer>
 
-            <InputTitle>E-MAIL DE ACESSO</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite seu e-mail"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="email-address"
-                onChangeText={setEmail}
-                value={email}
-                ref={eMailInputRef}
-                returnKeyType="next"
-                onSubmitEditing={() => passwordInputRef.current.focus()}
-              />
-              <MaterialIcons name="mail-outline" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>E-mail de Acesso</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Digite um e-mail"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="email-address"
+                  onChangeText={setEmail}
+                  value={email}
+                  ref={eMailInputRef}
+                  returnKeyType="next"
+                  onSubmitEditing={() => passwordInputRef.current.focus()}
+                />
+                <MaterialIcons name="mail-outline" size={20} color="#999" />
+              </InputContainer>
 
-            <SwitchContainer>
-              <SwitchText>PESSOA JURIDICA?</SwitchText>
-              <Switch
-                thumbColor="#f8a920"
-                trackColor={{ true: '#f8a920', false: '#333' }}
-                value={company}
-                onValueChange={setCompany}
-              />
-            </SwitchContainer>
+              <SwitchContainer>
+                <SwitchText>Pessoa Juridica?</SwitchText>
+                <Switch
+                  thumbColor="#f8a920"
+                  trackColor={{ true: '#f8a920', false: '#2b475c' }}
+                  value={company}
+                  onValueChange={setCompany}
+                />
+              </SwitchContainer>
 
-            <InputTitle>SENHA DE ACESSO</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite sua senha forte"
-                autoCapitalize="none"
-                autoCorrect={false}
-                secureTextEntry
-                ref={passwordInputRef}
-                onChangeText={setPassword}
-                value={password}
-                returnKeyType="next"
-                onSubmitEditing={() =>
-                  confirmPasswordInputRef.current.focus()}
-              />
-              <MaterialCommunityIcons
-                name="lock-outline"
-                size={20}
-                color="#999"
-              />
-            </InputContainer>
+              <InputTitle>Senha de Acesso</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Digite sua senha forte"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  secureTextEntry
+                  ref={passwordInputRef}
+                  onChangeText={setPassword}
+                  value={password}
+                  returnKeyType="next"
+                  onSubmitEditing={() =>
+                    confirmPasswordInputRef.current.focus()}
+                />
+                <MaterialCommunityIcons
+                  name="lock-outline"
+                  size={20}
+                  color="#999"
+                />
+              </InputContainer>
 
-            <InputTitle>CONFIMAR SENHA</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Confirme a nova senha"
-                autoCapitalize="none"
-                autoCorrect={false}
-                secureTextEntry
-                ref={confirmPasswordInputRef}
-                onChangeText={setPasswordConfirmation}
-                value={password_confirmation}
-                returnKeyType="send"
-                textContentType="oneTimeCode"
-                onSubmitEditing={handleCreateAccount}
-              />
-              <MaterialCommunityIcons
-                name="lock-outline"
-                size={20}
-                color="#999"
-              />
-            </InputContainer>
+              <InputTitle>Confirmar Senha</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Confirme a nova senha"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  secureTextEntry
+                  ref={confirmPasswordInputRef}
+                  onChangeText={setPasswordConfirmation}
+                  value={password_confirmation}
+                  returnKeyType="send"
+                  textContentType="oneTimeCode"
+                  onSubmitEditing={handleCreateAccount}
+                />
+                <MaterialCommunityIcons
+                  name="lock-outline"
+                  size={20}
+                  color="#999"
+                />
+              </InputContainer>
 
-            <SubmitButton onPress={handleCreateAccount}>
-              {loading ? (
-                <ActivityIndicator color="#FFF" size="small" />
-              ) : (
-                  <SubmitButtonText>CRIAR MINHA CONTA</SubmitButtonText>
-                )}
-            </SubmitButton>
+              <SubmitButton onPress={handleCreateAccount}>
+                {loading ? (
+                  <ActivityIndicator color="#000" size="small" />
+                ) : (
+                    <SubmitButtonText>CRIAR MINHA CONTA</SubmitButtonText>
+                  )}
+              </SubmitButton>
 
-            <ForgotPasswordButton onPress={() => navigation.navigate('Login')}>
-              <ForgotPasswordButtonText>Voltar</ForgotPasswordButtonText>
-            </ForgotPasswordButton>
-          </FormContainer>
-        </Container>
-      </KeyboardAvoidingView>
+              <BackToLoginButton onPress={() => navigation.navigate('Login')}>
+                <BackToLoginButtonText>Voltar</BackToLoginButtonText>
+              </BackToLoginButton>
+            </FormContainer>
+          </Container>
+        </KeyboardAvoidingView>
+      </LinearGradient>
     </TouchableWithoutFeedback>
   );
 }

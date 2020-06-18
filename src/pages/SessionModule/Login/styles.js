@@ -2,18 +2,19 @@ import styled from 'styled-components/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { StyleSheet } from 'react-native';
 
-import logoImage from '../../../assets/logo.png';
+import { colors } from '../../../styles';
 
 export const Container = styled.SafeAreaView`
   flex: 1;
-  background: #000;
   justify-content: center;
 `;
 
-export const Logo = styled.Image.attrs({
-  source: logoImage,
-})`
+export const Title = styled.Text`
   align-self: center;
+  color: ${colors.lighter};
+  font-size: 28px;
+  font-weight: bold;
+  letter-spacing: 2.8px;
   margin-bottom: 50px;
 `;
 
@@ -22,51 +23,51 @@ export const FormContainer = styled.View`
 `;
 
 export const InputTitle = styled.Text`
-  color: #999;
+  color: ${ colors.darker};
   font-weight: bold;
 `;
 
 export const InputContainer = styled.View`
   flex-direction: row;
   border-bottom-width: ${StyleSheet.hairlineWidth};
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: ${colors.light_gray};
   justify-content: space-between;
   margin-bottom: 30px;
 `;
 
 export const Input = styled.TextInput.attrs({
-  placeholderTextColor: '#999',
+  placeholderTextColor: `${colors.light_gray}`,
 })`
   height: 48px;
   font-size: 17px;
-  color: #999;
+  color: ${colors.white};
   flex: 1;
 `;
 
 export const EnvelopeIcon = styled(MaterialIcons).attrs({
   name: 'mail-outline',
 })`
-  color: #999;
+  color: ${ colors.light_gray};
   font-size: 20px;
 `;
 
 export const LockIcon = styled(MaterialIcons).attrs({
   name: 'lock-outline',
 })`
-  color: #999;
+  color: ${ colors.light_gray};
   font-size: 20px;
 `;
 
 export const SubmitButton = styled.TouchableOpacity`
   height: 50px;
-  background-color: #38b6ff;
+  background-color: ${ colors.lighter};
   justify-content: center;
   align-items: center;
-  border-radius: 6;
+  border-radius: 50px;
 `;
 
 export const SubmitButtonText = styled.Text`
-  color: #fff;
+  color: ${ colors.dark};
   font-size: 14px;
   font-weight: bold;
   letter-spacing: 2.8px;
@@ -74,15 +75,15 @@ export const SubmitButtonText = styled.Text`
 
 export const NewAccountButton = styled.TouchableOpacity`
   height: 42px;
-  background-color: #f8a920;
+  background-color: ${ colors.regular_yellow};
   justify-content: center;
   align-items: center;
   margin-top: 10px;
-  border-radius: 6;
+  border-radius: 50px;
 `;
 
 export const NewAccountButtonText = styled.Text`
-  color: #000;
+  color: ${ colors.dark};
   font-size: 13px;
   font-weight: bold;
   letter-spacing: 2.8px;
@@ -94,6 +95,6 @@ export const ForgotPasswordButton = styled.TouchableOpacity`
 `;
 
 export const ForgotPasswordButtonText = styled.Text`
-  color: #999;
+  color: ${ colors.darker};
   font-size: 16px;
 `;

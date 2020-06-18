@@ -6,13 +6,15 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+
 import { useSelector, useDispatch } from 'react-redux';
 
 import { signInRequest } from '../../../store/modules/auth/actions';
 
 import {
   Container,
-  Logo,
+  Title,
   FormContainer,
   InputContainer,
   InputTitle,
@@ -24,7 +26,7 @@ import {
   NewAccountButton,
   NewAccountButtonText,
   ForgotPasswordButton,
-  ForgotPasswordButtonText,
+  ForgotPasswordButtonText
 } from './styles';
 
 export default function Login({ navigation }) {
@@ -54,67 +56,72 @@ export default function Login({ navigation }) {
       onPress={Keyboard.dismiss}
       enabled={Platform.OS === 'ios'}
     >
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : null}
+      <LinearGradient
+        colors={['#2b475c', '#000']}
         style={{ flex: 1 }}
       >
-        <Container>
-          <Logo />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : null}
+          style={{ flex: 1 }}
+        >
 
-          <FormContainer>
-            <InputTitle>E-MAIL</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite seu e-mail"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="email-address"
-                onChangeText={text => setEmail(text)}
-                value={email}
-                returnKeyType="next"
-                onSubmitEditing={() => passwordInputRef.current.focus()}
-              />
-              <EnvelopeIcon />
-            </InputContainer>
+          <Container>
+            <Title>Login</Title>
+            <FormContainer>
+              <InputTitle>E-mail</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Seu e-mail"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="email-address"
+                  onChangeText={text => setEmail(text)}
+                  value={email}
+                  returnKeyType="next"
+                  onSubmitEditing={() => passwordInputRef.current.focus()}
+                />
+                <EnvelopeIcon />
+              </InputContainer>
 
-            <InputTitle>SENHA</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Sua senha secreta"
-                autoCapitalize="none"
-                autoCorrect={false}
-                secureTextEntry
-                onChangeText={text => setPassword(text)}
-                value={password}
-                ref={passwordInputRef}
-                returnKeyType="send"
-                onSubmitEditing={handleSubmit}
-              />
-              <LockIcon />
-            </InputContainer>
+              <InputTitle>Senha</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Senha secreta"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  secureTextEntry
+                  onChangeText={text => setPassword(text)}
+                  value={password}
+                  ref={passwordInputRef}
+                  returnKeyType="send"
+                  onSubmitEditing={handleSubmit}
+                />
+                <LockIcon />
+              </InputContainer>
 
-            <SubmitButton onPress={handleSubmit}>
-              {loading ? (
-                <ActivityIndicator color="#FFF" size="small" />
-              ) : (
-                <SubmitButtonText>ENTRAR</SubmitButtonText>
-              )}
-            </SubmitButton>
+              <SubmitButton onPress={handleSubmit}>
+                {loading ? (
+                  <ActivityIndicator color="#000" size="small" />
+                ) : (
+                    <SubmitButtonText>ENTRAR</SubmitButtonText>
+                  )}
+              </SubmitButton>
 
-            <NewAccountButton onPress={handleCreateAccount}>
-              <NewAccountButtonText>CRIAR UMA CONTA</NewAccountButtonText>
-            </NewAccountButton>
+              <NewAccountButton onPress={handleCreateAccount}>
+                <NewAccountButtonText>CRIAR UMA CONTA</NewAccountButtonText>
+              </NewAccountButton>
 
-            <ForgotPasswordButton
-              onPress={() => navigation.navigate('ForgotPassword')}
-            >
-              <ForgotPasswordButtonText>
-                Esqueci minha senha
-              </ForgotPasswordButtonText>
-            </ForgotPasswordButton>
-          </FormContainer>
-        </Container>
-      </KeyboardAvoidingView>
+              <ForgotPasswordButton
+                onPress={() => navigation.navigate('ForgotPassword')}
+              >
+                <ForgotPasswordButtonText>
+                  Esqueci minha senha
+                </ForgotPasswordButtonText>
+              </ForgotPasswordButton>
+            </FormContainer>
+          </Container>
+        </KeyboardAvoidingView>
+      </LinearGradient>
     </TouchableWithoutFeedback>
   );
 }

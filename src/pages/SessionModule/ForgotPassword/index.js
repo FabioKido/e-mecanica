@@ -7,12 +7,12 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import { resetPassword } from '../../../services/auth';
 
 import {
   Container,
-  Logo,
   FormContainer,
   InputContainer,
   InputTitle,
@@ -64,45 +64,48 @@ export default function ForgotPassword({ navigation }) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView
-        behavior="padding"
+      <LinearGradient
+        colors={['#2b475c', '#000']}
         style={{ flex: 1 }}
-        enabled={Platform.OS === 'ios'}
       >
-        <Container>
-          <Logo />
+        <KeyboardAvoidingView
+          behavior="padding"
+          style={{ flex: 1 }}
+          enabled={Platform.OS === 'ios'}
+        >
+          <Container>
+            <FormContainer>
+              <InputTitle>E-mail</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Digite um e-mail válido"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="email-address"
+                  onChangeText={text => setEmail(text)}
+                  selectTextOnFocus
+                  ref={emailInputRef}
+                  returnKeyType="send"
+                  onSubmitEditing={handleSubmit}
+                />
+                <EnvelopeIcon />
+              </InputContainer>
 
-          <FormContainer>
-            <InputTitle>E-MAIL</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite seu e-mail"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="email-address"
-                onChangeText={text => setEmail(text)}
-                selectTextOnFocus
-                ref={emailInputRef}
-                returnKeyType="send"
-                onSubmitEditing={handleSubmit}
-              />
-              <EnvelopeIcon />
-            </InputContainer>
+              <SubmitButton onPress={handleSubmit}>
+                {loading ? (
+                  <ActivityIndicator color="#000" size="small" />
+                ) : (
+                    <SubmitButtonText>RECUPERAR SENHA</SubmitButtonText>
+                  )}
+              </SubmitButton>
 
-            <SubmitButton onPress={handleSubmit}>
-              {loading ? (
-                <ActivityIndicator color="#FFF" size="small" />
-              ) : (
-                <SubmitButtonText>RECUPERAR SENHA</SubmitButtonText>
-              )}
-            </SubmitButton>
-
-            <BackToLoginButton onPress={() => navigation.navigate('Login')}>
-              <BackToLoginButtonText>Voltar ao login</BackToLoginButtonText>
-            </BackToLoginButton>
-          </FormContainer>
-        </Container>
-      </KeyboardAvoidingView>
+              <BackToLoginButton onPress={() => navigation.navigate('Login')}>
+                <BackToLoginButtonText>Voltar ao login</BackToLoginButtonText>
+              </BackToLoginButton>
+            </FormContainer>
+          </Container>
+        </KeyboardAvoidingView>
+      </LinearGradient>
     </TouchableWithoutFeedback>
   );
 }

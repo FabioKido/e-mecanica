@@ -2,25 +2,25 @@ import styled from 'styled-components/native';
 import { StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 
+import { colors } from '../../../styles';
+
 export const Container = styled.View`
   flex: 1;
   justify-content: center;
-  background: #000;
   padding-top: ${Constants.statusBarHeight}px;
 `;
 
 export const Title = styled.Text`
-  font-size: 18px;
-  color: #fff;
+  font-size: 28px;
+  color: ${ colors.lighter};
   font-weight: bold;
   letter-spacing: 2.8px;
-  text-transform: uppercase;
   text-align: center;
 `;
 
 export const Description = styled.Text`
   text-align: center;
-  color: #999;
+  color: ${ colors.darker};
   font-size: 15px;
   margin: 5px 0 30px;
   max-width: 260px;
@@ -36,24 +36,24 @@ export const FormContainer = styled.ScrollView.attrs({
 `;
 
 export const InputTitle = styled.Text`
-  color: #999;
+  color: ${ colors.darker};
   font-weight: bold;
 `;
 
 export const InputContainer = styled.View`
   flex-direction: row;
   border-bottom-width: ${StyleSheet.hairlineWidth};
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: ${colors.light_gray};
   justify-content: space-between;
   margin-bottom: 30px;
 `;
 
 export const Input = styled.TextInput.attrs({
-  placeholderTextColor: '#999',
+  placeholderTextColor: `${colors.light_gray}`,
 })`
   height: 48px;
   font-size: 17px;
-  color: #fff;
+  color: ${colors.white};
   flex: 1;
 `;
 
@@ -65,7 +65,7 @@ export const SwitchContainer = styled.View`
 `;
 
 export const SwitchText = styled.Text`
-  color: #e6e6e6;
+  color: ${ colors.lighter};
   font-size: 14px;
   font-weight: bold;
   letter-spacing: 2.8px;
@@ -73,26 +73,26 @@ export const SwitchText = styled.Text`
 `;
 
 export const SubmitButton = styled.TouchableOpacity`
-  height: 50px;
-  background-color: #f8a920;
+  height: 42px;
+  background-color: ${ colors.regular_yellow};
   justify-content: center;
   align-items: center;
-  border-radius: 6;
+  border-radius: 50px;
 `;
 
 export const SubmitButtonText = styled.Text`
-  color: #000;
+  color: ${ colors.dark};
   font-size: 14px;
   font-weight: bold;
   letter-spacing: 2.8px;
 `;
 
-export const ForgotPasswordButton = styled.TouchableOpacity`
+export const BackToLoginButton = styled.TouchableOpacity`
   margin: 30px 0 50px;
   align-items: center;
 `;
 
-export const ForgotPasswordButtonText = styled.Text`
-  color: #999;
+export const BackToLoginButtonText = styled.Text`
+  color: ${ colors.darker};
   font-size: 16px;
 `;
