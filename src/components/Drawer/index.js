@@ -1,5 +1,6 @@
 import React from 'react';
-import { DrawerItems, DrawerItem } from 'react-navigation';
+import { DrawerItems } from 'react-navigation';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -14,7 +15,7 @@ import {
 	UserName,
 	Logo,
 	Logout,
-	LogoutText
+	UserContent
 } from './styles';
 
 function CustomDrawer({ ...props }) {
@@ -23,21 +24,27 @@ function CustomDrawer({ ...props }) {
 	const { email } = useSelector(state => state.auth.user);
 
 	return (
-		<Container>
-			<Content>
-				<Logo />
-				<UserName>{email}</UserName>
-			</Content>
-			<ScrollDrawer>
-				<DrawerItems {...props} />
-			</ScrollDrawer>
-			<Logout
-				onPress={() => dispatch(signOutRequest())}
-			>
-				<FontAwesome5 name="door-open" size={20} color="#f8a920" />
-				<LogoutText>Sair</LogoutText>
-			</Logout>
-		</Container>
+		<LinearGradient
+			colors={['#2b475c', '#000']}
+			style={{ flex: 1 }}
+		>
+			<Container>
+				<Content>
+					<Logo />
+					<UserContent>
+						<UserName>{email}</UserName>
+						<Logout
+							onPress={() => dispatch(signOutRequest())}
+						>
+							<FontAwesome5 name="door-open" size={20} color="#f8a920" />
+						</Logout>
+					</UserContent>
+				</Content>
+				<ScrollDrawer>
+					<DrawerItems {...props} />
+				</ScrollDrawer>
+			</Container>
+		</LinearGradient>
 	)
 }
 

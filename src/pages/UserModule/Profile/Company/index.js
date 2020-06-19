@@ -4,6 +4,7 @@ import {
   Alert,
   Keyboard
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import * as Yup from 'yup';
 
@@ -112,99 +113,104 @@ export default function Company() {
   ]);
 
   return (
-    <Container>
-      <Content keyboardShouldPersistTaps="handled">
-        <FormContainer>
-          <Title>PERFIL</Title>
-          <Description>
-            Atualize suas informaçoes pessoais editando os campos abaixo, logo depois, clique em Salvar.
+    <LinearGradient
+      colors={['#2b475c', '#000']}
+      style={{ flex: 1 }}
+    >
+      <Container>
+        <Content keyboardShouldPersistTaps="handled">
+          <FormContainer>
+            <Title>Perfil</Title>
+            <Description>
+              Atualize suas informaçoes pessoais editando os campos abaixo, logo depois, clique em Salvar.
           </Description>
 
-          <InputTitle>NOME</InputTitle>
-          <InputContainer>
-            <Input
-              placeholder="Digite o nome da empresa"
-              autoCapitalize="words"
-              autoCorrect={false}
-              onChangeText={setName}
-              value={name}
-              returnKeyType="next"
-              onSubmitEditing={() => nomeFantasiaInputRef.current.focus()}
-            />
-            <MaterialIcons name="person-pin" size={20} color="#999" />
-          </InputContainer>
+            <InputTitle>Nome</InputTitle>
+            <InputContainer>
+              <Input
+                placeholder="Digite o nome da empresa"
+                autoCapitalize="words"
+                autoCorrect={false}
+                onChangeText={setName}
+                value={name}
+                returnKeyType="next"
+                onSubmitEditing={() => nomeFantasiaInputRef.current.focus()}
+              />
+              <MaterialIcons name="person-pin" size={20} color="#999" />
+            </InputContainer>
 
-          <InputTitle>NOME FANTASIA</InputTitle>
-          <InputContainer>
-            <Input
-              placeholder="Digite o nome fantasia da empresa"
-              autoCapitalize="none"
-              autoCorrect={false}
-              ref={nomeFantasiaInputRef}
-              onChangeText={setNomeFantasia}
-              value={nome_fantasia}
-              returnKeyType="next"
-              onSubmitEditing={() => cnpjInputRef.current.focus()}
-            />
-            <MaterialIcons name="lock" size={20} color="#999" />
-          </InputContainer>
+            <InputTitle>Nome Fantasia</InputTitle>
+            <InputContainer>
+              <Input
+                placeholder="Digite o nome fantasia da empresa"
+                autoCapitalize="none"
+                autoCorrect={false}
+                ref={nomeFantasiaInputRef}
+                onChangeText={setNomeFantasia}
+                value={nome_fantasia}
+                returnKeyType="next"
+                onSubmitEditing={() => cnpjInputRef.current.focus()}
+              />
+              <MaterialIcons name="lock" size={20} color="#999" />
+            </InputContainer>
 
-          <InputTitle>CNPJ</InputTitle>
-          <InputContainer>
-            <Input
-              placeholder="Número do seu CNPJ"
-              autoCapitalize="none"
-              autoCorrect={false}
-              maxLength={25}
-              ref={cnpjInputRef}
-              onChangeText={setCNPJ}
-              value={cnpj}
-              returnKeyType="next"
-              onSubmitEditing={() => ieInputRef.current.focus()}
-            />
-            <MaterialIcons name="lock" size={20} color="#999" />
-          </InputContainer>
+            <InputTitle>CNPJ</InputTitle>
+            <InputContainer>
+              <Input
+                placeholder="Número do seu CNPJ"
+                autoCapitalize="none"
+                autoCorrect={false}
+                maxLength={25}
+                ref={cnpjInputRef}
+                onChangeText={setCNPJ}
+                value={cnpj}
+                returnKeyType="next"
+                onSubmitEditing={() => ieInputRef.current.focus()}
+              />
+              <MaterialIcons name="lock" size={20} color="#999" />
+            </InputContainer>
 
-          <InputTitle>IE</InputTitle>
-          <InputContainer>
-            <Input
-              placeholder="Digite a sua Inscrição Estadual"
-              autoCapitalize="none"
-              autoCorrect={false}
-              maxLength={13}
-              ref={ieInputRef}
-              onChangeText={setIE}
-              value={ie}
-              returnKeyType="next"
-              onSubmitEditing={() => typeInputRef.current.focus()}
-            />
-            <MaterialIcons name="lock" size={20} color="#999" />
-          </InputContainer>
+            <InputTitle>IE</InputTitle>
+            <InputContainer>
+              <Input
+                placeholder="Digite a sua Inscrição Estadual"
+                autoCapitalize="none"
+                autoCorrect={false}
+                maxLength={13}
+                ref={ieInputRef}
+                onChangeText={setIE}
+                value={ie}
+                returnKeyType="next"
+                onSubmitEditing={() => typeInputRef.current.focus()}
+              />
+              <MaterialIcons name="lock" size={20} color="#999" />
+            </InputContainer>
 
-          <InputTitle>TIPO DE EMPRESA</InputTitle>
-          <InputContainer>
-            <Input
-              placeholder="Insira o tipo: MPE/Outros"
-              autoCapitalize="none"
-              autoCorrect={false}
-              ref={typeInputRef}
-              onChangeText={setType}
-              value={type}
-              returnKeyType="send"
-              onSubmitEditing={handleSaveCompany}
-            />
-            <MaterialIcons name="lock" size={20} color="#999" />
-          </InputContainer>
+            <InputTitle>Tipo de Empresa</InputTitle>
+            <InputContainer>
+              <Input
+                placeholder="Insira o tipo: MPE/Outros"
+                autoCapitalize="none"
+                autoCorrect={false}
+                ref={typeInputRef}
+                onChangeText={setType}
+                value={type}
+                returnKeyType="send"
+                onSubmitEditing={handleSaveCompany}
+              />
+              <MaterialIcons name="lock" size={20} color="#999" />
+            </InputContainer>
 
-          <SubmitButton onPress={handleSaveCompany}>
-            {loading ? (
-              <ActivityIndicator size="small" color="#FFF" />
-            ) : (
-                <SubmitButtonText>Salvar</SubmitButtonText>
-              )}
-          </SubmitButton>
-        </FormContainer>
-      </Content>
-    </Container>
+            <SubmitButton onPress={handleSaveCompany}>
+              {loading ? (
+                <ActivityIndicator size="small" color="#333" />
+              ) : (
+                  <SubmitButtonText>Salvar</SubmitButtonText>
+                )}
+            </SubmitButton>
+          </FormContainer>
+        </Content>
+      </Container>
+    </LinearGradient>
   );
 }

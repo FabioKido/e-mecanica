@@ -5,6 +5,7 @@ import {
   Keyboard,
   View
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import * as Yup from 'yup';
 
@@ -145,7 +146,7 @@ export default function Category() {
         <>
           <SubmitButton onPress={handleSaveCategory}>
             {loading ? (
-              <ActivityIndicator size="small" color="#FFF" />
+              <ActivityIndicator size="small" color="#333" />
             ) : (
                 <SubmitButtonText>Salvar</SubmitButtonText>
               )}
@@ -202,53 +203,58 @@ export default function Category() {
   }
 
   return (
-    <Container>
-      <Content keyboardShouldPersistTaps="handled">
-        <FormContainer>
-          <Title>CATEGORIAS</Title>
-          <Description>
-            Veja todas as suas categorias. Crie ou exclua uma categoria como quiser.
+    <LinearGradient
+      colors={['#2b475c', '#000']}
+      style={{ flex: 1 }}
+    >
+      <Container>
+        <Content keyboardShouldPersistTaps="handled">
+          <FormContainer>
+            <Title>Categorias</Title>
+            <Description>
+              Veja todas as suas categorias. Crie ou exclua uma categoria como quiser.
           </Description>
 
-          {add_category &&
-            <>
-              <InputTitle>DESCRIÇÃO</InputTitle>
-              <InputContainer>
-                <Input
-                  placeholder="Digite uma descrição"
-                  autoCapitalize="words"
-                  autoCorrect={false}
-                  onChangeText={setDescription}
-                  value={description}
-                  returnKeyType="next"
-                  onSubmitEditing={() => indicatorInputRef.current.focus()}
-                />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
-              </InputContainer>
+            {add_category &&
+              <>
+                <InputTitle>Descrição</InputTitle>
+                <InputContainer>
+                  <Input
+                    placeholder="Digite uma descrição"
+                    autoCapitalize="words"
+                    autoCorrect={false}
+                    onChangeText={setDescription}
+                    value={description}
+                    returnKeyType="next"
+                    onSubmitEditing={() => indicatorInputRef.current.focus()}
+                  />
+                  <MaterialIcons name="person-pin" size={20} color="#999" />
+                </InputContainer>
 
-              <InputTitle>INDICADOR</InputTitle>
-              <InputContainer>
-                <Input
-                  placeholder="Insira o indicador, ex: impostos/etc"
-                  autoCapitalize="words"
-                  autoCorrect={false}
-                  ref={indicatorInputRef}
-                  onChangeText={setIndicator}
-                  value={indicator}
-                  returnKeyType="send"
-                  onSubmitEditing={handleSaveCategory}
-                />
-                <MaterialIcons name="lock" size={20} color="#999" />
-              </InputContainer>
-            </>
-          }
+                <InputTitle>Indicador</InputTitle>
+                <InputContainer>
+                  <Input
+                    placeholder="Insira o indicador, ex: impostos/etc"
+                    autoCapitalize="words"
+                    autoCorrect={false}
+                    ref={indicatorInputRef}
+                    onChangeText={setIndicator}
+                    value={indicator}
+                    returnKeyType="send"
+                    onSubmitEditing={handleSaveCategory}
+                  />
+                  <MaterialIcons name="lock" size={20} color="#999" />
+                </InputContainer>
+              </>
+            }
 
-          <ViewButton />
+            <ViewButton />
 
-        </FormContainer>
+          </FormContainer>
 
-      </Content>
-    </Container>
+        </Content>
+      </Container>
+    </LinearGradient>
   );
 }
 

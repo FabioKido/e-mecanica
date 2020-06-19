@@ -60,14 +60,15 @@ export const LockIcon = styled(MaterialIcons).attrs({
 
 export const SubmitButton = styled.TouchableOpacity`
   height: 50px;
-  background-color: ${ colors.lighter};
+  background-color: transparent;
   justify-content: center;
   align-items: center;
+  border: 1px solid ${colors.lighter};
   border-radius: 50px;
 `;
 
 export const SubmitButtonText = styled.Text`
-  color: ${ colors.dark};
+  color: ${ colors.lighter};
   font-size: 14px;
   font-weight: bold;
   letter-spacing: 2.8px;

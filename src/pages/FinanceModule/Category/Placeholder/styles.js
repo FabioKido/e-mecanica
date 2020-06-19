@@ -2,8 +2,10 @@ import styled from 'styled-components/native';
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import { colors } from '../../../../styles';
+
 const Placeholder = styled(ShimmerPlaceHolder).attrs({
-  colorShimmer: ['#333', '#555', '#333'],
+  colorShimmer: [`${colors.primary}`, `${colors.lighter}`, `${colors.primary}`],
   duration: 1000
 })``;
 
@@ -18,7 +20,7 @@ export const WorkshopsContainer = styled.View`
 `;
 
 export const WorkshopCard = styled(LinearGradient).attrs({
-  colors: ['#222', '#333'],
+  colors: [`${colors.primary}`, `${colors.lighter}`],
   start: { x: 0, y: 0.75 },
   end: { x: 1, y: 0.25 },
   locations: [0, 1]

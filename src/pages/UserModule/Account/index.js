@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import * as Yup from 'yup';
 
@@ -58,7 +59,7 @@ export default function Profile() {
         password_confirmation: Yup.string()
       });
 
-      await schema.validate({username, email, password, password_confirmation}, {
+      await schema.validate({ username, email, password, password_confirmation }, {
         abortEarly: false,
       });
 
@@ -97,115 +98,120 @@ export default function Profile() {
   ]);
 
   return (
-    <Container>
-      <Content keyboardShouldPersistTaps="handled">
-        <FormContainer>
-          <Title>CONTA</Title>
-          <Description>
-            Atualize as informaçoes da sua conta editando os campos abaixo, logo depois, clique em Salvar. 
+    <LinearGradient
+      colors={['#2b475c', '#000']}
+      style={{ flex: 1 }}
+    >
+      <Container>
+        <Content keyboardShouldPersistTaps="handled">
+          <FormContainer>
+            <Title>Conta</Title>
+            <Description>
+              Atualize as informaçoes da sua conta editando os campos abaixo, logo depois, clique em Salvar.
           </Description>
 
-          <InputTitle>USUÁRIO</InputTitle>
-          <InputContainer>
-            <Input
-              placeholder="Digite nome de usuário"
-              autoCapitalize="words"
-              autoCorrect={false}
-              onChangeText={setUsername}
-              value={username}
-              returnKeyType="next"
-              onSubmitEditing={() => eMailInputRef.current.focus()}
-            />
-            <MaterialIcons name="person-pin" size={20} color="#999" />
-          </InputContainer>
+            <InputTitle>Usúario</InputTitle>
+            <InputContainer>
+              <Input
+                placeholder="Digite nome de usuário"
+                autoCapitalize="words"
+                autoCorrect={false}
+                onChangeText={setUsername}
+                value={username}
+                returnKeyType="next"
+                onSubmitEditing={() => eMailInputRef.current.focus()}
+              />
+              <MaterialIcons name="person-pin" size={20} color="#999" />
+            </InputContainer>
 
-          <InputTitle>E-MAIL</InputTitle>
-          <InputContainer>
-            <Input
-              placeholder="Seu endereço de e-mail"
-              autoCapitalize="none"
-              autoCorrect={false}
-              keyboardType="url"
-              ref={eMailInputRef}
-              onChangeText={setEmail}
-              value={email}
-              returnKeyType={changePassword ? 'next' : 'send'}
-              onSubmitEditing={() =>
-                changePassword
-                  ? oldPasswordInputRef.current.focus()
-                  : handleSaveProfile()
-              }
-            />
-            <MaterialIcons name="mail-outline" size={20} color="#999" />
-          </InputContainer>
+            <InputTitle>E-mail</InputTitle>
+            <InputContainer>
+              <Input
+                placeholder="Seu endereço de e-mail"
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="url"
+                ref={eMailInputRef}
+                onChangeText={setEmail}
+                value={email}
+                returnKeyType={changePassword ? 'next' : 'send'}
+                onSubmitEditing={() =>
+                  changePassword
+                    ? oldPasswordInputRef.current.focus()
+                    : handleSaveProfile()
+                }
+              />
+              <MaterialIcons name="mail-outline" size={20} color="#999" />
+            </InputContainer>
 
-          <InputTitle>ACESSO</InputTitle>
-          <InputContainer>
-            <Input
-              editable={false}
-              style={{color: '#f8a920'}}
-              value={String(profile.id_access_plan)}
-            />
-            <FontAwesome5 name="file-invoice-dollar" size={20} color="#999" />
-          </InputContainer>
+            <InputTitle>Acesso</InputTitle>
+            <InputContainer>
+              <Input
+                editable={false}
+                style={{ color: '#2b475c' }}
+                value={String(profile.id_access_plan)}
+              />
+              <FontAwesome5 name="file-invoice-dollar" size={20} color="#999" />
+            </InputContainer>
 
-          <SwitchContainer>
-            <SwitchText>Alterar senha</SwitchText>
-            <Switch
-              thumbColor="#38b6ff"
-              trackColor={{ true: '#38b6ff', false: '#333' }}
-              value={changePassword}
-              onValueChange={setChangePassword}
-            />
-          </SwitchContainer>
+            <SwitchContainer>
+              <SwitchText>Alterar senha?</SwitchText>
+              <Switch
+                thumbColor="#f8a920"
+                trackColor={{ true: '#f8a920', false: '#2b475c' }}
+                value={changePassword}
+                onValueChange={setChangePassword}
+              />
+            </SwitchContainer>
 
-          {changePassword && (
-            <>
-              <InputTitle>NOVA SENHA</InputTitle>
-              <InputContainer>
-                <Input
-                  placeholder="Sua nova senha"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  secureTextEntry
-                  ref={passwordInputRef}
-                  onChangeText={setPassword}
-                  value={password}
-                  returnKeyType="next"
-                  onSubmitEditing={() =>
-                    confirmPasswordInputRef.current.focus()}
-                />
-                <MaterialIcons name="lock" size={20} color="#999" />
-              </InputContainer>
+            {changePassword && (
+              <>
+                <InputTitle>Nova Senha</InputTitle>
+                <InputContainer>
+                  <Input
+                    placeholder="Sua nova senha"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    secureTextEntry
+                    ref={passwordInputRef}
+                    onChangeText={setPassword}
+                    value={password}
+                    returnKeyType="next"
+                    onSubmitEditing={() =>
+                      confirmPasswordInputRef.current.focus()}
+                  />
+                  <MaterialIcons name="lock" size={20} color="#999" />
+                </InputContainer>
 
-              <InputTitle>CONFIRMAR SENHA</InputTitle>
-              <InputContainer>
-                <Input
-                  placeholder="Confirme a nova senha"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  secureTextEntry
-                  ref={confirmPasswordInputRef}
-                  onChangeText={setPasswordConfirmation}
-                  value={password_confirmation}
-                  returnKeyType="send"
-                  onSubmitEditing={handleSaveProfile}
-                />
-                <MaterialIcons name="lock" size={20} color="#999" />
-              </InputContainer>
-            </>
-          )}
-
-          <SubmitButton onPress={handleSaveProfile}>
-            {loading ? (
-              <ActivityIndicator size="small" color="#FFF" />
-            ) : (
-              <SubmitButtonText>Salvar</SubmitButtonText>
+                <InputTitle>Confirmar Senha</InputTitle>
+                <InputContainer>
+                  <Input
+                    placeholder="Confirme a nova senha"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    secureTextEntry
+                    ref={confirmPasswordInputRef}
+                    onChangeText={setPasswordConfirmation}
+                    value={password_confirmation}
+                    returnKeyType="send"
+                    onSubmitEditing={handleSaveProfile}
+                  />
+                  <MaterialIcons name="lock" size={20} color="#999" />
+                </InputContainer>
+              </>
             )}
-          </SubmitButton>
-        </FormContainer>
-      </Content>
-    </Container>
+
+            <SubmitButton onPress={handleSaveProfile}>
+              {loading ? (
+                <ActivityIndicator size="small" color="#333" />
+              ) : (
+                  <SubmitButtonText>Salvar</SubmitButtonText>
+                )}
+            </SubmitButton>
+          </FormContainer>
+        </Content>
+      </Container>
+    </LinearGradient>
   );
 }
 

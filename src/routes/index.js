@@ -11,6 +11,8 @@ import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import createAnimatedSwitchNavigator from 'react-navigation-animated-switch';
 import { Transition } from 'react-native-reanimated';
 
+import { colors } from '../styles';
+
 import CustomDrawer from '../components/Drawer';
 
 // Sign Routes
@@ -65,7 +67,7 @@ const SettingBottomRoutes = createBottomTabNavigator(
         height: 54,
         paddingVertical: 5,
         backgroundColor: '#000',
-        borderTopColor: 'rgba(255, 255, 255, 0.4)',
+        borderTopColor: '#000',
       },
       labelStyle: {
         fontSize: 13,
@@ -87,7 +89,7 @@ const FinanceBottomRoutes = createBottomTabNavigator(
         height: 54,
         paddingVertical: 5,
         backgroundColor: '#000',
-        borderTopColor: 'rgba(255, 255, 255, 0.4)',
+        borderTopColor: '#000',
       },
       labelStyle: {
         fontSize: 13,
@@ -231,9 +233,9 @@ const AppRoutes = createDrawerNavigator(
     drawerType: 'back',
     lazy: true,
     contentOptions: {
-      activeTintColor: '#f8a920',
-      activeBackgroundColor: 'rgba(255, 255, 255, 0.1)',
-      inactiveTintColor: '#999',
+      activeTintColor: `${colors.regular_yellow}`,
+      activeBackgroundColor: 'rgba(248, 169, 32, 0.1)',
+      inactiveTintColor: `${colors.light_gray}`,
       labelStyle: {
         fontSize: 14
       }

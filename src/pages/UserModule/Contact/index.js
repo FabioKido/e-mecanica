@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import * as Yup from 'yup';
 
@@ -42,22 +43,22 @@ export default function Profile() {
 
   useEffect(() => {
     async function getInfos() {
-      try{
+      try {
         setLoading(true);
 
         const response = await getUserInfo();
-        const { contact } = response.data.data; 
+        const { contact } = response.data.data;
 
         setCelphone(contact.celphone);
         setPhone(contact.phone);
         setEmail(contact.email);
-      }catch(err) {
+      } catch (err) {
         console.log(err);
-      }finally{
+      } finally {
         setLoading(false);
       }
     }
-    
+
     getInfos();
   }, []);
 
@@ -73,7 +74,7 @@ export default function Profile() {
         phone: Yup.string()
       });
 
-      await schema.validate({celphone, email, phone }, {
+      await schema.validate({ celphone, email, phone }, {
         abortEarly: false,
       });
 
@@ -98,73 +99,78 @@ export default function Profile() {
   ]);
 
   return (
-    <Container>
-      <Content keyboardShouldPersistTaps="handled">
-        <FormContainer>
-          <Title>CONTATO</Title>
-          <Description>
-            Atualize suas informaçoes de contato editando os campos abaixo, logo depois, clique em Salvar. 
+    <LinearGradient
+      colors={['#2b475c', '#000']}
+      style={{ flex: 1 }}
+    >
+      <Container>
+        <Content keyboardShouldPersistTaps="handled">
+          <FormContainer>
+            <Title>Contato</Title>
+            <Description>
+              Atualize suas informaçoes de contato editando os campos abaixo, logo depois, clique em Salvar.
           </Description>
 
-          <InputTitle>CELULAR</InputTitle>
-          <InputContainer>
-            <Input
-              placeholder="Digite o número do celular"
-              autoCapitalize="none"
-              autoCorrect={false}
-              keyboardType="phone-pad"
-              maxLength={16}
-              onChangeText={setCelphone}
-              value={celphone}
-              returnKeyType="next"
-              onSubmitEditing={() => phoneInputRef.current.focus()}
-            />
-            <MaterialIcons name="person-pin" size={20} color="#999" />
-          </InputContainer>
+            <InputTitle>Celular</InputTitle>
+            <InputContainer>
+              <Input
+                placeholder="Digite o número do celular"
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="phone-pad"
+                maxLength={16}
+                onChangeText={setCelphone}
+                value={celphone}
+                returnKeyType="next"
+                onSubmitEditing={() => phoneInputRef.current.focus()}
+              />
+              <MaterialIcons name="person-pin" size={20} color="#999" />
+            </InputContainer>
 
-          <InputTitle>TELEFONE</InputTitle>
-          <InputContainer>
-            <Input
-              placeholder="Digite o número do telefone"
-              autoCapitalize="none"
-              autoCorrect={false}
-              keyboardType="phone-pad"
-              maxLength={15}
-              ref={phoneInputRef}
-              onChangeText={setPhone}
-              value={phone}
-              returnKeyType="next"
-              onSubmitEditing={() => eMailInputRef.current.focus()}
-            />
-            <MaterialIcons name="lock" size={20} color="#999" />
-          </InputContainer>
+            <InputTitle>Telefone</InputTitle>
+            <InputContainer>
+              <Input
+                placeholder="Digite o número do telefone"
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="phone-pad"
+                maxLength={15}
+                ref={phoneInputRef}
+                onChangeText={setPhone}
+                value={phone}
+                returnKeyType="next"
+                onSubmitEditing={() => eMailInputRef.current.focus()}
+              />
+              <MaterialIcons name="lock" size={20} color="#999" />
+            </InputContainer>
 
-          <InputTitle>E-MAIL</InputTitle>
-          <InputContainer>
-            <Input
-              placeholder="Seu endereço de e-mail"
-              autoCapitalize="none"
-              autoCorrect={false}
-              keyboardType="email-address"
-              ref={eMailInputRef}
-              onChangeText={setEmail}
-              value={email}
-              returnKeyType={'send'}
-              onSubmitEditing={handleSaveProfile}
-            />
-            <MaterialIcons name="mail-outline" size={20} color="#999" />
-          </InputContainer>
+            <InputTitle>E-mail</InputTitle>
+            <InputContainer>
+              <Input
+                placeholder="Seu endereço de e-mail"
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="email-address"
+                ref={eMailInputRef}
+                onChangeText={setEmail}
+                value={email}
+                returnKeyType={'send'}
+                onSubmitEditing={handleSaveProfile}
+              />
+              <MaterialIcons name="mail-outline" size={20} color="#999" />
+            </InputContainer>
 
-          <SubmitButton onPress={handleSaveProfile}>
-            {loading ? (
-              <ActivityIndicator size="small" color="#FFF" />
-            ) : (
-              <SubmitButtonText>Salvar</SubmitButtonText>
-            )}
-          </SubmitButton>
-        </FormContainer>
-      </Content>
-    </Container>
+            <SubmitButton onPress={handleSaveProfile}>
+              {loading ? (
+                <ActivityIndicator size="small" color="#333" />
+              ) : (
+                  <SubmitButtonText>Salvar</SubmitButtonText>
+                )}
+            </SubmitButton>
+          </FormContainer>
+        </Content>
+      </Container>
+    </LinearGradient>
   );
 }
 

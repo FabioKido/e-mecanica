@@ -85,6 +85,7 @@ export const SubmitButtonText = styled.Text`
   font-size: 14px;
   font-weight: bold;
   letter-spacing: 2.8px;
+  text-transform: uppercase;
 `;
 
 export const BackToLoginButton = styled.TouchableOpacity`

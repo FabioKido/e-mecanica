@@ -172,7 +172,7 @@ export default function CreateAccount({ navigation }) {
               <InputTitle>Senha de Acesso</InputTitle>
               <InputContainer>
                 <Input
-                  placeholder="Digite sua senha forte"
+                  placeholder="Digite uma senha forte"
                   autoCapitalize="none"
                   autoCorrect={false}
                   secureTextEntry

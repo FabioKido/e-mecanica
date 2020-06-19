@@ -1,13 +1,13 @@
 import styled from 'styled-components/native';
 import { StyleSheet, Platform } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import Constants from 'expo-constants';
+
+import { colors } from '../../../styles';
 
 export const Container = styled.KeyboardAvoidingView.attrs({
   behavior: Platform.OS === 'ios' ? 'padding' : null,
 })`
   flex: 1;
-  background: #000;
   padding-top: ${Constants.statusBarHeight}px;
 `;
 
@@ -18,17 +18,16 @@ export const FormContainer = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-size: 18px;
-  color: #fff;
+  font-size: 28px;
+  color: ${ colors.lighter};
   font-weight: bold;
   letter-spacing: 2.8px;
-  text-transform: uppercase;
   text-align: center;
 `;
 
 export const Description = styled.Text`
   text-align: center;
-  color: #999;
+  color: ${ colors.darker};
   font-size: 15px;
   margin: 5px 0 30px;
   max-width: 260px;
@@ -36,52 +35,37 @@ export const Description = styled.Text`
 `;
 
 export const InputTitle = styled.Text`
-  color: #999;
+  color: ${ colors.darker};
   font-weight: bold;
 `;
 
 export const InputContainer = styled.View`
   flex-direction: row;
   border-bottom-width: ${StyleSheet.hairlineWidth};
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: ${colors.light_gray};
   justify-content: space-between;
   margin-bottom: 30px;
 `;
 
 export const Input = styled.TextInput.attrs({
-  placeholderTextColor: '#999',
+  placeholderTextColor: `${colors.light_gray}`,
 })`
   height: 48px;
   font-size: 17px;
-  color: #fff;
+  color: ${colors.white};
   flex: 1;
 `;
 
-export const SwitchContainer = styled.View`
-  margin-bottom: 30px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-export const SwitchText = styled.Text`
-  color: #e6e6e6;
-  font-size: 14px;
-  font-weight: bold;
-  letter-spacing: 2.8px;
-  text-transform: uppercase;
-`;
-
 export const SubmitButton = styled.TouchableOpacity`
-  height: 50px;
-  background-color: #38b6ff;
+  height: 42px;
+  background-color: ${ colors.regular_yellow};
   justify-content: center;
   align-items: center;
-  border-radius: 6;
+  border-radius: 50px;
 `;
 
 export const SubmitButtonText = styled.Text`
-  color: #fff;
+  color: ${ colors.dark};
   font-size: 14px;
   font-weight: bold;
   letter-spacing: 2.8px;
@@ -95,7 +79,7 @@ export const CancelarButton = styled.TouchableOpacity`
 `;
 
 export const CancelarButtonText = styled.Text`
-  color: #f8a920;
+  color: ${ colors.darker};
   font-size: 16px;
 `;
 
@@ -114,7 +98,7 @@ export const CategoryCard = styled.TouchableOpacity.attrs({
   width: 100%;
   height: 86px;
   align-items: stretch;
-  background: #202020;
+  background: ${ colors.primary};
   margin-bottom: 15px;
   flex-direction: row;
   border-radius: 6;
@@ -129,7 +113,7 @@ export const CategoryInfo = styled.View`
 
 export const CategoryTitle = styled.Text`
   margin: 0 15px 5px;
-  color: #38b6ff;
+  color: ${ colors.darker};
   font-size: 16px;
   font-weight: bold;
 `;

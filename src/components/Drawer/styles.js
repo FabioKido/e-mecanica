@@ -1,26 +1,31 @@
 import styled from 'styled-components/native';
 
+import { colors } from '../../styles';
+
 import logoImage from '../../assets/logo.png';
 
 export const Container = styled.SafeAreaView`
   flex: 1;
-  background: #000;
   justify-content: center;
 `;
 
 export const ScrollDrawer = styled.ScrollView``;
 
 export const Content = styled.View`
-  background: #000;
+  background: transparent;
   margin-bottom: 15px;
 `;
 
+export const UserContent = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+`;
+
 export const UserName = styled.Text`
-  background: #000;
-  color: #999;
+  color: ${colors.regular_yellow};
   margin-bottom: 15px;
-  margin-left: 16px;
-  font-size: 16;
+  font-size: 20;
   font-Weight: bold;
 `;
 
@@ -39,8 +44,7 @@ export const Logout = styled.TouchableOpacity`
 `;
 
 export const LogoutText = styled.Text`
-  background: #000;
-  color: #f8a920;
+  color: ${colors.regular_yellow};
   margin-left: 30px;
   font-Weight: bold;
 `;

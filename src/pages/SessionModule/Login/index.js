@@ -101,7 +101,7 @@ export default function Login({ navigation }) {
 
               <SubmitButton onPress={handleSubmit}>
                 {loading ? (
-                  <ActivityIndicator color="#000" size="small" />
+                  <ActivityIndicator color="#FFF" size="small" />
                 ) : (
                     <SubmitButtonText>ENTRAR</SubmitButtonText>
                   )}

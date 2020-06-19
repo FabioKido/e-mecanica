@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import * as Yup from 'yup';
 
@@ -36,7 +37,7 @@ export default function Profile() {
   const ufInputRef = useRef();
 
   const profile = useSelector(state => state.auth.user);
-  
+
   const [street, setStreet] = useState('');
   const [number, setNumber] = useState('');
   const [neighborhood, setNeighborhood] = useState('');
@@ -48,25 +49,25 @@ export default function Profile() {
 
   useEffect(() => {
     async function getInfos() {
-      try{
+      try {
         setLoading(true);
 
         const response = await getUserInfo();
-        const { address } = response.data.data; 
+        const { address } = response.data.data;
 
         setStreet(address.street);
         setNumber(address.number)
         setNeighborhood(address.neighborhood);
         setComplement(address.complement),
-        setCity(address.city),
-        setUf(address.uf);
-      }catch(err) {
+          setCity(address.city),
+          setUf(address.uf);
+      } catch (err) {
         console.log(err);
-      }finally{
+      } finally {
         setLoading(false);
       }
     }
-    
+
     getInfos();
   }, []);
 
@@ -109,115 +110,120 @@ export default function Profile() {
   ]);
 
   return (
-    <Container>
-      <Content keyboardShouldPersistTaps="handled">
-        <FormContainer>
-          <Title>ENDEREÇO</Title>
-          <Description>
-            Atualize suas informaçoes de endereço editando os campos abaixo, logo depois, clique em Salvar. 
+    <LinearGradient
+      colors={['#2b475c', '#000']}
+      style={{ flex: 1 }}
+    >
+      <Container>
+        <Content keyboardShouldPersistTaps="handled">
+          <FormContainer>
+            <Title>Endereço</Title>
+            <Description>
+              Atualize suas informaçoes de endereço editando os campos abaixo, logo depois, clique em Salvar.
           </Description>
 
-          <InputTitle>LOGRADOURO</InputTitle>
-          <InputContainer>
-            <Input
-              placeholder="Digite uma rua/av/outros"
-              autoCapitalize="none"
-              autoCorrect={false}
-              onChangeText={setStreet}
-              value={street}
-              returnKeyType="next"
-              onSubmitEditing={() => numberInputRef.current.focus()}
-            />
-            <MaterialIcons name="person-pin" size={20} color="#999" />
-          </InputContainer>
+            <InputTitle>Logradouro</InputTitle>
+            <InputContainer>
+              <Input
+                placeholder="Digite uma rua/av/outros"
+                autoCapitalize="none"
+                autoCorrect={false}
+                onChangeText={setStreet}
+                value={street}
+                returnKeyType="next"
+                onSubmitEditing={() => numberInputRef.current.focus()}
+              />
+              <MaterialIcons name="person-pin" size={20} color="#999" />
+            </InputContainer>
 
-          <InputTitle>NÚMERO</InputTitle>
-          <InputContainer>
-            <Input
-              placeholder="Digite o nº do local"
-              autoCapitalize="none"
-              autoCorrect={false}
-              keyboardType="phone-pad"
-              ref={numberInputRef}
-              onChangeText={setNumber}
-              value={number === null ? '' : String(number)}
-              returnKeyType="next"
-              onSubmitEditing={() => neighborhoodInputRef.current.focus()}
-            />
-            <MaterialIcons name="person-pin" size={20} color="#999" />
-          </InputContainer>
+            <InputTitle>Número</InputTitle>
+            <InputContainer>
+              <Input
+                placeholder="Digite o nº do local"
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="phone-pad"
+                ref={numberInputRef}
+                onChangeText={setNumber}
+                value={number === null ? '' : String(number)}
+                returnKeyType="next"
+                onSubmitEditing={() => neighborhoodInputRef.current.focus()}
+              />
+              <MaterialIcons name="person-pin" size={20} color="#999" />
+            </InputContainer>
 
-          <InputTitle>BAIRRO</InputTitle>
-          <InputContainer>
-            <Input
-              placeholder="Digite o nome do bairro"
-              autoCapitalize="none"
-              autoCorrect={false}
-              ref={neighborhoodInputRef}
-              onChangeText={setNeighborhood}
-              value={neighborhood}
-              returnKeyType="next"
-              onSubmitEditing={() => complementInputRef.current.focus()}
-            />
-            <MaterialIcons name="lock" size={20} color="#999" />
-          </InputContainer>
+            <InputTitle>Bairro</InputTitle>
+            <InputContainer>
+              <Input
+                placeholder="Digite o nome do bairro"
+                autoCapitalize="none"
+                autoCorrect={false}
+                ref={neighborhoodInputRef}
+                onChangeText={setNeighborhood}
+                value={neighborhood}
+                returnKeyType="next"
+                onSubmitEditing={() => complementInputRef.current.focus()}
+              />
+              <MaterialIcons name="lock" size={20} color="#999" />
+            </InputContainer>
 
-          <InputTitle>COMPLEMENTO</InputTitle>
-          <InputContainer>
-            <Input
-              placeholder="Complemente se necessário"
-              autoCapitalize="none"
-              autoCorrect={false}
-              ref={complementInputRef}
-              onChangeText={setComplement}
-              value={complement}
-              returnKeyType="next"
-              onSubmitEditing={() => cityInputRef.current.focus()}
-            />
-            <MaterialIcons name="person-pin" size={20} color="#999" />
-          </InputContainer>
+            <InputTitle>Complemento</InputTitle>
+            <InputContainer>
+              <Input
+                placeholder="Complemente se necessário"
+                autoCapitalize="none"
+                autoCorrect={false}
+                ref={complementInputRef}
+                onChangeText={setComplement}
+                value={complement}
+                returnKeyType="next"
+                onSubmitEditing={() => cityInputRef.current.focus()}
+              />
+              <MaterialIcons name="person-pin" size={20} color="#999" />
+            </InputContainer>
 
-          <InputTitle>CIDADE</InputTitle>
-          <InputContainer>
-            <Input
-              placeholder="Sua cidade atual"
-              autoCapitalize="none"
-              autoCorrect={false}
-              ref={cityInputRef}
-              onChangeText={setCity}
-              value={city}
-              returnKeyType="next"
-              onSubmitEditing={() => ufInputRef.current.focus()}
-            />
-            <MaterialIcons name="person-pin" size={20} color="#999" />
-          </InputContainer>
+            <InputTitle>Cidade</InputTitle>
+            <InputContainer>
+              <Input
+                placeholder="Sua cidade atual"
+                autoCapitalize="none"
+                autoCorrect={false}
+                ref={cityInputRef}
+                onChangeText={setCity}
+                value={city}
+                returnKeyType="next"
+                onSubmitEditing={() => ufInputRef.current.focus()}
+              />
+              <MaterialIcons name="person-pin" size={20} color="#999" />
+            </InputContainer>
 
-          <InputTitle>UF</InputTitle>
-          <InputContainer>
-            <Input
-              placeholder="Seu estado federativo atual"
-              autoCapitalize="words"
-              autoCorrect={false}
-              maxLength={2}
-              ref={ufInputRef}
-              onChangeText={setUf}
-              value={uf}
-              returnKeyType={'send'}
-              onSubmitEditing={handleSaveProfile}
-            />
-            <MaterialIcons name="mail-outline" size={20} color="#999" />
-          </InputContainer>
+            <InputTitle>UF</InputTitle>
+            <InputContainer>
+              <Input
+                placeholder="Seu estado federativo atual"
+                autoCapitalize="words"
+                autoCorrect={false}
+                maxLength={2}
+                ref={ufInputRef}
+                onChangeText={setUf}
+                value={uf}
+                returnKeyType={'send'}
+                onSubmitEditing={handleSaveProfile}
+              />
+              <MaterialIcons name="mail-outline" size={20} color="#999" />
+            </InputContainer>
 
-          <SubmitButton onPress={handleSaveProfile}>
-            {loading ? (
-              <ActivityIndicator size="small" color="#FFF" />
-            ) : (
-              <SubmitButtonText>Salvar</SubmitButtonText>
-            )}
-          </SubmitButton>
-        </FormContainer>
-      </Content>
-    </Container>
+            <SubmitButton onPress={handleSaveProfile}>
+              {loading ? (
+                <ActivityIndicator size="small" color="#333" />
+              ) : (
+                  <SubmitButtonText>Salvar</SubmitButtonText>
+                )}
+            </SubmitButton>
+          </FormContainer>
+        </Content>
+      </Container>
+    </LinearGradient>
   );
 }
 
