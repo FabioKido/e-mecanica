@@ -18,7 +18,7 @@ export default function Placeholder() {
 
     for (i = 0; i < cardsNumber; i++) {
       cards.push(
-        <Container key={`category-card-placeholder-${i}`}>
+        <Container key={`accounts-card-placeholder-${i}`}>
           <Card>
             <TitlePlaceholder autoRun />
             <DescriptionPlaceholder autoRun />

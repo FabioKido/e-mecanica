@@ -24,18 +24,18 @@ import {
   SubmitButtonText,
   CancelarButton,
   CancelarButtonText,
-  CategoryCards,
-  CategoryCard,
-  CategoryInfo,
-  CategoryTitle,
-  CategoryContainer,
-  CategoryName,
-  CategoryIndicatorName,
-  CategoryStatus,
+  Cards,
+  Card,
+  CardInfo,
+  CardTitle,
+  CardContainer,
+  CardName,
+  CardSubName,
+  CardStatus,
   Empty
 } from './styles';
 
-import Placeholder from '../Category/Placeholder';
+import Placeholder from './Placeholder';
 
 import api from '../../../services/api';
 
@@ -162,7 +162,7 @@ export default function Category() {
           {loading ? (
             <Placeholder />
           ) : (
-              <CategoryCards
+              <Cards
                 data={categories}
                 renderItem={renderCategories}
                 keyExtractor={categories => `category-${categories.id}`}
@@ -183,22 +183,22 @@ export default function Category() {
 
   function renderCategories({ item: category }) {
     return (
-      <CategoryCard
+      <Card
         onPress={() => handleDeleteCategory(category)}
       >
-        <CategoryInfo>
-          <CategoryTitle numberOfLines={2}>{category.description}</CategoryTitle>
-          <CategoryContainer>
-            <CategoryName>
+        <CardInfo>
+          <CardTitle numberOfLines={2}>{category.description}</CardTitle>
+          <CardContainer>
+            <CardName>
               Indicador{' '}
-              <CategoryIndicatorName>({category.indicator})</CategoryIndicatorName>
-            </CategoryName>
+              <CardSubName>({category.indicator})</CardSubName>
+            </CardName>
 
-            <CategoryStatus>Excluir</CategoryStatus>
+            <CardStatus>Excluir</CardStatus>
 
-          </CategoryContainer>
-        </CategoryInfo>
-      </CategoryCard>
+          </CardContainer>
+        </CardInfo>
+      </Card>
     );
   }
 
@@ -261,6 +261,6 @@ export default function Category() {
 Category.navigationOptions = {
   tabBarLabel: 'Categorias',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={22} color={tintColor} />
+    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
   ),
 };

@@ -142,7 +142,7 @@ export default function Profile() {
                 placeholder="Digite o nº do local"
                 autoCapitalize="none"
                 autoCorrect={false}
-                keyboardType="phone-pad"
+                keyboardType="numeric"
                 ref={numberInputRef}
                 onChangeText={setNumber}
                 value={number === null ? '' : String(number)}

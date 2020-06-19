@@ -18,7 +18,7 @@ export const FormContainer = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-size: 24px;
+  font-size: 22px;
   color: ${ colors.lighter};
   font-weight: bold;
   letter-spacing: 2.8px;

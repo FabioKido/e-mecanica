@@ -98,7 +98,7 @@ export const Card = styled.TouchableOpacity.attrs({
   width: 100%;
   height: 86px;
   align-items: stretch;
-  background: ${ colors.primary};
+  background: ${ colors.terciary};
   margin-bottom: 15px;
   flex-direction: row;
   border-radius: 6;

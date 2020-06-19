@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { colors } from '../../../../styles';
 
 const Placeholder = styled(ShimmerPlaceHolder).attrs({
-  colorShimmer: [`${colors.primary}`, `${colors.lighter}`, `${colors.primary}`],
+  colorShimmer: [`${colors.terciary}`, `${colors.lighter}`, `${colors.terciary}`],
   duration: 1000
 })``;
 
@@ -20,7 +20,7 @@ export const Container = styled.View`
 `;
 
 export const Card = styled(LinearGradient).attrs({
-  colors: [`${colors.primary}`, `${colors.lighter}`],
+  colors: [`${colors.terciary}`, `${colors.lighter}`],
   start: { x: 0, y: 0.75 },
   end: { x: 1, y: 0.25 },
   locations: [0, 1]

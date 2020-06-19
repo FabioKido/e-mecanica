@@ -29,6 +29,11 @@ import Contact from '../pages/UserModule/Contact';
 import Address from '../pages/UserModule/Address';
 
 import Category from '../pages/FinanceModule/Category';
+import Recipes from '../pages/FinanceModule/Recipes';
+import Expenses from '../pages/FinanceModule/Expenses';
+import Transfers from '../pages/FinanceModule/Transfers';
+import Accounts from '../pages/FinanceModule/Accounts';
+import PaymentMethods from '../pages/FinanceModule/PaymentMethods';
 
 import DashCust from '../pages/CustomerModule/Dashboard';
 
@@ -78,7 +83,12 @@ const SettingBottomRoutes = createBottomTabNavigator(
 
 const FinanceBottomRoutes = createBottomTabNavigator(
   {
+    Transfers,
+    Recipes,
+    Expenses,
     Category,
+    Accounts,
+    PaymentMethods
   },
   {
     tabBarOptions: {
@@ -92,7 +102,7 @@ const FinanceBottomRoutes = createBottomTabNavigator(
         borderTopColor: '#000',
       },
       labelStyle: {
-        fontSize: 13,
+        fontSize: 10,
       },
     },
   }
@@ -228,7 +238,7 @@ const AppRoutes = createDrawerNavigator(
     },
   },
   {
-    initialRouteName: 'Settings',
+    initialRouteName: 'Finance',
     contentComponent: CustomDrawer,
     drawerType: 'back',
     lazy: true,
