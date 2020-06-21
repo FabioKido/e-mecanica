@@ -72,6 +72,30 @@ export const SubmitButtonText = styled.Text`
   text-transform: uppercase;
 `;
 
+export const DeleteButtonBox = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const DeleteButton = styled.TouchableOpacity`
+  height: 42px;
+  width: 125px;
+  background-color: transparent;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid ${colors.lighter};
+  border-radius: 50px;
+`;
+
+export const DeleteButtonText = styled.Text`
+  color: ${ colors.lighter};
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 2.8px;
+  text-transform: uppercase;
+`;
+
 export const CancelarButton = styled.TouchableOpacity`
   margin-top: 30px;
   margin-bottom: 50px;

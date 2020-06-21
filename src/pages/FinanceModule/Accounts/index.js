@@ -3,7 +3,8 @@ import {
   ActivityIndicator,
   Alert,
   Keyboard,
-  View
+  View,
+  Modal
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -22,6 +23,9 @@ import {
   Input,
   SubmitButton,
   SubmitButtonText,
+  DeleteButtonBox,
+  DeleteButton,
+  DeleteButtonText,
   CancelarButton,
   CancelarButtonText,
   Cards,
@@ -46,6 +50,7 @@ export default function Accounts() {
   const initialValueInputRef = useRef();
 
   const [accounts, setAccounts] = useState([]);
+  const [account, setAccount] = useState({});
   const [add_account, setAddAccount] = useState(false);
 
   const [title, setTitle] = useState('');
@@ -55,6 +60,7 @@ export default function Accounts() {
 
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [is_visible, setIsVisible] = useState(false);
 
   useEffect(() => {
     async function loadAccounts() {
@@ -75,6 +81,15 @@ export default function Accounts() {
     loadAccounts();
   }, []);
 
+  function getAccount(account) {
+    setAccount(account);
+    setTitle(account.title);
+    setDescription(account.description);
+    setType(account.type);
+    setInitialValue(account.initial_value);
+    setIsVisible(true);
+  }
+
   async function reloadAccounts() {
     try {
       setRefreshing(true);
@@ -92,9 +107,11 @@ export default function Accounts() {
     }
   }
 
-  const handleDeleteAccount = async ({ id }) => {
+  const handleDeleteAccount = async () => {
     try {
-      await api.delete(`/finance/account/${id}`);
+      await api.delete(`/finance/account/${account.id}`);
+
+      setAccount({});
 
       Alert.alert('Excluída!', 'Conta deletada com sucesso.');
     } catch (err) {
@@ -106,9 +123,38 @@ export default function Accounts() {
         message || 'Falha na exclusão da conta.'
       );
     } finally {
+      setIsVisible(false);
       reloadAccounts();
     }
   }
+
+  const handleUpdateAccount = useCallback(async () => {
+    Keyboard.dismiss();
+
+    try {
+      setLoading(true);
+
+      await api.put(`/finance/account/${account.id}`, { title, description, type, initial_value });
+
+      Alert.alert('Sucesso!', 'Conta pessoal atualizada com sucesso.');
+    } catch (err) {
+      const message =
+        err.response && err.response.data && err.response.data.error;
+
+      Alert.alert(
+        'Ooopsss',
+        message || 'Falha na atualização conta, confira seus dados.'
+      );
+    } finally {
+      setLoading(false);
+      reloadAccounts();
+    }
+  }, [
+    title,
+    description,
+    type,
+    initial_value
+  ]);
 
   const handleSaveAccount = useCallback(async () => {
     Keyboard.dismiss();
@@ -138,8 +184,8 @@ export default function Accounts() {
         message || 'Falha no registro da nova conta, confira seus dados.'
       );
     } finally {
-      reloadAccounts();
       setLoading(false);
+      reloadAccounts();
     }
   }, [
     title,
@@ -192,7 +238,7 @@ export default function Accounts() {
   function renderAccounts({ item: account }) {
     return (
       <Card
-        onPress={() => handleDeleteAccount(account)}
+        onPress={() => getAccount(account)}
       >
         <CardInfo>
           <CardTitle numberOfLines={2}>{account.title}</CardTitle>
@@ -211,24 +257,114 @@ export default function Accounts() {
   }
 
   return (
-    <LinearGradient
-      colors={['#2b475c', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>Contas Pessoais</Title>
-            <Description>
-              Veja todas as suas contas. Crie ou exclua uma conta como quiser.
+    <>
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>Contas Pessoais</Title>
+              <Description>
+                Veja todas as suas contas. Crie ou exclua uma conta como quiser.
           </Description>
 
-            {add_account &&
-              <>
+              {add_account &&
+                <>
+                  <InputTitle>Título</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Digite um título para a conta"
+                      autoCapitalize="words"
+                      autoCorrect={false}
+                      maxLength={60}
+                      onChangeText={setTitle}
+                      value={title}
+                      returnKeyType="next"
+                      onSubmitEditing={() => descriptionInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                  </InputContainer>
+
+                  <InputTitle>Descrição</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Digite uma descrição"
+                      autoCapitalize="words"
+                      autoCorrect={false}
+                      ref={descriptionInputRef}
+                      onChangeText={setDescription}
+                      value={description}
+                      returnKeyType="next"
+                      onSubmitEditing={() => typeInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                  </InputContainer>
+
+                  <InputTitle>Tipo de Conta</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Insira o tipo, ex: cc/cd/Caixa/etc"
+                      autoCapitalize="words"
+                      autoCorrect={false}
+                      maxLength={10}
+                      ref={typeInputRef}
+                      onChangeText={setType}
+                      value={type}
+                      returnKeyType="next"
+                      onSubmitEditing={() => initialValueInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
+
+                  <InputTitle>Valor Inícial</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Insira um valor inícial"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      keyboardType="numeric"
+                      ref={initialValueInputRef}
+                      onChangeText={setInitialValue}
+                      value={initial_value}
+                      returnKeyType="send"
+                      onSubmitEditing={handleSaveAccount}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
+                </>
+              }
+
+              <ViewButton />
+
+            </FormContainer>
+
+          </Content>
+        </Container>
+      </LinearGradient>
+      <Modal
+        animationType={'slide'}
+        transparent={false}
+        visible={is_visible}
+        onRequestClose={() => setIsVisible(false)}
+      >
+        <LinearGradient
+          colors={['#2b475c', '#000']}
+          style={{ flex: 1 }}
+        >
+          <Container>
+            <Content keyboardShouldPersistTaps="handled">
+              <FormContainer>
+                <Title>{account.title}</Title>
+                <Description>
+                  Edite ou exclua essa conta como quiser.
+                </Description>
+
                 <InputTitle>Título</InputTitle>
                 <InputContainer>
                   <Input
-                    placeholder="Digite um título para a conta"
+                    placeholder='Novo título'
                     autoCapitalize="words"
                     autoCorrect={false}
                     maxLength={60}
@@ -243,7 +379,7 @@ export default function Accounts() {
                 <InputTitle>Descrição</InputTitle>
                 <InputContainer>
                   <Input
-                    placeholder="Digite uma descrição"
+                    placeholder='Nova descrição'
                     autoCapitalize="words"
                     autoCorrect={false}
                     ref={descriptionInputRef}
@@ -258,7 +394,7 @@ export default function Accounts() {
                 <InputTitle>Tipo de Conta</InputTitle>
                 <InputContainer>
                   <Input
-                    placeholder="Insira o tipo, ex: cc/cd/Caixa/etc"
+                    placeholder='Novo tipo, ex: cc/cd/Caixa/etc'
                     autoCapitalize="words"
                     autoCorrect={false}
                     maxLength={10}
@@ -274,7 +410,7 @@ export default function Accounts() {
                 <InputTitle>Valor Inícial</InputTitle>
                 <InputContainer>
                   <Input
-                    placeholder="Insira um valor inícial"
+                    placeholder='Novo valor'
                     autoCapitalize="none"
                     autoCorrect={false}
                     keyboardType="numeric"
@@ -282,20 +418,34 @@ export default function Accounts() {
                     onChangeText={setInitialValue}
                     value={initial_value}
                     returnKeyType="send"
-                    onSubmitEditing={handleSaveAccount}
+                    onSubmitEditing={handleUpdateAccount}
                   />
                   <MaterialIcons name="lock" size={20} color="#999" />
                 </InputContainer>
-              </>
-            }
 
-            <ViewButton />
+                <DeleteButtonBox>
+                  <DeleteButton onPress={handleDeleteAccount}>
+                    <DeleteButtonText>Excluir</DeleteButtonText>
+                  </DeleteButton>
+                  <SubmitButton style={{ width: 125 }} onPress={handleUpdateAccount}>
+                    {loading ? (
+                      <ActivityIndicator size="small" color="#333" />
+                    ) : (
+                        <SubmitButtonText>Salvar</SubmitButtonText>
+                      )}
+                  </SubmitButton>
+                </DeleteButtonBox>
+                <CancelarButton onPress={() => setIsVisible(false)}>
+                  <CancelarButtonText>Sair</CancelarButtonText>
+                </CancelarButton>
 
-          </FormContainer>
+              </FormContainer>
 
-        </Content>
-      </Container>
-    </LinearGradient>
+            </Content>
+          </Container>
+        </LinearGradient>
+      </Modal>
+    </>
   );
 }
 
