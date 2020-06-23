@@ -35,6 +35,7 @@ import Transfers from '../pages/FinanceModule/Transfers';
 import Accounts from '../pages/FinanceModule/Accounts';
 import PaymentMethods from '../pages/FinanceModule/PaymentMethods';
 
+import Customers from '../pages/CustomerModule/Customer';
 import DashCust from '../pages/CustomerModule/Dashboard';
 
 import Dashboard from '../pages/ServiceModule/Dashboard';
@@ -146,6 +147,7 @@ const FinanceRoutes = createStackNavigator(
 
 const CustomerRoutes = createStackNavigator(
   {
+    Customers,
     DashCust,
   },
   {
@@ -238,7 +240,7 @@ const AppRoutes = createDrawerNavigator(
     },
   },
   {
-    initialRouteName: 'Finance',
+    initialRouteName: 'Customer',
     contentComponent: CustomDrawer,
     drawerType: 'back',
     lazy: true,
