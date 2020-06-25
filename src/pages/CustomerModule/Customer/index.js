@@ -199,11 +199,11 @@ export default function Customers() {
                 onRefresh={reloadCustomers}
                 refreshing={refreshing}
                 ListFooterComponent={<View style={{ height: 20 }} />}
-                ListEmptyComponent={<Empty>Nenhum cliente encontrada.</Empty>}
+                ListEmptyComponent={<Empty>Nenhum cliente encontrado.</Empty>}
               />
             )}
           <SubmitButton onPress={() => setAddCustomer(true)}>
-            <SubmitButtonText>Nova Conta</SubmitButtonText>
+            <SubmitButtonText>Novo Cliente</SubmitButtonText>
           </SubmitButton>
         </>
       );
@@ -242,7 +242,7 @@ export default function Customers() {
             <FormContainer>
               <Title>Clientes</Title>
               <Description>
-                Veja todas os seus cliente. Crie ou exclua um cliente como quiser.
+                Veja todos os seus cliente. Crie ou exclua um cliente como quiser.
               </Description>
 
               {add_customer &&
@@ -414,7 +414,7 @@ export default function Customers() {
 }
 
 Customers.navigationOptions = {
-  tabBarLabel: 'Contas',
+  tabBarLabel: 'Clientes',
   tabBarIcon: ({ tintColor }) => (
     <FontAwesome5 name="user-cog" size={18} color={tintColor} />
   ),

@@ -7,3 +7,11 @@ export function getUserInfo() {
 export function getCustomerInfo(id) {
   return api.get(`/customers/inf/${id}`);
 }
+
+export function getAutomovelInfo(id) {
+  return api.get(`/vehicles/automobile/${id}`);
+}
+
+export function getBikeInfo(id) {
+  return api.get(`/vehicles/bicycle/${id}`);
+}

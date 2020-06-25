@@ -558,7 +558,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
               </SubmitButton>
             </DeleteButtonBox>
             <CancelarButton onPress={() => setIsVisible(false)}>
-              <CancelarButtonText>Sair</CancelarButtonText>
+              <CancelarButtonText>Voltar</CancelarButtonText>
             </CancelarButton>
 
           </FormContainer>

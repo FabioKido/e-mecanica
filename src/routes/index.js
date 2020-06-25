@@ -36,6 +36,7 @@ import Accounts from '../pages/FinanceModule/Accounts';
 import PaymentMethods from '../pages/FinanceModule/PaymentMethods';
 
 import Customers from '../pages/CustomerModule/Customer';
+import Vehicles from '../pages/CustomerModule/Vehicles';
 import DashCust from '../pages/CustomerModule/Dashboard';
 
 import Dashboard from '../pages/ServiceModule/Dashboard';
@@ -54,6 +55,29 @@ const SignRoutes = createAnimatedSwitchNavigator(
         <Transition.In type="fade" durationMs={500} />
       </Transition.Together>
     ),
+  }
+);
+
+const CustomerBottomRoutes = createBottomTabNavigator(
+  {
+    Customers,
+    Vehicles,
+  },
+  {
+    tabBarOptions: {
+      keyboardHidesTabBar: true,
+      inactiveTintColor: 'rgba(255, 2555, 255, 0.5)',
+      activeTintColor: '#fff',
+      style: {
+        height: 54,
+        paddingVertical: 5,
+        backgroundColor: '#000',
+        borderTopColor: '#000',
+      },
+      labelStyle: {
+        fontSize: 13,
+      },
+    },
   }
 );
 
@@ -147,8 +171,7 @@ const FinanceRoutes = createStackNavigator(
 
 const CustomerRoutes = createStackNavigator(
   {
-    Customers,
-    DashCust,
+    CustomerBottomRoutes,
   },
   {
     headerMode: 'none',
