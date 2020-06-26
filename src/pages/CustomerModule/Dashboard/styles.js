@@ -146,11 +146,9 @@ export const Empty = styled.Text`
   font-size: 15px;
 `;
 
-export const Card = styled.TouchableOpacity.attrs({
-  activeOpacity: 0.7,
-})`
+export const Card = styled.View`
   width: 100%;
-  height: 250px;
+  height: 255px;
   justify-content: center;
   background: ${ colors.light};
   margin-bottom: 25px;
@@ -166,7 +164,7 @@ export const CardInfo = styled.View`
 
 export const CardTitle = styled.Text`
   margin: 0 15px;
-  color: ${ colors.darker};
+  color: #9900cc;
   font-size: 16px;
   font-weight: bold;
   align-self: center;
@@ -177,14 +175,13 @@ export const CardTitle = styled.Text`
 export const CardContainer = styled.View`
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  margin-left: 15px;
+  justify-content: space-around;
 `;
 
 export const CardName = styled.Text`
-  color: #fff;
   font-size: 13px;
   font-weight: bold;
+  letter-spacing: 2.8px;
 `;
 
 export const CardSubName = styled.Text`

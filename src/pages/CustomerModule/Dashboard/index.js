@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
-import { PieChart } from 'react-native-svg-charts';
+import { PieChart, BarChart, XAxis } from 'react-native-svg-charts';
+import * as scale from 'd3-scale';
 
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 import {
   Container,
@@ -34,9 +35,15 @@ import {
 
 import api from '../../../services/api';
 
-export default function Dashboard() {
+export default function Dashboard({ navigation }) {
 
   const [customers, setCustomers] = useState([]);
+  const [fabricators, setFabricators] = useState([]);
+  const [models, setModels] = useState([]);
+
+  const [fabricator_value, setFabricatorValue] = useState('Clique na Cor');
+  const [model_label, setModelLabel] = useState('');
+  const [model_value, setModelValue] = useState(0);
 
   const [loading, setLoading] = useState([]);
 
@@ -46,9 +53,12 @@ export default function Dashboard() {
         setLoading(true);
 
         const response = await api.get('/dashboard/customers');
-        const { customers } = response.data;
+        const { customers, fabricators, models } = response.data;
 
         setCustomers(customers);
+        setFabricators(fabricators);
+        setModels(models);
+
       } catch (err) {
         console.log(err);
       } finally {
@@ -59,27 +69,61 @@ export default function Dashboard() {
     loadInfos();
   }, []);
 
+  // TODO Resolver o loading, com gradient e lottie talves.
+
   if (loading) {
     return (
-      <CardInfo>
+      <LinearGradient
+        colors={['#600080', '#000']}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
         <ActivityIndicator />
-      </CardInfo>
+      </LinearGradient>
     );
   } else {
 
-    const pieData = [
+    const colors = [
+      '#600080',
+      '#9900cc',
+      '#c61aff',
+      '#d966ff',
+      '#ecb3ff'
+    ]
+
+    const custData = [
       {
         key: 1,
-        value: customers[0].count,
-        svg: { fill: '#600080' },
+        value: customers[0] ? customers[0].count : 0,
+        svg: { fill: customers[0].sex === 'M' ? '#600080' : '#9900cc' },
         arc: { outerRadius: '110%' }
       },
       {
         key: 2,
-        value: customers[1].count,
-        svg: { fill: '#9900cc' }
+        value: customers[1] ? customers[1].count : 0,
+        svg: { fill: customers[1].sex === 'M' ? '#600080' : '#9900cc' }
       }
     ]
+
+    const fabData = fabricators.map(({ fabricator: label, count }, index) => {
+      return {
+        label,
+        value: count,
+        svg: { fill: colors[index], onPress: () => setFabricatorValue(count) },
+      }
+    });
+
+    const modelData = models.map(({ model: key, count }, index) => {
+      return {
+        key,
+        value: count,
+        svg: { fill: colors[index] },
+        arc: { outerRadius: (70 + count) + '%', padAngle: model_label === key ? 0.1 : 0 },
+        onPress: () => {
+          setModelLabel(key)
+          setModelValue(count)
+        }
+      }
+    });
 
     return (
       <LinearGradient
@@ -92,31 +136,46 @@ export default function Dashboard() {
               <Title>Visão</Title>
               <Description>
                 Informações importantes. Use como forma de melhorar seu negócio.
-            </Description>
+              </Description>
 
               <Card>
                 <CardInfo>
-                  <CardTitle>Rank - Fabricantes</CardTitle>
-                  <PieChart
-                    style={{ height: 200 }}
-                    outerRadius={'70%'}
-                    innerRadius={10}
-                    data={pieData}
+                  <CardTitle>Top 3 - Fabricantes</CardTitle>
+                  <BarChart
+                    style={{ flex: 1, marginTop: 15, width: 250, alignSelf: 'center' }}
+                    data={fabData}
+                    yAccessor={({ item }) => item.value}
+                    gridMin={0}
                   />
-                  <CardStatus>Homens: {customers[0].count}</CardStatus>
+                  <XAxis
+                    style={{ marginTop: 10, width: 250, alignSelf: 'center' }}
+                    data={fabData}
+                    scale={scale.scaleBand}
+                    formatLabel={(_, index) => fabData[index].label}
+                  />
+                  <CardName style={{ color: '#9900cc', alignSelf: 'center' }}>
+                    {fabricator_value}
+                  </CardName>
                 </CardInfo>
               </Card>
 
               <Card>
                 <CardInfo>
-                  <CardTitle>Rank - Modelos</CardTitle>
+                  <CardTitle>Top 5 - Modelos</CardTitle>
                   <PieChart
-                    style={{ height: 200 }}
-                    outerRadius={'70%'}
-                    innerRadius={10}
-                    data={pieData}
+                    style={{ flex: 1 }}
+                    outerRadius={'80%'}
+                    innerRadius={'45%'}
+                    data={modelData}
                   />
-                  <CardStatus>Homens: {customers[0].count}</CardStatus>
+                  {model_value === 0 ?
+                    <CardName style={{ color: '#9900cc', alignSelf: 'center' }}>
+                      Clique na cor - Informações
+                    </CardName>
+                    :
+                    <CardName style={{ color: '#9900cc', alignSelf: 'center' }}>
+                      {model_label} - {model_value}
+                    </CardName>}
                 </CardInfo>
               </Card>
 
@@ -124,12 +183,19 @@ export default function Dashboard() {
                 <CardInfo>
                   <CardTitle>Gênero - Clientes</CardTitle>
                   <PieChart
-                    style={{ height: 200 }}
+                    style={{ flex: 1 }}
                     outerRadius={'70%'}
                     innerRadius={10}
-                    data={pieData}
+                    data={custData}
                   />
-                  <CardStatus>Homens: {customers[0].count}</CardStatus>
+                  <CardContainer>
+                    <CardName style={{ color: customers[0].sex === 'M' ? '#600080' : '#9900cc' }}>
+                      {customers[0].sex === 'M' ? 'Homens:' : 'Mulheres'} {customers[0].count}
+                    </CardName>
+                    <CardName style={{ color: customers[1].sex === 'M' ? '#600080' : '#9900cc' }}>
+                      {customers[1].sex === 'M' ? 'Homens:' : 'Mulheres'} {customers[1].count}
+                    </CardName>
+                  </CardContainer>
                 </CardInfo>
               </Card>
 
