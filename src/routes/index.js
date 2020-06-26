@@ -37,7 +37,7 @@ import PaymentMethods from '../pages/FinanceModule/PaymentMethods';
 
 import Customers from '../pages/CustomerModule/Customer';
 import Vehicles from '../pages/CustomerModule/Vehicles';
-import DashCust from '../pages/CustomerModule/Dashboard';
+import CustomerDashboard from '../pages/CustomerModule/Dashboard';
 
 import Dashboard from '../pages/ServiceModule/Dashboard';
 import OrderService from '../pages/ServiceModule/OrderService';
@@ -60,6 +60,7 @@ const SignRoutes = createAnimatedSwitchNavigator(
 
 const CustomerBottomRoutes = createBottomTabNavigator(
   {
+    CustomerDashboard,
     Customers,
     Vehicles,
   },
