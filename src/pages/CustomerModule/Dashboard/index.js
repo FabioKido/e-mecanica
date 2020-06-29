@@ -133,9 +133,9 @@ export default function Dashboard({ navigation }) {
         <Container>
           <Content keyboardShouldPersistTaps="handled">
             <FormContainer>
-              <Title>Visão</Title>
+              <Title>Visão Geral</Title>
               <Description>
-                Informações importantes. Use como forma de melhorar seu negócio.
+                Informações importantes do módulo de clientes. Use como forma de melhorar seu negócio.
               </Description>
 
               <Card>
@@ -210,7 +210,7 @@ export default function Dashboard({ navigation }) {
 }
 
 Dashboard.navigationOptions = {
-  tabBarLabel: 'Visão',
+  tabBarLabel: 'Dashboard',
   tabBarIcon: ({ tintColor }) => (
     <FontAwesome5 name="user-cog" size={18} color={tintColor} />
   ),
