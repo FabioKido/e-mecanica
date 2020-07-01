@@ -5,8 +5,7 @@ import {
   Keyboard,
   Platform,
   ActivityIndicator,
-  Alert,
-  Switch
+  Alert
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -15,6 +14,7 @@ import * as Yup from 'yup';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 
 import api from '../../../services/api';
+import CheckBox from '../../../components/CheckBox'
 
 import {
   Container,
@@ -161,11 +161,11 @@ export default function CreateAccount({ navigation }) {
 
               <SwitchContainer>
                 <SwitchText>Pessoa Juridica?</SwitchText>
-                <Switch
-                  thumbColor="#f8a920"
-                  trackColor={{ true: '#f8a920', false: '#2b475c' }}
+                <CheckBox
+                  iconColor="#f8a920"
+                  checkColor="#f8a920"
                   value={company}
-                  onValueChange={setCompany}
+                  onChange={() => setCompany(!company)}
                 />
               </SwitchContainer>
 

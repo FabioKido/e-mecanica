@@ -32,8 +32,9 @@ import {
 } from '../styles';
 
 import api from '../../../../../services/api';
-
 import { getBikeInfo } from '../../../../../services/infos';
+import CheckBox from "../../../../../components/CheckBox";
+
 
 export default function Bike({ vehicle, setIsVisible, reloadVehicles }) {
 
@@ -257,12 +258,11 @@ export default function Bike({ vehicle, setIsVisible, reloadVehicles }) {
             {more_info &&
               <SwitchContainer>
                 <SwitchText>Freio de Mão</SwitchText>
-
-                <Switch
-                  thumbColor="#f8a920"
-                  trackColor={{ true: '#f8a920', false: '#2b475c' }}
+                <CheckBox
+                  iconColor="#fff"
+                  checkColor="#fff"
                   value={hand_brake}
-                  onValueChange={setHandBrake}
+                  onChange={() => setHandBrake(!hand_brake)}
                 />
               </SwitchContainer>
             }

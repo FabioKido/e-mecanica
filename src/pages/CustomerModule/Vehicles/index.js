@@ -45,6 +45,7 @@ import Placeholder from './Placeholder';
 import CustonModal from './CustonModal';
 
 import api from '../../../services/api';
+import CheckBox from "../../../components/CheckBox";
 
 export default function Vehicles() {
 
@@ -506,11 +507,11 @@ export default function Vehicles() {
 
                       <SwitchContainer>
                         <SwitchText>Possui Ar?</SwitchText>
-                        <Switch
-                          thumbColor="#f8a920"
-                          trackColor={{ true: '#f8a920', false: '#2b475c' }}
+                        <CheckBox
+                          iconColor="#fff"
+                          checkColor="#fff"
                           value={ar}
-                          onValueChange={setAr}
+                          onChange={() => setAr(!ar)}
                         />
                       </SwitchContainer>
 
@@ -550,11 +551,11 @@ export default function Vehicles() {
                       <>
                         <SwitchContainer>
                           <SwitchText>É a Freio de Mão?</SwitchText>
-                          <Switch
-                            thumbColor="#f8a920"
-                            trackColor={{ true: '#f8a920', false: '#2b475c' }}
+                          <CheckBox
+                            iconColor="#fff"
+                            checkColor="#fff"
                             value={hand_brake}
-                            onValueChange={setHandBrake}
+                            onChange={() => setHandBrake(!hand_brake)}
                           />
                         </SwitchContainer>
                       </>

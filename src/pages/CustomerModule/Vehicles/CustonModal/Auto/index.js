@@ -32,8 +32,8 @@ import {
 } from '../styles';
 
 import api from '../../../../../services/api';
-
 import { getAutomovelInfo } from '../../../../../services/infos';
+import CheckBox from "../../../../../components/CheckBox";
 
 export default function Auto({ vehicle, setIsVisible, reloadVehicles }) {
 
@@ -402,11 +402,11 @@ export default function Auto({ vehicle, setIsVisible, reloadVehicles }) {
 
                 <SwitchContainer>
                   <SwitchText>Possui Ar?</SwitchText>
-                  <Switch
-                    thumbColor="#f8a920"
-                    trackColor={{ true: '#f8a920', false: '#2b475c' }}
+                  <CheckBox
+                    iconColor="#fff"
+                    checkColor="#fff"
                     value={ar}
-                    onValueChange={setAr}
+                    onChange={() => setAr(!ar)}
                   />
                 </SwitchContainer>
 

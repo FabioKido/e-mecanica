@@ -11,26 +11,12 @@ import {
   Container,
   Content,
   FormContainer,
-  InputContainer,
   Title,
   Description,
-  InputTitle,
-  Input,
-  ChoiceButton,
-  ChoiceText,
-  SubmitButton,
-  SubmitButtonText,
-  CancelarButton,
-  CancelarButtonText,
-  Cards,
   Card,
   CardInfo,
   CardTitle,
-  CardContainer,
-  CardName,
-  CardSubName,
-  CardStatus,
-  Empty
+  CardName
 } from './styles';
 
 import api from '../../../services/api';
@@ -41,9 +27,14 @@ export default function Dashboard({ navigation }) {
   const [fabricators, setFabricators] = useState([]);
   const [models, setModels] = useState([]);
 
+  const [customer_label, setCustomerLabel] = useState('');
+  const [customer_value, setCustomerValue] = useState(0);
+  const [customer_index, setCustomerIndex] = useState(0);
   const [fabricator_value, setFabricatorValue] = useState('Clique na Cor');
+  const [fabricator_index, setFabricatorIndex] = useState(1);
   const [model_label, setModelLabel] = useState('');
   const [model_value, setModelValue] = useState(0);
+  const [model_index, setModelIndex] = useState(0);
 
   const [loading, setLoading] = useState([]);
 
@@ -70,6 +61,8 @@ export default function Dashboard({ navigation }) {
   }, []);
 
   // TODO Resolver o loading, com gradient e lottie talves.
+  // TODO Resolver quando estiver sem informações.
+  // FIXME Resolver o estado global da Page com o redux.
 
   if (loading) {
     return (
@@ -90,25 +83,29 @@ export default function Dashboard({ navigation }) {
       '#ecb3ff'
     ]
 
-    const custData = [
-      {
-        key: 1,
-        value: customers[0] ? customers[0].count : 0,
-        svg: { fill: customers[0].sex === 'M' ? '#600080' : '#9900cc' },
-        arc: { outerRadius: '110%' }
-      },
-      {
-        key: 2,
-        value: customers[1] ? customers[1].count : 0,
-        svg: { fill: customers[1].sex === 'M' ? '#600080' : '#9900cc' }
+    const custData = customers.map(({ sex: key, count }, index) => {
+      return {
+        key,
+        value: count,
+        svg: { fill: colors[index] },
+        onPress: () => {
+          setCustomerLabel(key)
+          setCustomerValue(count)
+          setCustomerIndex(index)
+        }
       }
-    ]
+    });
 
     const fabData = fabricators.map(({ fabricator: label, count }, index) => {
       return {
         label,
         value: count,
-        svg: { fill: colors[index], onPress: () => setFabricatorValue(count) },
+        svg: {
+          fill: colors[index], onPress: () => {
+            setFabricatorValue(count)
+            setFabricatorIndex(index)
+          }
+        },
       }
     });
 
@@ -121,6 +118,7 @@ export default function Dashboard({ navigation }) {
         onPress: () => {
           setModelLabel(key)
           setModelValue(count)
+          setModelIndex(index)
         }
       }
     });
@@ -153,7 +151,7 @@ export default function Dashboard({ navigation }) {
                     scale={scale.scaleBand}
                     formatLabel={(_, index) => fabData[index].label}
                   />
-                  <CardName style={{ color: '#9900cc', alignSelf: 'center' }}>
+                  <CardName style={{ color: colors[fabricator_index], alignSelf: 'center' }}>
                     {fabricator_value}
                   </CardName>
                 </CardInfo>
@@ -170,12 +168,13 @@ export default function Dashboard({ navigation }) {
                   />
                   {model_value === 0 ?
                     <CardName style={{ color: '#9900cc', alignSelf: 'center' }}>
-                      Clique na cor - Informações
+                      Clique na cor
                     </CardName>
                     :
-                    <CardName style={{ color: '#9900cc', alignSelf: 'center' }}>
+                    <CardName style={{ color: colors[model_index], alignSelf: 'center' }}>
                       {model_label} - {model_value}
-                    </CardName>}
+                    </CardName>
+                  }
                 </CardInfo>
               </Card>
 
@@ -188,14 +187,16 @@ export default function Dashboard({ navigation }) {
                     innerRadius={10}
                     data={custData}
                   />
-                  <CardContainer>
-                    <CardName style={{ color: customers[0].sex === 'M' ? '#600080' : '#9900cc' }}>
-                      {customers[0].sex === 'M' ? 'Homens:' : 'Mulheres'} {customers[0].count}
+
+                  {customer_value === 0 ?
+                    <CardName style={{ color: '#9900cc', alignSelf: 'center' }}>
+                      Clique na cor
                     </CardName>
-                    <CardName style={{ color: customers[1].sex === 'M' ? '#600080' : '#9900cc' }}>
-                      {customers[1].sex === 'M' ? 'Homens:' : 'Mulheres'} {customers[1].count}
+                    :
+                    <CardName style={{ color: colors[customer_index], alignSelf: 'center' }}>
+                      {customer_label === 'M' ? 'Homens:' : 'Mulheres'} {customer_value}
                     </CardName>
-                  </CardContainer>
+                  }
                 </CardInfo>
               </Card>
 

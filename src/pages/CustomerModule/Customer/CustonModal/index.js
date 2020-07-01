@@ -2,8 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Keyboard,
-  Switch
+  Keyboard
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -35,6 +34,7 @@ import {
 
 import api from '../../../../services/api';
 import { getCustomerInfo } from '../../../../services/infos';
+import CheckBox from "../../../../components/CheckBox";
 
 export default function CustonModal({ customer, setIsVisible, reloadCustomers }) {
 
@@ -235,11 +235,11 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
             <SwitchContainer>
               {inadimplente ? <ChoiceText>Não é mais Inadiplente?</ChoiceText> : <ChoiceText>Tornar Inadiplente?</ChoiceText>}
 
-              <Switch
-                thumbColor="#f8a920"
-                trackColor={{ true: '#f8a920', false: '#2b475c' }}
+              <CheckBox
+                iconColor="#f8a920"
+                checkColor="#f8a920"
                 value={inadimplente}
-                onValueChange={setInadimplente}
+                onChange={() => setInadimplente(!inadimplente)}
               />
             </SwitchContainer>
 
