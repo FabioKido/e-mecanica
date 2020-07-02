@@ -5,7 +5,7 @@ import {
   Keyboard,
   View,
   Modal,
-  Switch
+  Picker
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -17,6 +17,7 @@ import {
   Container,
   Content,
   FormContainer,
+  InputPicker,
   InputContainer,
   Title,
   Description,
@@ -69,7 +70,9 @@ export default function Vehicles() {
   const [vehicle, setVehicle] = useState({});
   const [add_vehicle, setAddVehicle] = useState(false);
 
+  const [customers, setCustomers] = useState([]);
   const [id_customer, setIdCustomer] = useState();
+
   const [fabricator, setFabricator] = useState('');
   const [model, setModel] = useState('');
   const [year_fab, setYearFab] = useState();
@@ -113,6 +116,24 @@ export default function Vehicles() {
 
     loadVehicles();
   }, []);
+
+  useEffect(() => {
+    if (add_vehicle) {
+      async function loadCustomers() {
+        try {
+
+          const response = await api.get('/customers');
+          const { customers } = response.data;
+
+          setCustomers(customers);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      loadCustomers();
+    }
+  }, [add_vehicle]);
 
   async function reloadVehicles() {
     try {
@@ -269,6 +290,8 @@ export default function Vehicles() {
     );
   }
 
+  // TODO Resolver a margin left do combobox/select.
+
   return (
     <>
       <LinearGradient
@@ -286,18 +309,21 @@ export default function Vehicles() {
               {add_vehicle &&
                 <>
                   <InputTitle>Proprietário</InputTitle>
-                  <InputContainer>
-                    <Input
-                      placeholder="Nome do cliente, se tiver registrado"
-                      autoCapitalize="words"
-                      autoCorrect={false}
-                      onChangeText={setIdCustomer}
-                      value={id_customer}
-                      returnKeyType="next"
-                      onSubmitEditing={() => fabricatorInputRef.current.focus()}
-                    />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
-                  </InputContainer>
+                  <InputPicker>
+                    <Picker
+                      selectedValue={id_customer}
+                      style={{
+                        flex: 1,
+                        color: '#f8a920',
+                        backgroundColor: 'transparent'
+                      }}
+                      onValueChange={(itemValue, itemIndex) => setIdCustomer(itemValue)}
+                    >
+                      <Picker.Item label="Selecione o Proprietário" value="" />
+                      {customers && customers.map(customer => <Picker.Item key={customer.id} label={customer.name} value={customer.id} />)}
+                    </Picker>
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputPicker>
 
                   <InputTitle>Fabricante</InputTitle>
                   <InputContainer>

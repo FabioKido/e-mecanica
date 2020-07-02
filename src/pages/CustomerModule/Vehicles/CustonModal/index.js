@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 import Bike from './Bike';
 import Auto from './Auto';
 
-// TODO Colocar o nome do cliente em vez do seu ID nos componentes abaixo.
-
 export default function CustonModal({ vehicle, setIsVisible, reloadVehicles }) {
 
   const [vehicle_type, setVehicleType] = useState(vehicle.type);

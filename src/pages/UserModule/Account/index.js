@@ -97,6 +97,8 @@ export default function Profile() {
     password_confirmation,
   ]);
 
+  // Resolver como irão ver o plano de acesso.
+
   return (
     <LinearGradient
       colors={['#2b475c', '#000']}

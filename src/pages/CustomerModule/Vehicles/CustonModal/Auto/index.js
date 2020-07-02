@@ -2,8 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Keyboard,
-  Switch
+  Keyboard
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -192,7 +191,7 @@ export default function Auto({ vehicle, setIsVisible, reloadVehicles }) {
       <Container>
         <Content keyboardShouldPersistTaps="handled">
           <FormContainer>
-            <Title>{vehicle.id_customer}</Title>
+            <Title>Veículo - {vehicle.id}</Title>
             <Description>
               Edite ou exclua esse veículo como quiser.
             </Description>

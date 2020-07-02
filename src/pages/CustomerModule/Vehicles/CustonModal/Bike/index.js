@@ -145,7 +145,7 @@ export default function Bike({ vehicle, setIsVisible, reloadVehicles }) {
       <Container>
         <Content keyboardShouldPersistTaps="handled">
           <FormContainer>
-            <Title>{vehicle.id_customer}</Title>
+            <Title>Veículo - {vehicle.id}</Title>
             <Description>
               Edite ou exclua esse veículo como quiser.
             </Description>

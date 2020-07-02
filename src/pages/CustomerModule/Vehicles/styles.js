@@ -34,6 +34,13 @@ export const Description = styled.Text`
   align-self: center;
 `;
 
+export const InputPicker = styled.View`
+  flex-direction: row;
+  border-bottom-width: ${StyleSheet.hairlineWidth};
+  border-color: ${colors.light_gray};
+  margin-bottom: 30px;
+`;
+
 export const InputTitle = styled.Text`
   color: ${ colors.darker};
   font-weight: bold;
