@@ -315,7 +315,8 @@ export default function Vehicles() {
                       style={{
                         flex: 1,
                         color: '#f8a920',
-                        backgroundColor: 'transparent'
+                        backgroundColor: 'transparent',
+                        fontSize: 17
                       }}
                       onValueChange={(itemValue, itemIndex) => setIdCustomer(itemValue)}
                     >

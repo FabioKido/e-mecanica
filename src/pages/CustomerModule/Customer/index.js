@@ -4,7 +4,8 @@ import {
   Alert,
   Keyboard,
   View,
-  Modal
+  Modal,
+  Picker
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -46,7 +47,6 @@ import api from '../../../services/api';
 
 export default function Customers() {
 
-  const sexInputRef = useRef();
   const cpfInputRef = useRef();
   const rgInputRef = useRef();
   const observationsInputRef = useRef();
@@ -256,24 +256,27 @@ export default function Customers() {
                       onChangeText={setName}
                       value={name}
                       returnKeyType="next"
-                      onSubmitEditing={() => sexInputRef.current.focus()}
+                      onSubmitEditing={() => Keyboard.dismiss()}
                     />
                     <MaterialIcons name="person-pin" size={20} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Sexo</InputTitle>
                   <InputContainer>
-                    <Input
-                      placeholder="O sexo é"
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      maxLength={1}
-                      ref={sexInputRef}
-                      onChangeText={setSex}
-                      value={sex}
-                      returnKeyType="next"
-                      onSubmitEditing={() => observationsInputRef.current.focus()}
-                    />
+                    <Picker
+                      selectedValue={sex}
+                      style={{
+                        flex: 1,
+                        color: '#f8a920',
+                        backgroundColor: 'transparent',
+                        fontSize: 17
+                      }}
+                      onValueChange={(itemValue, itemIndex) => setSex(itemValue)}
+                    >
+                      <Picker.Item label='Selecione o Sexo' value='' />
+                      <Picker.Item label='Masculino' value='M' />
+                      <Picker.Item label='Feminino' value='F' />
+                    </Picker>
                     <MaterialIcons name="lock" size={20} color="#999" />
                   </InputContainer>
 

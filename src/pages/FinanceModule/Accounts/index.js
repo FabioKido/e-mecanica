@@ -436,7 +436,7 @@ export default function Accounts() {
                   </SubmitButton>
                 </DeleteButtonBox>
                 <CancelarButton onPress={() => setIsVisible(false)}>
-                  <CancelarButtonText>Sair</CancelarButtonText>
+                  <CancelarButtonText>Voltar</CancelarButtonText>
                 </CancelarButton>
 
               </FormContainer>

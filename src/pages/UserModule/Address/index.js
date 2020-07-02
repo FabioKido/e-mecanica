@@ -3,6 +3,7 @@ import {
   Keyboard,
   ActivityIndicator,
   Alert,
+  Picker
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -34,7 +35,6 @@ export default function Profile() {
   const neighborhoodInputRef = useRef();
   const complementInputRef = useRef();
   const cityInputRef = useRef();
-  const ufInputRef = useRef();
 
   const profile = useSelector(state => state.auth.user);
 
@@ -46,6 +46,36 @@ export default function Profile() {
   const [uf, setUf] = useState('');
 
   const [loading, setLoading] = useState(false);
+
+  const states = [
+    { uf: 'AC', name: 'Acre - AC' },
+    { uf: 'AL', name: 'Alagoas - AL' },
+    { uf: 'AP', name: 'Amapá - AP' },
+    { uf: 'AM', name: 'Amazonas - AM' },
+    { uf: 'BA', name: 'Bahia - BA' },
+    { uf: 'CE', name: 'Ceará - CE' },
+    { uf: 'DF', name: 'Distrito Federal - DF' },
+    { uf: 'ES', name: 'Espírito Santo - ES' },
+    { uf: 'GO', name: 'Goiás - GO' },
+    { uf: 'MA', name: 'Maranhão - MA' },
+    { uf: 'MT', name: 'Mato Grosso - MT' },
+    { uf: 'MS', name: 'Mato Grosso do Sul - MS' },
+    { uf: 'MG', name: 'Minas Gerais - MG' },
+    { uf: 'PA', name: 'Pará - PA' },
+    { uf: 'PB', name: 'Paraíba - PB' },
+    { uf: 'PR', name: 'Paraná - PR' },
+    { uf: 'PE', name: 'Pernambuco - PE' },
+    { uf: 'PI', name: 'Piauí - PI' },
+    { uf: 'RJ', name: 'Rio de Janeiro - RJ' },
+    { uf: 'RN', name: 'Rio Grande do Norte - RN' },
+    { uf: 'RS', name: 'Rio Grande do Sul - RS' },
+    { uf: 'RO', name: 'Rondônia - RO' },
+    { uf: 'RR', name: 'Roraima - RR' },
+    { uf: 'SC', name: 'Santa Catarina - SC' },
+    { uf: 'SP', name: 'São Paulo - SP' },
+    { uf: 'SE', name: 'Sergipe - SE' },
+    { uf: 'TO', name: 'Tocantins - TO' }
+  ];
 
   useEffect(() => {
     async function getInfos() {
@@ -192,24 +222,26 @@ export default function Profile() {
                 onChangeText={setCity}
                 value={city}
                 returnKeyType="next"
-                onSubmitEditing={() => ufInputRef.current.focus()}
+                onSubmitEditing={() => Keyboard.dismiss()}
               />
               <MaterialIcons name="person-pin" size={20} color="#999" />
             </InputContainer>
 
             <InputTitle>UF</InputTitle>
             <InputContainer>
-              <Input
-                placeholder="Seu estado federativo atual"
-                autoCapitalize="words"
-                autoCorrect={false}
-                maxLength={2}
-                ref={ufInputRef}
-                onChangeText={setUf}
-                value={uf}
-                returnKeyType={'send'}
-                onSubmitEditing={handleSaveProfile}
-              />
+              <Picker
+                selectedValue={uf}
+                style={{
+                  flex: 1,
+                  color: '#f8a920',
+                  backgroundColor: 'transparent',
+                  fontSize: 17
+                }}
+                onValueChange={(itemValue, itemIndex) => setUf(itemValue)}
+              >
+                <Picker.Item label='Selecione a UF' value={uf} />
+                {states && states.map(state => <Picker.Item key={state.uf} label={state.name} value={state.uf} />)}
+              </Picker>
               <MaterialIcons name="mail-outline" size={20} color="#999" />
             </InputContainer>
 
