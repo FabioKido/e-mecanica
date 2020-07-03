@@ -3,7 +3,8 @@ import {
   ActivityIndicator,
   Alert,
   Keyboard,
-  View
+  View,
+  Modal
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -36,6 +37,7 @@ import {
 } from './styles';
 
 import Placeholder from './Placeholder';
+import CustonModal from './CustonModal';
 
 import api from '../../../services/api';
 
@@ -45,7 +47,8 @@ export default function PaymentMethods() {
   const operatorInputRef = useRef();
 
   const [payment_methods, setPaymentMethods] = useState([]);
-  const [add_payment_method, setPaymentMethod] = useState(false);
+  const [payment_method, setPaymentMethod] = useState({});
+  const [add_payment_method, setAddPaymentMethod] = useState(false);
 
   const [method, setMethod] = useState('');
   const [operator, setOperator] = useState('');
@@ -53,6 +56,7 @@ export default function PaymentMethods() {
 
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [is_visible, setIsVisible] = useState(false);
 
   useEffect(() => {
     async function loadPaymentMethods() {
@@ -73,6 +77,15 @@ export default function PaymentMethods() {
     loadPaymentMethods();
   }, []);
 
+  function getPaymentMethod(payment_method) {
+    setPaymentMethod(payment_method);
+    setMethod(payment_method.method);
+    setOperator(payment_method.operator);
+    setTaxa(payment_method.taxa);
+    setIsVisible(true);
+  }
+
+
   async function reloadPaymentMethods() {
     try {
       setRefreshing(true);
@@ -87,24 +100,6 @@ export default function PaymentMethods() {
       );
     } finally {
       setRefreshing(false);
-    }
-  }
-
-  const handleDeletePaymentMethod = async ({ id }) => {
-    try {
-      await api.delete(`/finance/method/${id}`);
-
-      Alert.alert('Excluído!', 'Método deletado com sucesso.');
-    } catch (err) {
-      const message =
-        err.response && err.response.data && err.response.data.error;
-
-      Alert.alert(
-        'Ooopsss',
-        message || 'Falha na exclusão do método de pagamento.'
-      );
-    } finally {
-      reloadPaymentMethods();
     }
   }
 
@@ -156,7 +151,7 @@ export default function PaymentMethods() {
                 <SubmitButtonText>Salvar</SubmitButtonText>
               )}
           </SubmitButton>
-          <CancelarButton onPress={() => setPaymentMethod(false)}>
+          <CancelarButton onPress={() => setAddPaymentMethod(false)}>
             <CancelarButtonText>Voltar</CancelarButtonText>
           </CancelarButton>
         </>
@@ -178,7 +173,7 @@ export default function PaymentMethods() {
                 ListEmptyComponent={<Empty>Nenhum método de pagamento encontrado.</Empty>}
               />
             )}
-          <SubmitButton onPress={() => setPaymentMethod(true)}>
+          <SubmitButton onPress={() => setAddPaymentMethod(true)}>
             <SubmitButtonText>Novo Método</SubmitButtonText>
           </SubmitButton>
         </>
@@ -189,17 +184,17 @@ export default function PaymentMethods() {
   function renderPaymentMethod({ item: method }) {
     return (
       <Card
-        onPress={() => handleDeletePaymentMethod(method)}
+        onPress={() => getPaymentMethod(method)}
       >
         <CardInfo>
           <CardTitle numberOfLines={2}>{method.method}</CardTitle>
           <CardContainer>
             <CardName>
-              {method.taxa}{' '}
-              <CardSubName>({'Em porcentagem'})</CardSubName>
+              Operadora{' '}
+              <CardSubName>({method.operator})</CardSubName>
             </CardName>
 
-            <CardStatus>{method.operator}</CardStatus>
+            <CardStatus>{method.taxa}%</CardStatus>
 
           </CardContainer>
         </CardInfo>
@@ -208,76 +203,87 @@ export default function PaymentMethods() {
   }
 
   return (
-    <LinearGradient
-      colors={['#2b475c', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>Métodos de Pagamento</Title>
-            <Description>
-              Veja todos os seus métodos de pagamento. Crie ou exclua um método como quiser.
+    <>
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>Métodos de Pagamento</Title>
+              <Description>
+                Veja todos os seus métodos de pagamento. Crie ou exclua um método como quiser.
           </Description>
 
-            {add_payment_method &&
-              <>
-                <InputTitle>Método de Pagamento</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Digite um Método, ex: Crédito/Débito"
-                    autoCapitalize="words"
-                    autoCorrect={false}
-                    maxLength={60}
-                    onChangeText={setMethod}
-                    value={method}
-                    returnKeyType="next"
-                    onSubmitEditing={() => operatorInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="person-pin" size={20} color="#999" />
-                </InputContainer>
+              {add_payment_method &&
+                <>
+                  <InputTitle>Método de Pagamento</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Digite um Método, ex: Crédito/Débito"
+                      autoCapitalize="words"
+                      autoCorrect={false}
+                      maxLength={60}
+                      onChangeText={setMethod}
+                      value={method}
+                      returnKeyType="next"
+                      onSubmitEditing={() => operatorInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>Operadora</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Insira o título ou operadora"
-                    autoCapitalize="words"
-                    autoCorrect={false}
-                    maxLength={10}
-                    ref={operatorInputRef}
-                    onChangeText={setOperator}
-                    value={operator}
-                    returnKeyType="next"
-                    onSubmitEditing={() => taxaInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="lock" size={20} color="#999" />
-                </InputContainer>
+                  <InputTitle>Operadora</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Insira o título ou operadora"
+                      autoCapitalize="words"
+                      autoCorrect={false}
+                      maxLength={10}
+                      ref={operatorInputRef}
+                      onChangeText={setOperator}
+                      value={operator}
+                      returnKeyType="next"
+                      onSubmitEditing={() => taxaInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>Taxa</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Insira o valor da taxa do método"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    keyboardType="numeric"
-                    ref={taxaInputRef}
-                    onChangeText={setTaxa}
-                    value={taxa}
-                    returnKeyType="send"
-                    onSubmitEditing={handleSavePaymentMethod}
-                  />
-                  <MaterialIcons name="lock" size={20} color="#999" />
-                </InputContainer>
-              </>
-            }
+                  <InputTitle>Taxa</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Insira o valor da taxa do método"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      keyboardType="numeric"
+                      ref={taxaInputRef}
+                      onChangeText={setTaxa}
+                      value={taxa}
+                      returnKeyType="send"
+                      onSubmitEditing={handleSavePaymentMethod}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
+                </>
+              }
 
-            <ViewButton />
+              <ViewButton />
 
-          </FormContainer>
+            </FormContainer>
 
-        </Content>
-      </Container>
-    </LinearGradient>
+          </Content>
+        </Container>
+      </LinearGradient>
+
+      <Modal
+        animationType={'slide'}
+        transparent={false}
+        visible={is_visible}
+        onRequestClose={() => setIsVisible(false)}
+      >
+        <CustonModal payment_method={payment_method} setIsVisible={setIsVisible} reloadPaymentMethods={reloadPaymentMethods} />
+      </Modal>
+    </>
   );
 }
 

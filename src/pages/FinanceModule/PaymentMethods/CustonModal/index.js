@@ -28,64 +28,61 @@ import {
 
 import api from '../../../../services/api';
 
-export default function CustonModal({ account, setIsVisible, reloadAccounts }) {
+export default function CustonModal({ payment_method, setIsVisible, reloadPaymentMethods }) {
 
-  const descriptionInputRef = useRef();
-  const typeInputRef = useRef();
-  const initialValueInputRef = useRef();
+  const taxaInputRef = useRef();
+  const operatorInputRef = useRef();
 
-  const [title, setTitle] = useState(account.title);
-  const [description, setDescription] = useState(account.description);
-  const [type, setType] = useState(account.type);
-  const [initial_value, setInitialValue] = useState(account.initial_value);
+  const [method, setMethod] = useState(payment_method.method);
+  const [operator, setOperator] = useState(payment_method.operator);
+  const [taxa, setTaxa] = useState(payment_method.taxa);
 
   const [loading, setLoading] = useState(false);
 
-  const handleDeleteAccount = async () => {
+  const handleDeletePaymentMethod = async () => {
     try {
-      await api.delete(`/finance/account/${account.id}`);
+      await api.delete(`/finance/method/${payment_method.id}`);
 
-      Alert.alert('Excluída!', 'Conta deletada com sucesso.');
+      Alert.alert('Excluído!', 'Método deletado com sucesso.');
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;
 
       Alert.alert(
         'Ooopsss',
-        message || 'Falha na exclusão da conta.'
+        message || 'Falha na exclusão do método de pagamento.'
       );
     } finally {
       setIsVisible(false);
-      reloadAccounts();
+      reloadPaymentMethods();
     }
   }
 
-  const handleUpdateAccount = useCallback(async () => {
+  const handleUpdatePaymentMethod = useCallback(async () => {
     Keyboard.dismiss();
 
     try {
       setLoading(true);
 
-      await api.put(`/finance/account/${account.id}`, { title, description, type, initial_value });
+      await api.put(`/finance/method/${payment_method.id}`, { method, operator, taxa });
 
-      Alert.alert('Sucesso!', 'Conta pessoal atualizada com sucesso.');
+      Alert.alert('Sucesso!', 'Método atualizado com sucesso.');
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;
 
       Alert.alert(
         'Ooopsss',
-        message || 'Falha na atualização da conta, confira seus dados.'
+        message || 'Falha na atualização do método de pagamento, confira seus dados.'
       );
     } finally {
       setLoading(false);
-      reloadAccounts();
+      reloadPaymentMethods();
     }
   }, [
-    title,
-    description,
-    type,
-    initial_value
+    method,
+    operator,
+    taxa
   ]);
 
   return (
@@ -96,78 +93,63 @@ export default function CustonModal({ account, setIsVisible, reloadAccounts }) {
       <Container>
         <Content keyboardShouldPersistTaps="handled">
           <FormContainer>
-            <Title>{account.title}</Title>
+            <Title>{payment_method.method}</Title>
             <Description>
-              Edite ou exclua essa conta como quiser.
-                </Description>
+              Edite ou exclua esse método de pagamento como quiser.
+            </Description>
 
-            <InputTitle>Título</InputTitle>
+            <InputTitle>Método de Pagamento</InputTitle>
             <InputContainer>
               <Input
-                placeholder='Novo título'
+                placeholder="Digite um Método, ex: Crédito/Débito"
                 autoCapitalize="words"
                 autoCorrect={false}
                 maxLength={60}
-                onChangeText={setTitle}
-                value={title}
+                onChangeText={setMethod}
+                value={method}
                 returnKeyType="next"
-                onSubmitEditing={() => descriptionInputRef.current.focus()}
+                onSubmitEditing={() => operatorInputRef.current.focus()}
               />
               <MaterialIcons name="person-pin" size={20} color="#999" />
             </InputContainer>
 
-            <InputTitle>Descrição</InputTitle>
+            <InputTitle>Operadora</InputTitle>
             <InputContainer>
               <Input
-                placeholder='Nova descrição'
-                autoCapitalize="words"
-                autoCorrect={false}
-                ref={descriptionInputRef}
-                onChangeText={setDescription}
-                value={description}
-                returnKeyType="next"
-                onSubmitEditing={() => typeInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
-
-            <InputTitle>Tipo de Conta</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder='Novo tipo, ex: cc/cd/Caixa/etc'
+                placeholder="Insira o título ou operadora"
                 autoCapitalize="words"
                 autoCorrect={false}
                 maxLength={10}
-                ref={typeInputRef}
-                onChangeText={setType}
-                value={type}
+                ref={operatorInputRef}
+                onChangeText={setOperator}
+                value={operator}
                 returnKeyType="next"
-                onSubmitEditing={() => initialValueInputRef.current.focus()}
+                onSubmitEditing={() => taxaInputRef.current.focus()}
               />
               <MaterialIcons name="lock" size={20} color="#999" />
             </InputContainer>
 
-            <InputTitle>Valor Inícial</InputTitle>
+            <InputTitle>Taxa</InputTitle>
             <InputContainer>
               <Input
-                placeholder='Novo valor'
+                placeholder="Insira o valor da taxa do método"
                 autoCapitalize="none"
                 autoCorrect={false}
                 keyboardType="numeric"
-                ref={initialValueInputRef}
-                onChangeText={setInitialValue}
-                value={initial_value}
+                ref={taxaInputRef}
+                onChangeText={setTaxa}
+                value={taxa}
                 returnKeyType="send"
-                onSubmitEditing={handleUpdateAccount}
+                onSubmitEditing={handleUpdatePaymentMethod}
               />
               <MaterialIcons name="lock" size={20} color="#999" />
             </InputContainer>
 
             <DeleteButtonBox>
-              <DeleteButton onPress={handleDeleteAccount}>
+              <DeleteButton onPress={handleDeletePaymentMethod}>
                 <DeleteButtonText>Excluir</DeleteButtonText>
               </DeleteButton>
-              <SubmitButton style={{ width: 125 }} onPress={handleUpdateAccount}>
+              <SubmitButton style={{ width: 125 }} onPress={handleUpdatePaymentMethod}>
                 {loading ? (
                   <ActivityIndicator size="small" color="#333" />
                 ) : (

@@ -3,7 +3,8 @@ import {
   ActivityIndicator,
   Alert,
   Keyboard,
-  View
+  View,
+  Modal
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -36,6 +37,7 @@ import {
 } from './styles';
 
 import Placeholder from './Placeholder';
+import CustonModal from './CustonModal';
 
 import api from '../../../services/api';
 
@@ -44,6 +46,7 @@ export default function Category() {
   const indicatorInputRef = useRef();
 
   const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState({});
   const [add_category, setAddCategory] = useState(false);
 
   const [description, setDescription] = useState('');
@@ -51,6 +54,7 @@ export default function Category() {
 
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [is_visible, setIsVisible] = useState(false);
 
   useEffect(() => {
     async function loadCategories() {
@@ -71,6 +75,13 @@ export default function Category() {
     loadCategories();
   }, []);
 
+  function getCategory(category) {
+    setCategory(category);
+    setDescription(category.description);
+    setIndicator(category.indicator);
+    setIsVisible(true);
+  }
+
   async function reloadCategories() {
     try {
       setRefreshing(true);
@@ -85,24 +96,6 @@ export default function Category() {
       );
     } finally {
       setRefreshing(false);
-    }
-  }
-
-  const handleDeleteCategory = async ({ id }) => {
-    try {
-      await api.delete(`/finance/category/${id}`);
-
-      Alert.alert('Excluída!', 'Categoria deletada com sucesso.');
-    } catch (err) {
-      const message =
-        err.response && err.response.data && err.response.data.error;
-
-      Alert.alert(
-        'Ooopsss',
-        message || 'Falha na exclusão da categoria.'
-      );
-    } finally {
-      reloadCategories();
     }
   }
 
@@ -184,7 +177,7 @@ export default function Category() {
   function renderCategories({ item: category }) {
     return (
       <Card
-        onPress={() => handleDeleteCategory(category)}
+        onPress={() => getCategory(category)}
       >
         <CardInfo>
           <CardTitle numberOfLines={2}>{category.description}</CardTitle>
@@ -194,7 +187,7 @@ export default function Category() {
               <CardSubName>({category.indicator})</CardSubName>
             </CardName>
 
-            <CardStatus>Excluir</CardStatus>
+            <CardStatus>Abrir</CardStatus>
 
           </CardContainer>
         </CardInfo>
@@ -203,58 +196,68 @@ export default function Category() {
   }
 
   return (
-    <LinearGradient
-      colors={['#2b475c', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>Categorias</Title>
-            <Description>
-              Veja todas as suas categorias. Crie ou exclua uma categoria como quiser.
-          </Description>
+    <>
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>Categorias</Title>
+              <Description>
+                Veja todas as suas categorias. Crie ou exclua uma categoria como quiser.
+              </Description>
 
-            {add_category &&
-              <>
-                <InputTitle>Descrição</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Digite uma descrição"
-                    autoCapitalize="words"
-                    autoCorrect={false}
-                    onChangeText={setDescription}
-                    value={description}
-                    returnKeyType="next"
-                    onSubmitEditing={() => indicatorInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="person-pin" size={20} color="#999" />
-                </InputContainer>
+              {add_category &&
+                <>
+                  <InputTitle>Descrição</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Digite uma descrição"
+                      autoCapitalize="words"
+                      autoCorrect={false}
+                      onChangeText={setDescription}
+                      value={description}
+                      returnKeyType="next"
+                      onSubmitEditing={() => indicatorInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>Indicador</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Insira o indicador, ex: impostos/etc"
-                    autoCapitalize="words"
-                    autoCorrect={false}
-                    ref={indicatorInputRef}
-                    onChangeText={setIndicator}
-                    value={indicator}
-                    returnKeyType="send"
-                    onSubmitEditing={handleSaveCategory}
-                  />
-                  <MaterialIcons name="lock" size={20} color="#999" />
-                </InputContainer>
-              </>
-            }
+                  <InputTitle>Indicador</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Insira o indicador, ex: impostos/etc"
+                      autoCapitalize="words"
+                      autoCorrect={false}
+                      ref={indicatorInputRef}
+                      onChangeText={setIndicator}
+                      value={indicator}
+                      returnKeyType="send"
+                      onSubmitEditing={handleSaveCategory}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
+                </>
+              }
 
-            <ViewButton />
+              <ViewButton />
 
-          </FormContainer>
+            </FormContainer>
 
-        </Content>
-      </Container>
-    </LinearGradient>
+          </Content>
+        </Container>
+      </LinearGradient>
+      <Modal
+        animationType={'slide'}
+        transparent={false}
+        visible={is_visible}
+        onRequestClose={() => setIsVisible(false)}
+      >
+        <CustonModal category={category} setIsVisible={setIsVisible} reloadCategories={reloadCategories} />
+      </Modal>
+    </>
   );
 }
 
