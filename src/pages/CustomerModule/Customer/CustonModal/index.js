@@ -6,6 +6,7 @@ import {
   Picker
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { TextInputMask } from 'react-native-masked-text';
 
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
@@ -85,6 +86,36 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
   const [value_click, setValueClick] = useState(true);
 
   const [loading, setLoading] = useState(false);
+
+  const states = [
+    { uf: 'AC', name: 'Acre - AC' },
+    { uf: 'AL', name: 'Alagoas - AL' },
+    { uf: 'AP', name: 'Amapá - AP' },
+    { uf: 'AM', name: 'Amazonas - AM' },
+    { uf: 'BA', name: 'Bahia - BA' },
+    { uf: 'CE', name: 'Ceará - CE' },
+    { uf: 'DF', name: 'Distrito Federal - DF' },
+    { uf: 'ES', name: 'Espírito Santo - ES' },
+    { uf: 'GO', name: 'Goiás - GO' },
+    { uf: 'MA', name: 'Maranhão - MA' },
+    { uf: 'MT', name: 'Mato Grosso - MT' },
+    { uf: 'MS', name: 'Mato Grosso do Sul - MS' },
+    { uf: 'MG', name: 'Minas Gerais - MG' },
+    { uf: 'PA', name: 'Pará - PA' },
+    { uf: 'PB', name: 'Paraíba - PB' },
+    { uf: 'PR', name: 'Paraná - PR' },
+    { uf: 'PE', name: 'Pernambuco - PE' },
+    { uf: 'PI', name: 'Piauí - PI' },
+    { uf: 'RJ', name: 'Rio de Janeiro - RJ' },
+    { uf: 'RN', name: 'Rio Grande do Norte - RN' },
+    { uf: 'RS', name: 'Rio Grande do Sul - RS' },
+    { uf: 'RO', name: 'Rondônia - RO' },
+    { uf: 'RR', name: 'Roraima - RR' },
+    { uf: 'SC', name: 'Santa Catarina - SC' },
+    { uf: 'SP', name: 'São Paulo - SP' },
+    { uf: 'SE', name: 'Sergipe - SE' },
+    { uf: 'TO', name: 'Tocantins - TO' }
+  ];
 
   async function getInfos() {
     if (value_click) {
@@ -326,14 +357,22 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
               <>
                 <InputTitle>CNPJ</InputTitle>
                 <InputContainer>
-                  <Input
+                  <TextInputMask
                     placeholder="Número do CNPJ"
                     autoCapitalize="none"
                     autoCorrect={false}
-                    maxLength={25}
+                    maxLength={18}
+                    type={'cnpj'}
                     ref={cnpjInputRef}
-                    onChangeText={setCNPJ}
+                    onChangeText={text => setCNPJ(text)}
                     value={cnpj}
+                    style={{
+                      height: 48,
+                      fontSize: 17,
+                      color: '#FFF',
+                      flex: 1
+                    }}
+                    placeholderTextColor='#5f6368'
                     returnKeyType="next"
                     onSubmitEditing={() => ieInputRef.current.focus()}
                   />
@@ -346,12 +385,13 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                     placeholder="Digite a sua Inscrição Estadual"
                     autoCapitalize="none"
                     autoCorrect={false}
-                    maxLength={13}
+                    keyboardType="numeric"
+                    maxLength={9}
                     ref={ieInputRef}
                     onChangeText={setIE}
                     value={ie}
                     returnKeyType="next"
-                    onSubmitEditing={() => rgInputRef.current.focus()}
+                    onSubmitEditing={handleUpdateCustomer}
                   />
                   <MaterialIcons name="lock" size={20} color="#999" />
                 </InputContainer>
@@ -360,37 +400,45 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                 <>
                   <InputTitle>CPF</InputTitle>
                   <InputContainer>
-                    <Input
+                    <TextInputMask
                       placeholder="Número do CPF"
                       autoCapitalize="none"
                       autoCorrect={false}
                       maxLength={14}
+                      type={'cpf'}
                       ref={cpfInputRef}
-                      onChangeText={setCPF}
+                      onChangeText={text => setCPF(text)}
                       value={cpf}
+                      style={{
+                        height: 48,
+                        fontSize: 17,
+                        color: '#FFF',
+                        flex: 1
+                      }}
+                      placeholderTextColor='#5f6368'
                       returnKeyType="next"
                       onSubmitEditing={() => rgInputRef.current.focus()}
                     />
                     <MaterialIcons name="lock" size={20} color="#999" />
                   </InputContainer>
+
+                  <InputTitle>RG</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Digite o RG"
+                      autoCapitalize="characters"
+                      autoCorrect={false}
+                      maxLength={14}
+                      ref={rgInputRef}
+                      onChangeText={setRG}
+                      value={rg}
+                      returnKeyType="send"
+                      onSubmitEditing={handleUpdateCustomer}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
                 </>
               )}
-
-            <InputTitle>RG</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite o RG"
-                autoCapitalize="none"
-                autoCorrect={false}
-                maxLength={14}
-                ref={rgInputRef}
-                onChangeText={setRG}
-                value={rg}
-                returnKeyType="send"
-                onSubmitEditing={handleUpdateCustomer}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
 
             <ChoiceButton
               onPress={() => {
@@ -407,13 +455,26 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
 
                 <InputTitle>Celular</InputTitle>
                 <InputContainer>
-                  <Input
+                  <TextInputMask
                     placeholder="Digite o número do celular"
                     autoCapitalize="none"
                     autoCorrect={false}
                     keyboardType="phone-pad"
-                    maxLength={16}
-                    onChangeText={setCelphone}
+                    maxLength={15}
+                    type={'cel-phone'}
+                    options={{
+                      maskType: 'BRL',
+                      withDDD: true,
+                      dddMask: '(99) '
+                    }}
+                    style={{
+                      height: 48,
+                      fontSize: 17,
+                      color: '#FFF',
+                      flex: 1
+                    }}
+                    placeholderTextColor='#5f6368'
+                    onChangeText={text => setCelphone(text)}
                     value={celphone}
                     returnKeyType="next"
                     onSubmitEditing={() => phoneInputRef.current.focus()}
@@ -423,14 +484,27 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
 
                 <InputTitle>Telefone</InputTitle>
                 <InputContainer>
-                  <Input
+                  <TextInputMask
                     placeholder="Digite o número do telefone"
                     autoCapitalize="none"
                     autoCorrect={false}
                     keyboardType="phone-pad"
                     maxLength={15}
+                    type={'cel-phone'}
+                    options={{
+                      maskType: 'BRL',
+                      withDDD: true,
+                      dddMask: '(99) '
+                    }}
+                    style={{
+                      height: 48,
+                      fontSize: 17,
+                      color: '#FFF',
+                      flex: 1
+                    }}
+                    placeholderTextColor='#5f6368'
                     ref={phoneInputRef}
-                    onChangeText={setPhone}
+                    onChangeText={text => setPhone(text)}
                     value={phone}
                     returnKeyType="next"
                     onSubmitEditing={() => eMailInputRef.current.focus()}
@@ -460,7 +534,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                 <InputContainer>
                   <Input
                     placeholder="Digite uma rua/av/outros"
-                    autoCapitalize="none"
+                    autoCapitalize="words"
                     autoCorrect={false}
                     ref={logradouroInputRef}
                     onChangeText={setStreet}
@@ -491,7 +565,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                 <InputContainer>
                   <Input
                     placeholder="Digite o nome do bairro"
-                    autoCapitalize="none"
+                    autoCapitalize="words"
                     autoCorrect={false}
                     ref={neighborhoodInputRef}
                     onChangeText={setNeighborhood}
@@ -521,7 +595,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                 <InputContainer>
                   <Input
                     placeholder="Sua cidade atual"
-                    autoCapitalize="none"
+                    autoCapitalize="words"
                     autoCorrect={false}
                     ref={cityInputRef}
                     onChangeText={setCity}
@@ -534,17 +608,19 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
 
                 <InputTitle>UF</InputTitle>
                 <InputContainer>
-                  <Input
-                    placeholder="Seu estado federativo atual"
-                    autoCapitalize="words"
-                    autoCorrect={false}
-                    maxLength={2}
-                    ref={ufInputRef}
-                    onChangeText={setUf}
-                    value={uf}
-                    returnKeyType={'send'}
-                    onSubmitEditing={handleUpdateCustomer}
-                  />
+                  <Picker
+                    selectedValue={uf}
+                    style={{
+                      flex: 1,
+                      color: '#f8a920',
+                      backgroundColor: 'transparent',
+                      fontSize: 17
+                    }}
+                    onValueChange={(itemValue, itemIndex) => setUf(itemValue)}
+                  >
+                    <Picker.Item label='Selecione a UF' value={uf} />
+                    {states && states.map(state => <Picker.Item key={state.uf} label={state.name} value={state.uf} />)}
+                  </Picker>
                   <MaterialIcons name="mail-outline" size={20} color="#999" />
                 </InputContainer>
               </>

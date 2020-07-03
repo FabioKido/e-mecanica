@@ -5,6 +5,7 @@ import {
   Alert,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { TextInputMask } from 'react-native-masked-text';
 
 import * as Yup from 'yup';
 
@@ -113,13 +114,26 @@ export default function Profile() {
 
             <InputTitle>Celular</InputTitle>
             <InputContainer>
-              <Input
+              <TextInputMask
                 placeholder="Digite o número do celular"
                 autoCapitalize="none"
                 autoCorrect={false}
                 keyboardType="phone-pad"
-                maxLength={16}
-                onChangeText={setCelphone}
+                maxLength={15}
+                type={'cel-phone'}
+                options={{
+                  maskType: 'BRL',
+                  withDDD: true,
+                  dddMask: '(99) '
+                }}
+                style={{
+                  height: 48,
+                  fontSize: 17,
+                  color: '#FFF',
+                  flex: 1
+                }}
+                placeholderTextColor='#5f6368'
+                onChangeText={text => setCelphone(text)}
                 value={celphone}
                 returnKeyType="next"
                 onSubmitEditing={() => phoneInputRef.current.focus()}
@@ -129,14 +143,27 @@ export default function Profile() {
 
             <InputTitle>Telefone</InputTitle>
             <InputContainer>
-              <Input
+              <TextInputMask
                 placeholder="Digite o número do telefone"
                 autoCapitalize="none"
                 autoCorrect={false}
                 keyboardType="phone-pad"
                 maxLength={15}
+                type={'cel-phone'}
+                options={{
+                  maskType: 'BRL',
+                  withDDD: true,
+                  dddMask: '(99) '
+                }}
+                style={{
+                  height: 48,
+                  fontSize: 17,
+                  color: '#FFF',
+                  flex: 1
+                }}
+                placeholderTextColor='#5f6368'
                 ref={phoneInputRef}
-                onChangeText={setPhone}
+                onChangeText={text => setPhone(text)}
                 value={phone}
                 returnKeyType="next"
                 onSubmitEditing={() => eMailInputRef.current.focus()}

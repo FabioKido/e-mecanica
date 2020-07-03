@@ -8,6 +8,7 @@ import {
   Picker
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { TextInputMask } from 'react-native-masked-text';
 
 import * as Yup from 'yup';
 
@@ -331,14 +332,22 @@ export default function Customers() {
                     <>
                       <InputTitle>CNPJ</InputTitle>
                       <InputContainer>
-                        <Input
+                        <TextInputMask
                           placeholder="Número do CNPJ"
                           autoCapitalize="none"
                           autoCorrect={false}
-                          maxLength={25}
+                          maxLength={18}
+                          type={'cnpj'}
                           ref={cnpjInputRef}
-                          onChangeText={setCNPJ}
+                          onChangeText={text => setCNPJ(text)}
                           value={cnpj}
+                          style={{
+                            height: 48,
+                            fontSize: 17,
+                            color: '#FFF',
+                            flex: 1
+                          }}
+                          placeholderTextColor='#5f6368'
                           returnKeyType="next"
                           onSubmitEditing={() => ieInputRef.current.focus()}
                         />
@@ -351,12 +360,13 @@ export default function Customers() {
                           placeholder="Digite a sua Inscrição Estadual"
                           autoCapitalize="none"
                           autoCorrect={false}
-                          maxLength={13}
+                          keyboardType="numeric"
+                          maxLength={9}
                           ref={ieInputRef}
                           onChangeText={setIE}
                           value={ie}
                           returnKeyType="next"
-                          onSubmitEditing={() => rgInputRef.current.focus()}
+                          onSubmitEditing={handleSaveCustomer}
                         />
                         <MaterialIcons name="lock" size={20} color="#999" />
                       </InputContainer>
@@ -365,38 +375,45 @@ export default function Customers() {
                       <>
                         <InputTitle>CPF</InputTitle>
                         <InputContainer>
-                          <Input
+                          <TextInputMask
                             placeholder="Número do CPF"
                             autoCapitalize="none"
                             autoCorrect={false}
                             maxLength={14}
+                            type={'cpf'}
                             ref={cpfInputRef}
-                            onChangeText={setCPF}
+                            onChangeText={text => setCPF(text)}
                             value={cpf}
+                            style={{
+                              height: 48,
+                              fontSize: 17,
+                              color: '#FFF',
+                              flex: 1
+                            }}
+                            placeholderTextColor='#5f6368'
                             returnKeyType="next"
                             onSubmitEditing={() => rgInputRef.current.focus()}
                           />
                           <MaterialIcons name="lock" size={20} color="#999" />
                         </InputContainer>
+
+                        <InputTitle>RG</InputTitle>
+                        <InputContainer>
+                          <Input
+                            placeholder="Digite o RG"
+                            autoCapitalize="characters"
+                            autoCorrect={false}
+                            maxLength={14}
+                            ref={rgInputRef}
+                            onChangeText={setRG}
+                            value={rg}
+                            returnKeyType="send"
+                            onSubmitEditing={handleSaveCustomer}
+                          />
+                          <MaterialIcons name="lock" size={20} color="#999" />
+                        </InputContainer>
                       </>
                     )}
-
-                  <InputTitle>RG</InputTitle>
-                  <InputContainer>
-                    <Input
-                      placeholder="Digite o RG"
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      maxLength={14}
-                      ref={rgInputRef}
-                      onChangeText={setRG}
-                      value={rg}
-                      returnKeyType="send"
-                      onSubmitEditing={handleSaveCustomer}
-                    />
-                    <MaterialIcons name="lock" size={20} color="#999" />
-                  </InputContainer>
-
                 </>
               }
 

@@ -5,6 +5,7 @@ import {
   Keyboard
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { TextInputMask } from 'react-native-masked-text';
 
 import * as Yup from 'yup';
 
@@ -156,14 +157,22 @@ export default function Company() {
 
             <InputTitle>CNPJ</InputTitle>
             <InputContainer>
-              <Input
+              <TextInputMask
                 placeholder="Número do seu CNPJ"
                 autoCapitalize="none"
                 autoCorrect={false}
-                maxLength={25}
+                maxLength={18}
+                type={'cnpj'}
                 ref={cnpjInputRef}
-                onChangeText={setCNPJ}
+                onChangeText={text => setCNPJ(text)}
                 value={cnpj}
+                style={{
+                  height: 48,
+                  fontSize: 17,
+                  color: '#FFF',
+                  flex: 1
+                }}
+                placeholderTextColor='#5f6368'
                 returnKeyType="next"
                 onSubmitEditing={() => ieInputRef.current.focus()}
               />
@@ -175,8 +184,9 @@ export default function Company() {
               <Input
                 placeholder="Digite a sua Inscrição Estadual"
                 autoCapitalize="none"
+                keyboardType="numeric"
                 autoCorrect={false}
-                maxLength={13}
+                maxLength={9}
                 ref={ieInputRef}
                 onChangeText={setIE}
                 value={ie}

@@ -28,6 +28,7 @@ export default function Dashboard({ navigation }) {
   const [models, setModels] = useState([]);
 
   const [customer_label, setCustomerLabel] = useState('');
+  const [customer_type, setCustomerType] = useState('');
   const [customer_value, setCustomerValue] = useState(0);
   const [customer_index, setCustomerIndex] = useState(0);
   const [fabricator_value, setFabricatorValue] = useState('Clique na Cor');
@@ -64,6 +65,16 @@ export default function Dashboard({ navigation }) {
   // TODO Resolver quando estiver sem informações.
   // FIXME Resolver o estado global da Page com o redux.
 
+  function getCustomerLabel(label) {
+    if (label === 'M') {
+      setCustomerType('Homens -');
+    } else if (label === 'F') {
+      setCustomerType('Mulheres -');
+    } else {
+      setCustomerType('Não definido');
+    }
+  }
+
   if (loading) {
     return (
       <LinearGradient
@@ -92,6 +103,7 @@ export default function Dashboard({ navigation }) {
           setCustomerLabel(key)
           setCustomerValue(count)
           setCustomerIndex(index)
+          getCustomerLabel(key)
         }
       }
     });
@@ -194,7 +206,7 @@ export default function Dashboard({ navigation }) {
                     </CardName>
                     :
                     <CardName style={{ color: colors[customer_index], alignSelf: 'center' }}>
-                      {customer_label === 'M' ? 'Homens:' : 'Mulheres'} {customer_value}
+                      {customer_type} {customer_value}
                     </CardName>
                   }
                 </CardInfo>

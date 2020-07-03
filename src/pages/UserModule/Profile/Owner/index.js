@@ -5,6 +5,8 @@ import {
   Keyboard,
   Picker
 } from 'react-native';
+import { TextInputMask } from 'react-native-masked-text';
+
 import { LinearGradient } from 'expo-linear-gradient';
 
 import * as Yup from 'yup';
@@ -29,8 +31,6 @@ import {
   SubmitButton,
   SubmitButtonText,
 } from './styles';
-
-// FIXME Resolver a validação do CPF e CNPJ;
 
 export default function Owner() {
 
@@ -202,14 +202,22 @@ export default function Owner() {
 
             <InputTitle>CPF</InputTitle>
             <InputContainer>
-              <Input
+              <TextInputMask
                 placeholder="Número do seu CPF"
                 autoCapitalize="none"
                 autoCorrect={false}
                 maxLength={14}
+                type={'cpf'}
                 ref={cpfInputRef}
-                onChangeText={setCPF}
+                onChangeText={text => setCPF(text)}
                 value={cpf}
+                style={{
+                  height: 48,
+                  fontSize: 17,
+                  color: '#FFF',
+                  flex: 1
+                }}
+                placeholderTextColor='#5f6368'
                 returnKeyType="next"
                 onSubmitEditing={() => rgInputRef.current.focus()}
               />
@@ -220,7 +228,7 @@ export default function Owner() {
             <InputContainer>
               <Input
                 placeholder="Digite o seu RG"
-                autoCapitalize="none"
+                autoCapitalize="characters"
                 autoCorrect={false}
                 maxLength={14}
                 ref={rgInputRef}

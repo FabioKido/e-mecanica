@@ -156,7 +156,7 @@ export default function Profile() {
             <InputContainer>
               <Input
                 placeholder="Digite uma rua/av/outros"
-                autoCapitalize="none"
+                autoCapitalize="words"
                 autoCorrect={false}
                 onChangeText={setStreet}
                 value={street}
@@ -186,7 +186,7 @@ export default function Profile() {
             <InputContainer>
               <Input
                 placeholder="Digite o nome do bairro"
-                autoCapitalize="none"
+                autoCapitalize="words"
                 autoCorrect={false}
                 ref={neighborhoodInputRef}
                 onChangeText={setNeighborhood}
@@ -216,7 +216,7 @@ export default function Profile() {
             <InputContainer>
               <Input
                 placeholder="Sua cidade atual"
-                autoCapitalize="none"
+                autoCapitalize="words"
                 autoCorrect={false}
                 ref={cityInputRef}
                 onChangeText={setCity}
