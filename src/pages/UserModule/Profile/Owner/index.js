@@ -8,6 +8,8 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 
 import * as Yup from 'yup';
+
+import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
 
 import { useSelector } from 'react-redux';
@@ -28,10 +30,6 @@ import {
   SubmitButtonText,
 } from './styles';
 
-// FIXME Terminar de resolver a validação da data de aniversário:
-//    - Resolver conversão da data vinda do banco para o front/mobile;
-//    - Resolver a conversão da string para salvar no banco depois;
-//
 // FIXME Resolver a validação do CPF e CNPJ;
 
 export default function Owner() {
@@ -50,13 +48,15 @@ export default function Owner() {
   const [birthday, setBirthday] = useState('');
   const [orgao_expeditor, setOrgaoExpeditor] = useState('');
 
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState();
   const [loading, setLoading] = useState(false);
 
   const onDateChange = date => {
     setDate(date);
 
-    setBirthday(date);
+    const momentObj = moment(date, 'DD-MM-YYYY');
+
+    setBirthday(momentObj);
   };
 
   useEffect(() => {
@@ -74,6 +74,9 @@ export default function Owner() {
           birthday,
           orgao_expeditor
         } = response.data;
+
+        const date = birthday ? moment(birthday).format('DD-MM-YYYY') : '';
+        setDate(date);
 
         setId(id)
         setName(name);
@@ -180,8 +183,7 @@ export default function Owner() {
               <Input
                 placeholder="Clique no calendário para editar"
                 editable={false}
-                onChangeText={setBirthday}
-                value={birthday}
+                value={date}
               />
               <DatePicker
                 date={date}

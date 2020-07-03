@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
 
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
@@ -78,7 +79,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
   const [city, setCity] = useState('');
   const [uf, setUf] = useState('');
 
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(() => birthday ? moment(birthday).format('DD-MM-YYYY') : '');
   const [choice_cnpj, setChoiceCNPJ] = useState(false);
   const [more_info, setMoreInfo] = useState(false);
   const [value_click, setValueClick] = useState(true);
@@ -117,7 +118,9 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
   const onDateChange = date => {
     setDate(date);
 
-    setBirthday(date);
+    const momentObj = moment(date, 'DD-MM-YYYY');
+
+    setBirthday(momentObj);
   };
 
   const handleDeleteCustomer = async () => {
@@ -281,8 +284,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
               <Input
                 placeholder="Clique no calendário para editar"
                 editable={false}
-                onChangeText={setBirthday}
-                value={birthday}
+                value={date}
               />
               <DatePicker
                 date={date}

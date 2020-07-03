@@ -10,6 +10,8 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 
 import * as Yup from 'yup';
+
+import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
 
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
@@ -67,7 +69,7 @@ export default function Customers() {
   const [cnpj, setCNPJ] = useState('');
   const [ie, setIE] = useState('');
 
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState();
   const [choice_cnpj, setChoiceCNPJ] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -113,7 +115,9 @@ export default function Customers() {
   const onDateChange = date => {
     setDate(date);
 
-    setBirthday(date);
+    const momentObj = moment(date, 'DD-MM-YYYY');
+
+    setBirthday(momentObj);
   };
 
   function getCustomer(customer) {
@@ -285,8 +289,7 @@ export default function Customers() {
                     <Input
                       placeholder="Clique no calendário para editar"
                       editable={false}
-                      onChangeText={setBirthday}
-                      value={birthday}
+                      value={date}
                     />
                     <DatePicker
                       date={date}
