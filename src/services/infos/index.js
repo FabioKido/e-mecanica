@@ -15,3 +15,7 @@ export function getAutomovelInfo(id) {
 export function getBikeInfo(id) {
   return api.get(`/vehicles/bicycle/${id}`);
 }
+
+export function getDashboardCustomer() {
+  return api.get('/dashboard/customers');
+}

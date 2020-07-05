@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import { useDispatch } from 'react-redux';
+
 import * as Yup from 'yup';
 
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
@@ -48,7 +50,11 @@ import CustonModal from './CustonModal';
 import api from '../../../services/api';
 import CheckBox from "../../../components/CheckBox";
 
+import { loadDashboardRequest } from '../../../store/modules/finance/actions';
+
 export default function Vehicles() {
+
+  const dispatch = useDispatch();
 
   const fabricatorInputRef = useRef();
   const modelInputRef = useRef();
@@ -195,6 +201,8 @@ export default function Vehicles() {
       });
 
       Alert.alert('Sucesso!', 'Novo veículo registrado com sucesso.');
+
+      dispatch(loadDashboardRequest());
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;

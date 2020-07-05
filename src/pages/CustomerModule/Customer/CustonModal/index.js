@@ -8,6 +8,8 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { TextInputMask } from 'react-native-masked-text';
 
+import { useDispatch } from 'react-redux';
+
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
 
@@ -39,7 +41,11 @@ import api from '../../../../services/api';
 import { getCustomerInfo } from '../../../../services/infos';
 import CheckBox from "../../../../components/CheckBox";
 
+import { loadDashboardRequest } from '../../../../store/modules/finance/actions';
+
 export default function CustonModal({ customer, setIsVisible, reloadCustomers }) {
+
+  const dispatch = useDispatch();
 
   const cpfInputRef = useRef();
   const rgInputRef = useRef();
@@ -159,6 +165,8 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
       await api.delete(`/customers/${customer.id}`);
 
       Alert.alert('Excluído!', 'Cliente deletado com sucesso.');
+
+      dispatch(loadDashboardRequest());
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;
@@ -202,6 +210,8 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
       });
 
       Alert.alert('Sucesso!', 'Cliente atualizado com sucesso.');
+
+      dispatch(loadDashboardRequest());
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;

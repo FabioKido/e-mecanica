@@ -2,12 +2,13 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Keyboard,
-  Switch
+  Keyboard
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { MaterialIcons } from '@expo/vector-icons';
+
+import { useDispatch } from 'react-redux';
 
 import {
   Container,
@@ -35,8 +36,11 @@ import api from '../../../../../services/api';
 import { getBikeInfo } from '../../../../../services/infos';
 import CheckBox from "../../../../../components/CheckBox";
 
+import { loadDashboardRequest } from '../../../../../store/modules/finance/actions';
 
 export default function Bike({ vehicle, setIsVisible, reloadVehicles }) {
+
+  const dispatch = useDispatch();
 
   const modelInputRef = useRef();
   const yearFabInputRef = useRef();
@@ -84,6 +88,8 @@ export default function Bike({ vehicle, setIsVisible, reloadVehicles }) {
       await api.delete(`/vehicles/${vehicle.id}`);
 
       Alert.alert('Excluído!', 'Veículo deletado com sucesso.');
+
+      dispatch(loadDashboardRequest());
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;
@@ -115,6 +121,8 @@ export default function Bike({ vehicle, setIsVisible, reloadVehicles }) {
       });
 
       Alert.alert('Sucesso!', 'Veículo atualizado com sucesso.');
+
+      dispatch(loadDashboardRequest());
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;

@@ -12,6 +12,8 @@ import { TextInputMask } from 'react-native-masked-text';
 
 import * as Yup from 'yup';
 
+import { useDispatch } from 'react-redux';
+
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
 
@@ -48,7 +50,11 @@ import CustonModal from './CustonModal';
 
 import api from '../../../services/api';
 
+import { loadDashboardRequest } from '../../../store/modules/finance/actions';
+
 export default function Customers() {
+
+  const dispatch = useDispatch();
 
   const cpfInputRef = useRef();
   const rgInputRef = useRef();
@@ -152,6 +158,8 @@ export default function Customers() {
       });
 
       Alert.alert('Sucesso!', 'Novo cliente registrado com sucesso.');
+
+      dispatch(loadDashboardRequest());
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;

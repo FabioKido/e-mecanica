@@ -7,6 +7,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import { FontAwesome5 } from '@expo/vector-icons';
 
+import { useSelector, useDispatch } from 'react-redux';
+
 import {
   Container,
   Content,
@@ -19,13 +21,16 @@ import {
   CardName
 } from './styles';
 
-import api from '../../../services/api';
+import { loadDashboardRequest } from '../../../store/modules/finance/actions';
 
-export default function Dashboard({ navigation }) {
+export default function Dashboard() {
 
-  const [customers, setCustomers] = useState([]);
-  const [fabricators, setFabricators] = useState([]);
-  const [models, setModels] = useState([]);
+  const dispatch = useDispatch();
+  const loading = useSelector(state => state.finance.loading);
+
+  const customers = useSelector(state => state.finance.customers);
+  const fabricators = useSelector(state => state.finance.fabricators);
+  const models = useSelector(state => state.finance.models);
 
   const [customer_label, setCustomerLabel] = useState('');
   const [customer_type, setCustomerType] = useState('');
@@ -37,25 +42,9 @@ export default function Dashboard({ navigation }) {
   const [model_value, setModelValue] = useState(0);
   const [model_index, setModelIndex] = useState(0);
 
-  const [loading, setLoading] = useState([]);
-
   useEffect(() => {
     async function loadInfos() {
-      try {
-        setLoading(true);
-
-        const response = await api.get('/dashboard/customers');
-        const { customers, fabricators, models } = response.data;
-
-        setCustomers(customers);
-        setFabricators(fabricators);
-        setModels(models);
-
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoading(false);
-      }
+      dispatch(loadDashboardRequest());
     }
 
     loadInfos();
@@ -63,7 +52,7 @@ export default function Dashboard({ navigation }) {
 
   // TODO Resolver o loading, com gradient e lottie talves.
   // TODO Resolver quando estiver sem informações.
-  // FIXME Resolver o estado global da Page com o redux.
+  // TODO Resolver quando fabricators ou models não tiver nome.
 
   function getCustomerLabel(label) {
     if (label === 'M') {

@@ -6,7 +6,7 @@ export default reducers => {
     {
       key: '@emec',
       storage: AsyncStorage,
-      whitelist: ['auth'],
+      whitelist: ['auth', 'finance'],
     },
     reducers
   );
