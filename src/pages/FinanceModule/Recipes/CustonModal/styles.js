@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { StyleSheet, Platform } from 'react-native';
 import Constants from 'expo-constants';
 
-import { colors } from '../../../styles';
+import { colors } from '../../../../styles';
 
 export const Container = styled.KeyboardAvoidingView.attrs({
   behavior: Platform.OS === 'ios' ? 'padding' : null,
@@ -34,11 +34,12 @@ export const Description = styled.Text`
   align-self: center;
 `;
 
-export const InputPicker = styled.View`
-  flex-direction: row;
-  border-bottom-width: ${StyleSheet.hairlineWidth};
-  border-color: ${colors.light_gray};
+export const TitleSection = styled.Text`
+  font-size: 16px;
+  color: ${ colors.lighter};
   margin-bottom: 30px;
+  font-weight: bold;
+  letter-spacing: 2.8px;
 `;
 
 export const InputTitle = styled.Text`
@@ -63,6 +64,36 @@ export const Input = styled.TextInput.attrs({
   flex: 1;
 `;
 
+export const SwitchContainer = styled.View`
+  margin-bottom: 30px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const SwitchText = styled.Text`
+  color: ${colors.lighter};
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 2.8px;
+  text-transform: uppercase;
+`;
+
+export const ChoiceButton = styled.TouchableOpacity`
+  margin-bottom: 30px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const ChoiceText = styled.Text`
+  color: ${colors.regular_yellow};
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 2.8px;
+  text-transform: uppercase;
+`;
+
 export const SubmitButton = styled.TouchableOpacity`
   height: 42px;
   background-color: ${ colors.regular_yellow};
@@ -73,6 +104,30 @@ export const SubmitButton = styled.TouchableOpacity`
 
 export const SubmitButtonText = styled.Text`
   color: ${ colors.dark};
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 2.8px;
+  text-transform: uppercase;
+`;
+
+export const DeleteButtonBox = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const DeleteButton = styled.TouchableOpacity`
+  height: 42px;
+  width: 125px;
+  background-color: transparent;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid ${colors.lighter};
+  border-radius: 50px;
+`;
+
+export const DeleteButtonText = styled.Text`
+  color: ${ colors.lighter};
   font-size: 14px;
   font-weight: bold;
   letter-spacing: 2.8px;
@@ -105,7 +160,7 @@ export const Card = styled.TouchableOpacity.attrs({
   width: 100%;
   height: 86px;
   align-items: stretch;
-  background: ${ colors.secondary};
+  background: ${ colors.primary};
   margin-bottom: 15px;
   flex-direction: row;
   border-radius: 6;

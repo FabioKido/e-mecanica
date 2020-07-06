@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { StyleSheet, Platform } from 'react-native';
 import Constants from 'expo-constants';
 
-import { colors } from '../../../styles';
+import { colors } from '../../../../styles';
 
 export const Container = styled.KeyboardAvoidingView.attrs({
   behavior: Platform.OS === 'ios' ? 'padding' : null,
@@ -32,6 +32,14 @@ export const Description = styled.Text`
   margin: 5px 0 30px;
   max-width: 260px;
   align-self: center;
+`;
+
+export const TitleSection = styled.Text`
+  font-size: 16px;
+  color: ${ colors.lighter};
+  margin-bottom: 30px;
+  font-weight: bold;
+  letter-spacing: 2.8px;
 `;
 
 export const InputPicker = styled.View`

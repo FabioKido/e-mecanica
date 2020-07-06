@@ -224,6 +224,8 @@ export default function Customers() {
   }
 
   function renderCustomers({ item: customer }) {
+    const customer_date = customer.birthday ? moment(customer.birthday).format('DD-MM-YYYY') : '';
+
     return (
       <Card
         onPress={() => getCustomer(customer)}
@@ -236,7 +238,7 @@ export default function Customers() {
               <CardSubName>{customer.inadimplente ? 'Sim' : 'Não'}</CardSubName>
             </CardName>
 
-            <CardStatus>{customer.birthday || '--/--/--'}</CardStatus>
+            <CardStatus>{customer_date || '--/--/--'}</CardStatus>
 
           </CardContainer>
         </CardInfo>

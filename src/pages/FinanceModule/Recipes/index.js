@@ -1,13 +1,17 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
-  ActivityIndicator,
   Alert,
   Keyboard,
-  View
+  View,
+  Modal,
+  Picker
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import * as Yup from 'yup';
+
+import moment from 'moment';
+import DatePicker from 'react-native-datepicker';
 
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
@@ -16,6 +20,7 @@ import {
   Content,
   FormContainer,
   InputContainer,
+  InputPicker,
   Title,
   Description,
   InputTitle,
@@ -36,35 +41,42 @@ import {
 } from './styles';
 
 import Placeholder from './Placeholder';
+import RecipeDetail from './RecipeDetail';
 
 import api from '../../../services/api';
 
 export default function Recipes() {
 
   const descriptionInputRef = useRef();
-  const typeInputRef = useRef();
-  const initialValueInputRef = useRef();
+  const observationsInputRef = useRef();
 
-  const [accounts, setAccounts] = useState([]);
-  const [add_account, setAddAccount] = useState(false);
+  const [recipes, setRecipes] = useState([]);
+  const [recipe, setRecipe] = useState({});
+  const [add_recipe, setAddRecipe] = useState(false);
 
-  const [title, setTitle] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [id_category, setIdCategory] = useState();
+
+  const [total_value, setTotalValue] = useState('');
   const [description, setDescription] = useState('');
-  const [type, setType] = useState('');
-  const [initial_value, setInitialValue] = useState('');
+  const [observations, setObservations] = useState('');
+  const [options, setOptions] = useState('');
+  const [date_recipe, setDateRecipe] = useState('');
 
+  const [date, setDate] = useState();
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [is_visible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    async function loadAccounts() {
+    async function loadRecipes() {
       try {
         setLoading(true);
 
         const response = await api.get('/finance/recipes');
-        const { accounts } = response.data;
+        const { recipes } = response.data;
 
-        setAccounts(accounts);
+        setRecipes(recipes);
       } catch (err) {
         console.log(err);
       } finally {
@@ -72,97 +84,104 @@ export default function Recipes() {
       }
     }
 
-    loadAccounts();
+    loadRecipes();
   }, []);
 
-  async function reloadAccounts() {
+  useEffect(() => {
+    if (add_recipe) {
+      async function loadCategories() {
+        try {
+
+          const response = await api.get('/finance/categories');
+          const { categories } = response.data;
+
+          setCategories(categories);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      loadCategories();
+    }
+  }, [add_recipe]);
+
+  const onDateChange = date => {
+    setDate(date);
+
+    const momentObj = moment(date, 'DD-MM-YYYY');
+
+    setDateRecipe(momentObj);
+  };
+
+  async function reloadRecipes() {
     try {
       setRefreshing(true);
 
       const response = await api.get('/finance/recipes');
-      const { accounts } = response.data;
+      const { recipes } = response.data;
 
-      setAccounts(accounts);
+      setRecipes(recipes);
     } catch (err) {
       Alert.alert(
-        'Erro ao obter lista de categorias, tente novamente mais tarde!'
+        'Erro ao obter lista de receitas, tente novamente mais tarde!'
       );
     } finally {
       setRefreshing(false);
     }
   }
 
-  const handleDeleteAccount = async ({ id }) => {
-    try {
-      await api.delete(`/finance/account/${id}`);
-
-      Alert.alert('Excluída!', 'Conta deletada com sucesso.');
-    } catch (err) {
-      const message =
-        err.response && err.response.data && err.response.data.error;
-
-      Alert.alert(
-        'Ooopsss',
-        message || 'Falha na exclusão da conta.'
-      );
-    } finally {
-      reloadAccounts();
-    }
-  }
-
-  const handleSaveAccount = useCallback(async () => {
+  const handleSaveRecipe = useCallback(async () => {
     Keyboard.dismiss();
 
     try {
       setLoading(true);
 
       const schema = Yup.object().shape({
-        title: Yup.string().required('Título é obrigatório'),
-        type: Yup.string().required('Tipo é obrigatório'),
-        initial_value: Yup.number().required('Valor inícial é obrigatório')
+        total_value: Yup.number().required('O valor total é obrigatório')
       });
 
-      await schema.validate({ title, type, initial_value }, {
+      await schema.validate({ total_value }, {
         abortEarly: false,
       });
 
-      await api.post('/finance/account', { title, description, type, initial_value });
+      await api.post('/finance/recipe', {
+        id_category,
+        total_value,
+        description,
+        parcels: 1,
+        date: date_recipe,
+        observations,
+        options
+      });
 
-      Alert.alert('Sucesso!', 'Nova conta pessoal registrada com sucesso.');
+      Alert.alert('Sucesso!', 'Nova receita registrada com sucesso.');
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;
 
       Alert.alert(
         'Ooopsss',
-        message || 'Falha no registro da nova conta, confira seus dados.'
+        message || 'Falha no registro da nova receita, confira seus dados.'
       );
     } finally {
-      reloadAccounts();
+      reloadRecipes();
       setLoading(false);
     }
   }, [
-    title,
+    id_category,
+    total_value,
     description,
-    type,
-    initial_value
+    date_recipe,
+    observations,
+    options
   ]);
 
   function ViewButton() {
-    if (add_account) {
+    if (add_recipe) {
       return (
-        <>
-          <SubmitButton onPress={handleSaveAccount}>
-            {loading ? (
-              <ActivityIndicator size="small" color="#333" />
-            ) : (
-                <SubmitButtonText>Salvar</SubmitButtonText>
-              )}
-          </SubmitButton>
-          <CancelarButton onPress={() => setAddAccount(false)}>
-            <CancelarButtonText>Voltar</CancelarButtonText>
-          </CancelarButton>
-        </>
+        <CancelarButton onPress={() => setAddRecipe(false)}>
+          <CancelarButtonText>Voltar</CancelarButtonText>
+        </CancelarButton>
       );
     } else {
       return (
@@ -171,44 +190,48 @@ export default function Recipes() {
             <Placeholder />
           ) : (
               <Cards
-                data={accounts}
-                renderItem={renderAccounts}
-                keyExtractor={accounts => `account-${accounts.id}`}
+                data={recipes}
+                renderItem={renderRecipes}
+                keyExtractor={recipes => `recipe-${recipes.id}`}
                 showsVerticalScrollIndicator={false}
-                onRefresh={reloadAccounts}
+                onRefresh={reloadRecipes}
                 refreshing={refreshing}
                 ListFooterComponent={<View style={{ height: 20 }} />}
-                ListEmptyComponent={<Empty>Nenhuma conta encontrada.</Empty>}
+                ListEmptyComponent={<Empty>Nenhuma receita encontrada.</Empty>}
               />
             )}
-          <SubmitButton onPress={() => setAddAccount(true)}>
-            <SubmitButtonText>Nova Conta</SubmitButtonText>
+          <SubmitButton onPress={() => setAddRecipe(true)}>
+            <SubmitButtonText>Nova Receita</SubmitButtonText>
           </SubmitButton>
         </>
       );
     }
   }
 
-  function renderAccounts({ item: account }) {
+  function renderRecipes({ item: recipe }) {
+    const recipe_date = moment(recipe.date).format('DD-MM-YYYY');
+
     return (
       <Card
-        onPress={() => handleDeleteAccount(account)}
+        onPress={() => { }}
       >
         <CardInfo>
-          <CardTitle numberOfLines={2}>{account.title}</CardTitle>
+          <CardTitle numberOfLines={2}>{recipe.description}</CardTitle>
           <CardContainer>
             <CardName>
-              {account.description}{' '}
-              <CardSubName>({account.type})</CardSubName>
+              Recebimento: {' '}
+              <CardSubName>({recipe_date})</CardSubName>
             </CardName>
 
-            <CardStatus>{account.initial_value}</CardStatus>
+            <CardStatus>{recipe.total_value}</CardStatus>
 
           </CardContainer>
         </CardInfo>
       </Card>
     );
   }
+
+  // TODO O id_payment(e a categoria de serviço) vem do pagamento de um serviço... resolverei com o redux.
 
   return (
     <LinearGradient
@@ -218,22 +241,41 @@ export default function Recipes() {
       <Container>
         <Content keyboardShouldPersistTaps="handled">
           <FormContainer>
-            <Title>Contas Pessoais</Title>
+            <Title>Receitas</Title>
             <Description>
-              Veja todas as suas contas. Crie ou exclua uma conta como quiser.
+              Veja todas as suas receitas. Crie ou exclua uma receita como quiser.
           </Description>
 
-            {add_account &&
+            {add_recipe &&
               <>
-                <InputTitle>Título</InputTitle>
+                <InputTitle>Categoria</InputTitle>
+                <InputPicker>
+                  <Picker
+                    selectedValue={id_category}
+                    style={{
+                      flex: 1,
+                      color: '#f8a920',
+                      backgroundColor: 'transparent',
+                      fontSize: 17
+                    }}
+                    onValueChange={(itemValue, itemIndex) => setIdCategory(itemValue)}
+                  >
+                    <Picker.Item label="Selecione a Categoria" value="" />
+                    {categories && categories.map(category => <Picker.Item key={category.id} label={category.description} value={category.id} />)}
+                  </Picker>
+                  <MaterialIcons name="lock" size={20} color="#999" />
+                </InputPicker>
+
+                <InputTitle>Valor Total</InputTitle>
                 <InputContainer>
                   <Input
-                    placeholder="Digite um título para a conta"
-                    autoCapitalize="words"
+                    placeholder="Digite o valor total da receita"
+                    autoCapitalize="none"
                     autoCorrect={false}
+                    keyboardType="numeric"
                     maxLength={60}
-                    onChangeText={setTitle}
-                    value={title}
+                    onChangeText={setTotalValue}
+                    value={total_value}
                     returnKeyType="next"
                     onSubmitEditing={() => descriptionInputRef.current.focus()}
                   />
@@ -243,50 +285,78 @@ export default function Recipes() {
                 <InputTitle>Descrição</InputTitle>
                 <InputContainer>
                   <Input
-                    placeholder="Digite uma descrição"
+                    placeholder="Digite uma breve descrição"
                     autoCapitalize="words"
                     autoCorrect={false}
                     ref={descriptionInputRef}
                     onChangeText={setDescription}
                     value={description}
                     returnKeyType="next"
-                    onSubmitEditing={() => typeInputRef.current.focus()}
+                    onSubmitEditing={() => observationsInputRef.current.focus()}
                   />
                   <MaterialIcons name="person-pin" size={20} color="#999" />
                 </InputContainer>
 
-                <InputTitle>Tipo de Conta</InputTitle>
+                <InputTitle>Data</InputTitle>
                 <InputContainer>
                   <Input
-                    placeholder="Insira o tipo, ex: cc/cd/Caixa/etc"
-                    autoCapitalize="words"
+                    placeholder="Clique no calendário para editar"
+                    editable={false}
+                    value={date}
+                  />
+                  <DatePicker
+                    date={date}
+                    is24Hour={true}
+                    format="DD-MM-YYYY"
+                    minDate="01-01-2001"
+                    maxDate="31-12-2030"
+                    hideText={true}
+                    iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
+                    style={{
+                      width: 21
+                    }}
+                    onDateChange={onDateChange}
+                  />
+                </InputContainer>
+
+                <InputTitle>Observações</InputTitle>
+                <InputContainer>
+                  <Input
+                    placeholder="Digite algo a ser observado"
+                    autoCapitalize="none"
                     autoCorrect={false}
-                    maxLength={10}
-                    ref={typeInputRef}
-                    onChangeText={setType}
-                    value={type}
+                    ref={observationsInputRef}
+                    onChangeText={setObservations}
+                    value={observations}
                     returnKeyType="next"
-                    onSubmitEditing={() => initialValueInputRef.current.focus()}
+                    onSubmitEditing={() => Keyboard.dismiss()}
                   />
                   <MaterialIcons name="lock" size={20} color="#999" />
                 </InputContainer>
 
-                <InputTitle>Valor Inícial</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Insira um valor inícial"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    keyboardType="numeric"
-                    ref={initialValueInputRef}
-                    onChangeText={setInitialValue}
-                    value={initial_value}
-                    returnKeyType="send"
-                    onSubmitEditing={handleSaveAccount}
-                  />
+                <InputTitle>Opções</InputTitle>
+                <InputPicker>
+                  <Picker
+                    selectedValue={options}
+                    style={{
+                      flex: 1,
+                      color: '#f8a920',
+                      backgroundColor: 'transparent',
+                      fontSize: 17
+                    }}
+                    onValueChange={(itemValue, itemIndex) => setOptions(itemValue)}
+                  >
+                    <Picker.Item label="Selecione a Opção de Recebimento" value="á Vista" />
+                    <Picker.Item label="á Vista" value="á Vista" />
+                    <Picker.Item label="Parcelada" value="Parcelada" />
+                  </Picker>
                   <MaterialIcons name="lock" size={20} color="#999" />
-                </InputContainer>
+                </InputPicker>
               </>
+            }
+
+            {options !== '' &&
+              <RecipeDetail options={options} total_value={total_value} />
             }
 
             <ViewButton />
