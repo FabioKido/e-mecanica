@@ -47,6 +47,13 @@ export const InputTitle = styled.Text`
   font-weight: bold;
 `;
 
+export const InputPicker = styled.View`
+  flex-direction: row;
+  border-bottom-width: ${StyleSheet.hairlineWidth};
+  border-color: ${colors.light_gray};
+  margin-bottom: 30px;
+`;
+
 export const InputContainer = styled.View`
   flex-direction: row;
   border-bottom-width: ${StyleSheet.hairlineWidth};

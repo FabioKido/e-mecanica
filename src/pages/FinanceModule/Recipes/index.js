@@ -42,6 +42,7 @@ import {
 
 import Placeholder from './Placeholder';
 import RecipeDetail from './RecipeDetail';
+import CustonModal from './CustonModal';
 
 import api from '../../../services/api';
 
@@ -104,6 +105,12 @@ export default function Recipes() {
       loadCategories();
     }
   }, [add_recipe]);
+
+  function getRecipe(recipe) {
+    setRecipe(recipe);
+
+    setIsVisible(true);
+  }
 
   const onDateChange = date => {
     setDate(date);
@@ -226,7 +233,7 @@ export default function Recipes() {
 
     return (
       <Card
-        onPress={() => { }}
+        onPress={() => getRecipe(recipe)}
       >
         <CardInfo>
           <CardTitle numberOfLines={2}>{recipe.description}</CardTitle>
@@ -246,140 +253,152 @@ export default function Recipes() {
 
   // TODO O id_payment(e a categoria de serviço) vem do pagamento de um serviço... resolverei com o redux.
   // TODO Resolver as casa depois da virgula, podendo apenas duas.
+  // FIXME Butão de Page no Dashboard para listar todas as parcelas(por ter algumas que não tem o id da receita)
 
   return (
-    <LinearGradient
-      colors={['#2b5b2e', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>Receitas</Title>
-            <Description>
-              Veja todas as suas receitas. Crie ou exclua uma receita como quiser.
-          </Description>
+    <>
+      <LinearGradient
+        colors={['#2b5b2e', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>Receitas</Title>
+              <Description>
+                Veja todas as suas receitas. Crie ou exclua uma receita como quiser.
+              </Description>
 
-            {add_recipe &&
-              <>
-                <InputTitle>Categoria</InputTitle>
-                <InputPicker>
-                  <Picker
-                    selectedValue={id_category}
-                    style={{
-                      flex: 1,
-                      color: '#f8a920',
-                      backgroundColor: 'transparent',
-                      fontSize: 17
-                    }}
-                    onValueChange={(itemValue, itemIndex) => setIdCategory(itemValue)}
-                  >
-                    <Picker.Item label="Selecione a Categoria" value="" />
-                    {categories && categories.map(category => <Picker.Item key={category.id} label={category.description} value={category.id} />)}
-                  </Picker>
-                  <MaterialIcons name="lock" size={20} color="#999" />
-                </InputPicker>
+              {add_recipe &&
+                <>
+                  <InputTitle>Categoria</InputTitle>
+                  <InputPicker>
+                    <Picker
+                      selectedValue={id_category}
+                      style={{
+                        flex: 1,
+                        color: '#f8a920',
+                        backgroundColor: 'transparent',
+                        fontSize: 17
+                      }}
+                      onValueChange={(itemValue, itemIndex) => setIdCategory(itemValue)}
+                    >
+                      <Picker.Item label="Selecione a Categoria" value="" />
+                      {categories && categories.map(category => <Picker.Item key={category.id} label={category.description} value={category.id} />)}
+                    </Picker>
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputPicker>
 
-                <InputTitle>Valor Total</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Digite o valor total da receita"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    keyboardType="numeric"
-                    maxLength={60}
-                    onChangeText={setTotalValue}
-                    value={total_value}
-                    returnKeyType="next"
-                    onSubmitEditing={() => descriptionInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="person-pin" size={20} color="#999" />
-                </InputContainer>
+                  <InputTitle>Valor Total</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Digite o valor total da receita"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      keyboardType="numeric"
+                      maxLength={60}
+                      onChangeText={setTotalValue}
+                      value={total_value}
+                      returnKeyType="next"
+                      onSubmitEditing={() => descriptionInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>Descrição</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Digite uma breve descrição"
-                    autoCapitalize="words"
-                    autoCorrect={false}
-                    ref={descriptionInputRef}
-                    onChangeText={setDescription}
-                    value={description}
-                    returnKeyType="next"
-                    onSubmitEditing={() => observationsInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="person-pin" size={20} color="#999" />
-                </InputContainer>
+                  <InputTitle>Descrição</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Digite uma breve descrição"
+                      autoCapitalize="words"
+                      autoCorrect={false}
+                      ref={descriptionInputRef}
+                      onChangeText={setDescription}
+                      value={description}
+                      returnKeyType="next"
+                      onSubmitEditing={() => observationsInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>Data</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Clique no calendário para editar"
-                    editable={false}
-                    value={date}
-                  />
-                  <DatePicker
-                    date={date}
-                    is24Hour={true}
-                    format="DD-MM-YYYY"
-                    minDate="01-01-2001"
-                    maxDate="31-12-2030"
-                    hideText={true}
-                    iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
-                    style={{
-                      width: 21
-                    }}
-                    onDateChange={onDateChange}
-                  />
-                </InputContainer>
+                  <InputTitle>Data</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Clique no calendário para editar"
+                      editable={false}
+                      value={date}
+                    />
+                    <DatePicker
+                      date={date}
+                      is24Hour={true}
+                      format="DD-MM-YYYY"
+                      minDate="01-01-2001"
+                      maxDate="31-12-2030"
+                      hideText={true}
+                      iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
+                      style={{
+                        width: 21
+                      }}
+                      onDateChange={onDateChange}
+                    />
+                  </InputContainer>
 
-                <InputTitle>Observações</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Digite algo a ser observado"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    ref={observationsInputRef}
-                    onChangeText={setObservations}
-                    value={observations}
-                    returnKeyType="next"
-                    onSubmitEditing={() => Keyboard.dismiss()}
-                  />
-                  <MaterialIcons name="lock" size={20} color="#999" />
-                </InputContainer>
+                  <InputTitle>Observações</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Digite algo a ser observado"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      ref={observationsInputRef}
+                      onChangeText={setObservations}
+                      value={observations}
+                      returnKeyType="next"
+                      onSubmitEditing={() => Keyboard.dismiss()}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>Opções</InputTitle>
-                <InputPicker>
-                  <Picker
-                    selectedValue={options}
-                    style={{
-                      flex: 1,
-                      color: '#f8a920',
-                      backgroundColor: 'transparent',
-                      fontSize: 17
-                    }}
-                    onValueChange={(itemValue, itemIndex) => setOptions(itemValue)}
-                  >
-                    <Picker.Item label="Selecione a Opção de Recebimento" value="á Vista" />
-                    <Picker.Item label="á Vista" value="á Vista" />
-                    <Picker.Item label="Parcelada" value="Parcelada" />
-                  </Picker>
-                  <MaterialIcons name="lock" size={20} color="#999" />
-                </InputPicker>
+                  <InputTitle>Opções</InputTitle>
+                  <InputPicker>
+                    <Picker
+                      selectedValue={options}
+                      style={{
+                        flex: 1,
+                        color: '#f8a920',
+                        backgroundColor: 'transparent',
+                        fontSize: 17
+                      }}
+                      onValueChange={(itemValue, itemIndex) => setOptions(itemValue)}
+                    >
+                      <Picker.Item label="Selecione a Opção de Recebimento" value="á Vista" />
+                      <Picker.Item label="á Vista" value="á Vista" />
+                      <Picker.Item label="Parcelada" value="Parcelada" />
+                    </Picker>
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputPicker>
 
-                {options !== '' &&
-                  <RecipeDetail options={options} total_value={total_value} handleSaveRecipe={handleSaveRecipe} />
-                }
-              </>
-            }
+                  {options !== '' &&
+                    <RecipeDetail options={options} total_value={total_value} handleSaveRecipe={handleSaveRecipe} />
+                  }
+                </>
+              }
 
-            <ViewButton />
+              <ViewButton />
 
-          </FormContainer>
+            </FormContainer>
 
-        </Content>
-      </Container>
-    </LinearGradient>
+          </Content>
+        </Container>
+      </LinearGradient>
+
+      <Modal
+        animationType={'slide'}
+        transparent={false}
+        visible={is_visible}
+        onRequestClose={() => setIsVisible(false)}
+      >
+        <CustonModal recipe={recipe} setIsVisible={setIsVisible} reloadRecipes={reloadRecipes} />
+      </Modal>
+    </>
   );
 }
 
