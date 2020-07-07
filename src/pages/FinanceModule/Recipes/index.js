@@ -161,9 +161,11 @@ export default function Recipes() {
           document_number: obj_parcel.number,
           taxa_ajuste: obj_parcel.taxa,
           observations: obj_parcel.observation,
-          paid_out: obj_parcel.paid_out
+          paid_out: obj_parcel.paid_out,
+          payment_method: obj_parcel.payment_method,
+          account_destiny: obj_parcel.account_destiny
         })
-      )
+      );
 
       Alert.alert('Sucesso!', 'Nova receita registrada com sucesso.');
     } catch (err) {
@@ -243,6 +245,7 @@ export default function Recipes() {
   }
 
   // TODO O id_payment(e a categoria de serviço) vem do pagamento de um serviço... resolverei com o redux.
+  // TODO Resolver as casa depois da virgula, podendo apenas duas.
 
   return (
     <LinearGradient
@@ -363,11 +366,11 @@ export default function Recipes() {
                   </Picker>
                   <MaterialIcons name="lock" size={20} color="#999" />
                 </InputPicker>
-              </>
-            }
 
-            {options !== '' &&
-              <RecipeDetail options={options} total_value={total_value} handleSaveRecipe={handleSaveRecipe} />
+                {options !== '' &&
+                  <RecipeDetail options={options} total_value={total_value} handleSaveRecipe={handleSaveRecipe} />
+                }
+              </>
             }
 
             <ViewButton />

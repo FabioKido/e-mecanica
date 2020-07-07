@@ -133,7 +133,9 @@ export default function ({ options, total_value, reloadRecipes, handleSaveRecipe
       taxa: taxa_ajustes[`taxa_ajuste${row}`] || 0,
       observation: observations[`observations${row}`] || '',
       vencimento: vencimentos[`dates${row}`] || '',
-      paid_out: paid_outs[`paid_outs${row}`] || false
+      paid_out: paid_outs[`paid_outs${row}`] || false,
+      payment_method,
+      account_destiny
     }
 
     return (
@@ -234,18 +236,18 @@ export default function ({ options, total_value, reloadRecipes, handleSaveRecipe
 
   function setInfosParcel() {
 
-    // Resolver o tatal_value que vem em forato de string.
-
-    let row_parcel = {
+    let row_parcel = [{
       parcel: Number(total_value) + (Number(taxa_ajuste) || 0),
       number: document_number || 1,
       taxa: taxa_ajuste || 0,
       observation: observation,
       vencimento: vencimento || '',
-      paid_out: paid_out
-    }
+      paid_out: paid_out,
+      payment_method,
+      account_destiny
+    }];
 
-    console.log(row_parcel)
+    handleSaveRecipe(row_parcel, 1);
 
   }
 
