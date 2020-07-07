@@ -130,7 +130,7 @@ export default function Recipes() {
     }
   }
 
-  const handleSaveRecipe = useCallback(async () => {
+  const handleSaveRecipe = useCallback(async (obj_parcels, parcels) => {
     Keyboard.dismiss();
 
     try {
@@ -144,21 +144,32 @@ export default function Recipes() {
         abortEarly: false,
       });
 
-      await api.post('/finance/recipe', {
+      const res_recipe = await api.post('/finance/recipe', {
         id_category,
         total_value,
         description,
-        parcels: 1,
+        parcels,
         date: date_recipe,
         observations,
         options
       });
 
+      await obj_parcels.map(obj_parcel =>
+        api.post(`/finance/recipe-detail/${res_recipe.data.data.id}`, {
+          value: obj_parcel.parcel,
+          vencimento: obj_parcel.vencimento,
+          document_number: obj_parcel.number,
+          taxa_ajuste: obj_parcel.taxa,
+          observations: obj_parcel.observation,
+          paid_out: obj_parcel.paid_out
+        })
+      )
+
       Alert.alert('Sucesso!', 'Nova receita registrada com sucesso.');
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;
-
+      console.log(err)
       Alert.alert(
         'Ooopsss',
         message || 'Falha no registro da nova receita, confira seus dados.'
@@ -356,7 +367,7 @@ export default function Recipes() {
             }
 
             {options !== '' &&
-              <RecipeDetail options={options} total_value={total_value} />
+              <RecipeDetail options={options} total_value={total_value} handleSaveRecipe={handleSaveRecipe} />
             }
 
             <ViewButton />

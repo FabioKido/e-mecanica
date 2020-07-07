@@ -7,37 +7,27 @@ import {
 
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
+import moment from 'moment';
+import DatePicker from 'react-native-datepicker';
+
 import {
-  Container,
-  Content,
-  FormContainer,
+  SwitchContainer,
+  ChoiceText,
   InputContainer,
   InputPicker,
-  Title,
   TitleSection,
-  Description,
   InputTitle,
   Input,
   SubmitButton,
-  SubmitButtonText,
-  CancelarButton,
-  CancelarButtonText,
-  Cards,
-  Card,
-  CardInfo,
-  CardTitle,
-  CardContainer,
-  CardName,
-  CardSubName,
-  CardStatus,
-  Empty
+  SubmitButtonText
 } from './styles';
 
 import api from '../../../../services/api';
 
+import CheckBox from "../../../../components/CheckBox";
+
 // TODO Ver se a taxa é em porcentagem ou em dinheiro mesmo!!!
 // TODO Colocar os REF nos inputs, para ver se dá certo eles.
-// FIXME Resolver os inputs da parcela(Não tem o target?).
 
 export default function ({ options, total_value, reloadRecipes, handleSaveRecipe }) {
 
@@ -50,10 +40,20 @@ export default function ({ options, total_value, reloadRecipes, handleSaveRecipe
   const [methods, setMethods] = useState([]);
   const [accounts, setAccounts] = useState([]);
 
+  const [document_number, setDocument_number] = useState('');
+  const [taxa_ajuste, setTaxa_ajuste] = useState('');
+  const [observation, setObservation] = useState('');
+  const [vencimento, setVencimento] = useState();
+  const [paid_out, setPaidOut] = useState(false);
+
   const [document_numbers, setDocument_numbers] = useState("");
   const [taxa_ajustes, setTaxa_ajustes] = useState("");
   const [observations, setObservations] = useState("");
+  const [vencimentos, setVencimentos] = useState("");
+  const [paid_outs, setPaidOuts] = useState("");
 
+  const [date, setDate] = useState("");
+  const [dates, setDates] = useState("");
   const [loading, setLoading] = useState(false);
 
   let rows = [];
@@ -67,7 +67,6 @@ export default function ({ options, total_value, reloadRecipes, handleSaveRecipe
   useEffect(() => {
     async function loadMethodsAndAccounts() {
       try {
-
 
         const res_acc = await api.get('/finance/accounts');
         const { accounts } = res_acc.data;
@@ -94,32 +93,47 @@ export default function ({ options, total_value, reloadRecipes, handleSaveRecipe
 
   }, [options, total_value, parcels]);
 
-  function handleInputChangeDocumentNumber(event) {
-    const { name, value } = event.target;
+  const onDateChange = (date, name) => {
 
+    const momentObj = moment(date, 'DD-MM-YYYY');
+
+    setVencimentos({ ...vencimentos, [name]: momentObj });
+    setDates({ ...dates, [name]: date });
+  };
+
+  const onChangeDate = date => {
+    setDate(date);
+
+    const momentObj = moment(date, 'DD-MM-YYYY');
+
+    setVencimento(momentObj);
+  };
+
+  const onCheckBoxChange = (value, name) => {
+    setPaidOuts({ ...paid_outs, [name]: value });
+  };
+
+  function handleInputChangeDocumentNumber(value, name) {
     setDocument_numbers({ ...document_numbers, [name]: value });
   };
 
-  function handleInputChangeTaxaAjuste(event) {
-    const { name, value } = event.target;
-
+  function handleInputChangeTaxaAjuste(value, name) {
     setTaxa_ajustes({ ...taxa_ajustes, [name]: value });
   };
 
-  function handleInputChangeObservations(event) {
-    const { name, value } = event.target;
-
+  function handleInputChangeObservations(value, name) {
     setObservations({ ...observations, [name]: value });
   };
 
-  function renderRow(row, index) {
+  function renderParcelRow(row, index) {
 
     rows_parcels[index] = {
-      indice: row,
       parcel: parcel + (Number(taxa_ajustes[`taxa_ajuste${row}`]) || 0),
-      number: document_numbers[`document_number${row}`] || '',
+      number: document_numbers[`document_number${row}`] || row + 1,
       taxa: taxa_ajustes[`taxa_ajuste${row}`] || 0,
-      observation: observations[`observations${row}`] || ''
+      observation: observations[`observations${row}`] || '',
+      vencimento: vencimentos[`dates${row}`] || '',
+      paid_out: paid_outs[`paid_outs${row}`] || false
     }
 
     return (
@@ -131,22 +145,43 @@ export default function ({ options, total_value, reloadRecipes, handleSaveRecipe
           <Input
             name='value'
             editable={false}
-            style={{ color: '#2b475c' }}
+            style={{ color: '#f8a920' }}
             value={String(parcel)}
           />
           <FontAwesome5 name="file-invoice-dollar" size={20} color="#999" />
         </InputContainer>
 
+        <InputTitle>Vencimento</InputTitle>
+        <InputContainer>
+          <Input
+            placeholder="Clique no calendário para editar"
+            editable={false}
+            value={dates[`dates${row}`] || ''}
+          />
+          <DatePicker
+            date={dates[`dates${row}`]}
+            is24Hour={true}
+            format="DD-MM-YYYY"
+            minDate="01-01-2001"
+            maxDate="31-12-2030"
+            hideText={true}
+            iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
+            style={{
+              width: 21
+            }}
+            onDateChange={d => onDateChange(d, `dates${row}`)}
+          />
+        </InputContainer>
+
         <InputTitle>Número do Documento</InputTitle>
         <InputContainer>
           <Input
-            name={`document_number${row}`}
             placeholder="Digite o número do documento"
             autoCapitalize="none"
             autoCorrect={false}
             keyboardType="numeric"
             maxLength={60}
-            onChangeText={handleInputChangeDocumentNumber}
+            onChangeText={v => handleInputChangeDocumentNumber(v, `document_number${row}`)}
             value={document_numbers[`document_number${row}`] || ''}
             returnKeyType="next"
           />
@@ -156,13 +191,12 @@ export default function ({ options, total_value, reloadRecipes, handleSaveRecipe
         <InputTitle>Taxa de Ajuste</InputTitle>
         <InputContainer>
           <Input
-            name={`taxa_ajuste${row}`}
             placeholder="Digite a taxa de ajuste"
             autoCapitalize="none"
             autoCorrect={false}
             keyboardType="numeric"
             maxLength={60}
-            onChangeText={handleInputChangeTaxaAjuste}
+            onChangeText={v => handleInputChangeTaxaAjuste(v, `taxa_ajuste${row}`)}
             value={taxa_ajustes[`taxa_ajuste${row}`] || ''}
             returnKeyType="next"
           />
@@ -172,22 +206,50 @@ export default function ({ options, total_value, reloadRecipes, handleSaveRecipe
         <InputTitle>Observações</InputTitle>
         <InputContainer>
           <Input
-            name={`observations${row}`}
             placeholder="Algo a observar referente a parcela"
             autoCapitalize="none"
             autoCorrect={false}
             maxLength={60}
-            onChangeText={handleInputChangeObservations}
+            onChangeText={v => handleInputChangeObservations(v, `observations${row}`)}
             value={observations[`observations${row}`] || ''}
             returnKeyType="next"
           />
           <MaterialIcons name="person-pin" size={20} color="#999" />
         </InputContainer>
+
+        <SwitchContainer>
+          <ChoiceText>Parcela Recebida?</ChoiceText>
+
+          <CheckBox
+            iconColor="#f8a920"
+            checkColor="#f8a920"
+            value={paid_outs[`paid_outs${row}`]}
+            onChange={() => onCheckBoxChange(!paid_outs[`paid_outs${row}`], `paid_outs${row}`)}
+          />
+        </SwitchContainer>
+
       </View>
     )
   }
 
-  const listItems = rows.map(renderRow);
+  function setInfosParcel() {
+
+    // Resolver o tatal_value que vem em forato de string.
+
+    let row_parcel = {
+      parcel: Number(total_value) + (Number(taxa_ajuste) || 0),
+      number: document_number || 1,
+      taxa: taxa_ajuste || 0,
+      observation: observation,
+      vencimento: vencimento || '',
+      paid_out: paid_out
+    }
+
+    console.log(row_parcel)
+
+  }
+
+  const listItems = rows.map(renderParcelRow);
 
   if (options === 'Parcelada') {
     return (
@@ -204,9 +266,9 @@ export default function ({ options, total_value, reloadRecipes, handleSaveRecipe
             }}
             onValueChange={(itemValue, itemIndex) => setParcels(itemValue)}
           >
-            <Picker.Item label="2" value="2" />
-            <Picker.Item label="3" value="3" />
-            <Picker.Item label="4" value="4" />
+            <Picker.Item label="2" value={2} />
+            <Picker.Item label="3" value={3} />
+            <Picker.Item label="4" value={4} />
           </Picker>
           <MaterialIcons name="lock" size={20} color="#999" />
         </InputPicker>
@@ -246,9 +308,10 @@ export default function ({ options, total_value, reloadRecipes, handleSaveRecipe
           </Picker>
           <MaterialIcons name="lock" size={20} color="#999" />
         </InputPicker>
+
         {listItems}
 
-        <SubmitButton onPress={() => { }}>
+        <SubmitButton onPress={() => handleSaveRecipe(rows_parcels, parcels)}>
           {loading ? (
             <ActivityIndicator size="small" color="#333" />
           ) : (
@@ -259,9 +322,142 @@ export default function ({ options, total_value, reloadRecipes, handleSaveRecipe
     )
   } else {
     return (
-      <>
+      <View>
+        <TitleSection>{'Detalhes'}</TitleSection>
 
-      </>
+        <InputTitle>Método de Pagamento</InputTitle>
+        <InputPicker>
+          <Picker
+            selectedValue={payment_method}
+            style={{
+              flex: 1,
+              color: '#f8a920',
+              backgroundColor: 'transparent',
+              fontSize: 17
+            }}
+            onValueChange={(itemValue, itemIndex) => setPayment_method(itemValue)}
+          >
+            <Picker.Item label="Selecione o Método de Pagamento" value="" />
+            {methods && methods.map(method => <Picker.Item key={method.id} label={method.method} value={method.id} />)}
+          </Picker>
+          <MaterialIcons name="lock" size={20} color="#999" />
+        </InputPicker>
+
+        <InputTitle>Conta de Destino</InputTitle>
+        <InputPicker>
+          <Picker
+            selectedValue={account_destiny}
+            style={{
+              flex: 1,
+              color: '#f8a920',
+              backgroundColor: 'transparent',
+              fontSize: 17
+            }}
+            onValueChange={(itemValue, itemIndex) => setAccount_destiny(itemValue)}
+          >
+            <Picker.Item label="Selecione a Conta de Destino" value="" />
+            {accounts && accounts.map(account => <Picker.Item key={account.id} label={account.title} value={account.id} />)}
+          </Picker>
+          <MaterialIcons name="lock" size={20} color="#999" />
+        </InputPicker>
+
+        <InputTitle>Valor á Vista </InputTitle>
+        <InputContainer>
+          <Input
+            name='value'
+            editable={false}
+            style={{ color: '#f8a920' }}
+            value={String(parcel)}
+          />
+          <FontAwesome5 name="file-invoice-dollar" size={20} color="#999" />
+        </InputContainer>
+
+        <InputTitle>Vencimento</InputTitle>
+        <InputContainer>
+          <Input
+            placeholder="Clique no calendário para editar"
+            editable={false}
+            value={date}
+          />
+          <DatePicker
+            date={date}
+            is24Hour={true}
+            format="DD-MM-YYYY"
+            minDate="01-01-2001"
+            maxDate="31-12-2030"
+            hideText={true}
+            iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
+            style={{
+              width: 21
+            }}
+            onDateChange={onChangeDate}
+          />
+        </InputContainer>
+
+        <InputTitle>Número do Documento</InputTitle>
+        <InputContainer>
+          <Input
+            placeholder="Digite o número do documento"
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardType="numeric"
+            maxLength={60}
+            onChangeText={setDocument_number}
+            value={document_number}
+            returnKeyType="next"
+          />
+          <MaterialIcons name="person-pin" size={20} color="#999" />
+        </InputContainer>
+
+        <InputTitle>Taxa de Ajuste</InputTitle>
+        <InputContainer>
+          <Input
+            placeholder="Digite a taxa de ajuste"
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardType="numeric"
+            maxLength={60}
+            onChangeText={setTaxa_ajuste}
+            value={taxa_ajuste}
+            returnKeyType="next"
+          />
+          <MaterialIcons name="person-pin" size={20} color="#999" />
+        </InputContainer>
+
+        <InputTitle>Observações</InputTitle>
+        <InputContainer>
+          <Input
+            placeholder="Algo a observar referente a parcela"
+            autoCapitalize="none"
+            autoCorrect={false}
+            maxLength={60}
+            onChangeText={setObservation}
+            value={observation}
+            returnKeyType="next"
+          />
+          <MaterialIcons name="person-pin" size={20} color="#999" />
+        </InputContainer>
+
+        <SwitchContainer>
+          <ChoiceText>Parcela Recebida?</ChoiceText>
+
+          <CheckBox
+            iconColor="#f8a920"
+            checkColor="#f8a920"
+            value={paid_out}
+            onChange={() => setPaidOut(!paid_out)}
+          />
+        </SwitchContainer>
+
+        <SubmitButton onPress={setInfosParcel}>
+          {loading ? (
+            <ActivityIndicator size="small" color="#333" />
+          ) : (
+              <SubmitButtonText>Salvar</SubmitButtonText>
+            )}
+        </SubmitButton>
+
+      </View>
     )
   }
 }

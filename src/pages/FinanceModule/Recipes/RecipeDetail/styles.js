@@ -42,6 +42,21 @@ export const TitleSection = styled.Text`
   letter-spacing: 2.8px;
 `;
 
+export const SwitchContainer = styled.View`
+  margin-bottom: 30px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const ChoiceText = styled.Text`
+  color: ${colors.regular_yellow};
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 2.8px;
+  text-transform: uppercase;
+`;
+
 export const InputPicker = styled.View`
   flex-direction: row;
   border-bottom-width: ${StyleSheet.hairlineWidth};
