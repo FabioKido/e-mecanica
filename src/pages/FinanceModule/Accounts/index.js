@@ -193,7 +193,7 @@ export default function Accounts() {
           <CardTitle numberOfLines={2}>{account.title}</CardTitle>
           <CardContainer>
             <CardName>
-              {account.description}{' '}
+              Tipo de Conta{' '}
               <CardSubName>({account.type})</CardSubName>
             </CardName>
 

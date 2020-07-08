@@ -34,6 +34,7 @@ import {
 } from './styles';
 
 import api from '../../../../services/api';
+import NavigationService from '../../../../services/navigation';
 
 export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
 
@@ -42,7 +43,6 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
 
   const [categories, setCategories] = useState([]);
   const [id_category, setIdCategory] = useState(recipe.id_category);
-  const [add_category, setAddCategory] = useState(false);
 
   const [total_value, setTotalValue] = useState(recipe.total_value);
   const [description, setDescription] = useState(recipe.description);
@@ -76,6 +76,12 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
 
     setDateRecipe(momentObj);
   };
+
+  const handleNavigateToDetailPage = () => {
+    setIsVisible(false);
+
+    setTimeout(() => NavigationService.navigate('RecipeDetail', recipe), 100);
+  }
 
   const handleDeleteRecipe = async () => {
     try {
@@ -231,9 +237,9 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
             </InputContainer>
 
             <ChoiceButton
-              onPress={() => setIsVisible(false)}
+              onPress={handleNavigateToDetailPage}
             >
-              <ChoiceText>Atualizar Detalhes?</ChoiceText>
+              <ChoiceText>Atualizar Parcelas?</ChoiceText>
             </ChoiceButton>
 
             <DeleteButtonBox>

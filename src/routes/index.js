@@ -30,6 +30,7 @@ import Address from '../pages/UserModule/Address';
 
 import Category from '../pages/FinanceModule/Category';
 import Recipes from '../pages/FinanceModule/Recipes';
+import RecipeDetail from '../pages/FinanceModule/RecipeDetail';
 import Expenses from '../pages/FinanceModule/Expenses';
 import Transfers from '../pages/FinanceModule/Transfers';
 import Accounts from '../pages/FinanceModule/Accounts';
@@ -164,6 +165,7 @@ const StockRoutes = createStackNavigator(
 const FinanceRoutes = createStackNavigator(
   {
     FinanceBottomRoutes,
+    RecipeDetail
   },
   {
     headerMode: 'none',
