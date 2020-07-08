@@ -36,7 +36,7 @@ import api from '../../../../../services/api';
 import { getBikeInfo } from '../../../../../services/infos';
 import CheckBox from "../../../../../components/CheckBox";
 
-import { loadDashboardRequest } from '../../../../../store/modules/finance/actions';
+import { loadDashboardRequest } from '../../../../../store/modules/customer/actions';
 
 export default function Bike({ vehicle, setIsVisible, reloadVehicles }) {
 

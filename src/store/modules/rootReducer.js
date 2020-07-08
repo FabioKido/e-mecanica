@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
 import auth from './auth/reducer';
-import finance from './finance/reducer';
+import customer from './customer/reducer';
 
 export default combineReducers({
   auth,
-  finance
+  customer
 });

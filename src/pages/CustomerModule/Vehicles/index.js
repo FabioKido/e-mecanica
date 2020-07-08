@@ -50,7 +50,7 @@ import CustonModal from './CustonModal';
 import api from '../../../services/api';
 import CheckBox from "../../../components/CheckBox";
 
-import { loadDashboardRequest } from '../../../store/modules/finance/actions';
+import { loadDashboardRequest } from '../../../store/modules/customer/actions';
 
 export default function Vehicles() {
 

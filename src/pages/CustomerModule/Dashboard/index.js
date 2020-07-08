@@ -21,7 +21,7 @@ import {
   CardName
 } from './styles';
 
-import { loadDashboardRequest } from '../../../store/modules/finance/actions';
+import { loadDashboardRequest } from '../../../store/modules/customer/actions';
 
 export default function Dashboard() {
 

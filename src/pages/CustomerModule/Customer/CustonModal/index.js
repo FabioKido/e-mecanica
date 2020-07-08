@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -41,7 +41,7 @@ import api from '../../../../services/api';
 import { getCustomerInfo } from '../../../../services/infos';
 import CheckBox from "../../../../components/CheckBox";
 
-import { loadDashboardRequest } from '../../../../store/modules/finance/actions';
+import { loadDashboardRequest } from '../../../../store/modules/customer/actions';
 
 export default function CustonModal({ customer, setIsVisible, reloadCustomers }) {
 
