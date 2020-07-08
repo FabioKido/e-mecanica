@@ -39,15 +39,15 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
   const taxaAjusteInputRef = useRef();
   const observationInputRef = useRef();
 
-  const [payment_method, setPayment_method] = useState('');
-  const [account_destiny, setAccount_destiny] = useState('');
+  const [payment_method, setPayment_method] = useState(recipe_detail.id_payment_method);
+  const [account_destiny, setAccount_destiny] = useState(recipe_detail.id_account_destiny);
 
   const [methods, setMethods] = useState([]);
   const [accounts, setAccounts] = useState([]);
 
   const [value, setValue] = useState(recipe_detail.value);
   const [document_number, setDocument_number] = useState(recipe_detail.document_number);
-  const [taxa_ajuste, setTaxa_ajuste] = useState(recipe_detail.taxa_ajuste);
+  const [taxa_ajuste, setTaxa_ajuste] = useState();
   const [observation, setObservation] = useState(recipe_detail.observation);
   const [vencimento, setVencimento] = useState(recipe_detail.vencimento);
   const [paid_out, setPaidOut] = useState(recipe_detail.paid_out);
@@ -72,7 +72,7 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
       }
     }
 
-    setTimeout(loadMethodsAndAccounts, 500);
+    setTimeout(loadMethodsAndAccounts, 1000);
   }, []);
 
   const onDateChange = date => {
@@ -90,14 +90,14 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
       setLoading(true);
 
       await api.put(`/finance/recipe-detail/${recipe_detail.id}`, {
-        value: Number(value) + Number(taxa_ajuste),
+        value: Number(value) + (Number(taxa_ajuste) || 0),
         document_number,
         taxa_ajuste,
         vencimento,
         paid_out,
         observation,
-        payment_method,
-        account_destiny
+        id_payment_method: payment_method,
+        id_account_destiny: account_destiny
       });
 
       Alert.alert('Sucesso!', 'Parcela atualizada com sucesso.');
@@ -225,7 +225,7 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
             <InputTitle>Taxa de Ajuste</InputTitle>
             <InputContainer>
               <Input
-                placeholder="Digite a taxa de ajuste"
+                placeholder={`Taxa de ajuste atual: ${recipe_detail.taxa_ajuste}`}
                 autoCapitalize="none"
                 autoCorrect={false}
                 keyboardType="numeric"

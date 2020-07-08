@@ -29,7 +29,7 @@ import CheckBox from "../../../../components/CheckBox";
 // TODO Ver se a taxa é em porcentagem ou em dinheiro mesmo!!!
 // TODO Colocar os REF nos inputs, para ver se dá certo eles.
 
-export default function ({ options, total_value, reloadRecipes, handleSaveRecipe }) {
+export default function ({ options, total_value, handleSaveRecipe, loading }) {
 
   const [parcel, setParcel] = useState(0);
   const [parcels, setParcels] = useState(2);
@@ -54,7 +54,6 @@ export default function ({ options, total_value, reloadRecipes, handleSaveRecipe
 
   const [date, setDate] = useState("");
   const [dates, setDates] = useState("");
-  const [loading, setLoading] = useState(false);
 
   let rows = [];
   let rows_parcels = [];
@@ -87,9 +86,9 @@ export default function ({ options, total_value, reloadRecipes, handleSaveRecipe
   useEffect(() => {
     setParcel(() => (options === 'á Vista' ? total_value : total_value / parcels));
 
-    setDocument_numbers("");
-    setTaxa_ajustes("");
-    setObservations("");
+    // setDocument_numbers("");
+    // setTaxa_ajustes("");
+    // setObservations("");
 
   }, [options, total_value, parcels]);
 

@@ -169,8 +169,8 @@ export default function Recipes() {
           taxa_ajuste: obj_parcel.taxa,
           observations: obj_parcel.observation,
           paid_out: obj_parcel.paid_out,
-          payment_method: obj_parcel.payment_method,
-          account_destiny: obj_parcel.account_destiny
+          id_payment_method: obj_parcel.payment_method,
+          id_account_destiny: obj_parcel.account_destiny
         })
       );
 
@@ -377,7 +377,7 @@ export default function Recipes() {
                   </InputPicker>
 
                   {options !== '' &&
-                    <RecipeDetail options={options} total_value={total_value} handleSaveRecipe={handleSaveRecipe} />
+                    <RecipeDetail options={options} total_value={total_value} handleSaveRecipe={handleSaveRecipe} loading={loading} />
                   }
                 </>
               }
