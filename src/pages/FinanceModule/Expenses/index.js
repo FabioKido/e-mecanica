@@ -241,7 +241,7 @@ export default function Expenses() {
 
   return (
     <LinearGradient
-      colors={['#2b5b2e', '#000']}
+      colors={['#592f2a', '#000']}
       style={{ flex: 1 }}
     >
       <Container>

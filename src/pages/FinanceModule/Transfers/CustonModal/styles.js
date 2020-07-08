@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { StyleSheet, Platform } from 'react-native';
 import Constants from 'expo-constants';
 
-import { colors } from '../../../styles';
+import { colors } from '../../../../styles';
 
 export const Container = styled.KeyboardAvoidingView.attrs({
   behavior: Platform.OS === 'ios' ? 'padding' : null,
@@ -34,16 +34,24 @@ export const Description = styled.Text`
   align-self: center;
 `;
 
-export const InputPicker = styled.View`
-  flex-direction: row;
-  border-bottom-width: ${StyleSheet.hairlineWidth};
-  border-color: ${colors.light_gray};
+export const TitleSection = styled.Text`
+  font-size: 16px;
+  color: ${ colors.lighter};
   margin-bottom: 30px;
+  font-weight: bold;
+  letter-spacing: 2.8px;
 `;
 
 export const InputTitle = styled.Text`
   color: ${ colors.darker};
   font-weight: bold;
+`;
+
+export const InputPicker = styled.View`
+  flex-direction: row;
+  border-bottom-width: ${StyleSheet.hairlineWidth};
+  border-color: ${colors.light_gray};
+  margin-bottom: 30px;
 `;
 
 export const InputContainer = styled.View`
@@ -61,6 +69,36 @@ export const Input = styled.TextInput.attrs({
   font-size: 17px;
   color: ${colors.white};
   flex: 1;
+`;
+
+export const SwitchContainer = styled.View`
+  margin-bottom: 30px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const SwitchText = styled.Text`
+  color: ${colors.lighter};
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 2.8px;
+  text-transform: uppercase;
+`;
+
+export const ChoiceButton = styled.TouchableOpacity`
+  margin-bottom: 30px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const ChoiceText = styled.Text`
+  color: ${colors.regular_yellow};
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 2.8px;
+  text-transform: uppercase;
 `;
 
 export const SubmitButton = styled.TouchableOpacity`
