@@ -26,11 +26,11 @@ import { loadDashboardRequest } from '../../../store/modules/customer/actions';
 export default function Dashboard() {
 
   const dispatch = useDispatch();
-  const loading = useSelector(state => state.finance.loading);
+  const loading = useSelector(state => state.customer.loading);
 
-  const customers = useSelector(state => state.finance.customers);
-  const fabricators = useSelector(state => state.finance.fabricators);
-  const models = useSelector(state => state.finance.models);
+  const customers = useSelector(state => state.customer.customers);
+  const fabricators = useSelector(state => state.customer.fabricators);
+  const models = useSelector(state => state.customer.models);
 
   const [customer_label, setCustomerLabel] = useState('');
   const [customer_type, setCustomerType] = useState('');

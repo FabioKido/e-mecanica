@@ -12,6 +12,8 @@ import * as Yup from 'yup';
 
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
+import { useSelector } from 'react-redux';
+
 import {
   Container,
   Content,
@@ -43,6 +45,8 @@ import api from '../../../services/api';
 
 export default function Accounts() {
 
+  const updated = useSelector(state => state.finance.updated);
+
   const descriptionInputRef = useRef();
   const typeInputRef = useRef();
   const initialValueInputRef = useRef();
@@ -59,7 +63,7 @@ export default function Accounts() {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [is_visible, setIsVisible] = useState(false);
-
+  console.log('----', updated)
   useEffect(() => {
     async function loadAccounts() {
       try {
@@ -78,6 +82,12 @@ export default function Accounts() {
 
     loadAccounts();
   }, []);
+
+  useEffect(() => {
+    if (updated) {
+      reloadAccounts()
+    }
+  }, [updated]);
 
   function getAccount(account) {
     setAccount(account);
@@ -197,7 +207,7 @@ export default function Accounts() {
               <CardSubName>({account.type})</CardSubName>
             </CardName>
 
-            <CardStatus>{account.initial_value}</CardStatus>
+            <CardStatus>R$ {account.initial_value}</CardStatus>
 
           </CardContainer>
         </CardInfo>

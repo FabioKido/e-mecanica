@@ -51,8 +51,12 @@ export default function CustonModal({ transfer, setIsVisible, reloadTransfers, }
     async function loadInfos() {
       try {
 
-        const res_cat = await api.get(`/finance/category/${transfer.id_category}`);
-        const { category } = res_cat.data;
+        if (transfer.id_category) {
+          const res_cat = await api.get(`/finance/category/${transfer.id_category}`);
+          const { category } = res_cat.data;
+
+          setCategory(category.description);
+        }
 
         const res_ori = await api.get(`/finance/account/${transfer.id_account_origin}`);
         const { account: acc_ori } = res_ori.data;
@@ -60,7 +64,6 @@ export default function CustonModal({ transfer, setIsVisible, reloadTransfers, }
         const res_des = await api.get(`/finance/account/${transfer.id_account_destiny}`);
         const { account: acc_des } = res_des.data;
 
-        setCategory(category.description);
         setAccountOrigin(acc_ori.title);
         setAccountDestiny(acc_des.title);
       } catch (err) {

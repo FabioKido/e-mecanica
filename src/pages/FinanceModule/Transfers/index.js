@@ -16,6 +16,8 @@ import DatePicker from 'react-native-datepicker';
 
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
+import { useDispatch } from 'react-redux';
+
 import {
   Container,
   Content,
@@ -44,9 +46,13 @@ import {
 import Placeholder from './Placeholder';
 import CustonModal from './CustonModal';
 
+import { updateAccountRequest } from '../../../store/modules/finance/actions';
+
 import api from '../../../services/api';
 
 export default function Accounts() {
+
+  const dispatch = useDispatch();
 
   const observationsInputRef = useRef();
 
@@ -157,7 +163,7 @@ export default function Accounts() {
         abortEarly: false,
       });
 
-      await api.post('/finance/transfer', {
+      const response = await api.post('/finance/transfer', {
         id_category,
         id_account_origin,
         id_account_destiny,
@@ -166,6 +172,18 @@ export default function Accounts() {
         date_transfer,
         observations
       });
+
+      const { origin_value, destiny_value } = response.data;
+
+      dispatch(
+        updateAccountRequest(
+          id_account_origin,
+          id_account_destiny,
+          total_value,
+          origin_value,
+          destiny_value
+        )
+      );
 
       Alert.alert('Sucesso!', 'Transferência realizada com sucesso.');
     } catch (err) {
