@@ -257,7 +257,7 @@ export default function Customers() {
             <FormContainer>
               <Title>Clientes</Title>
               <Description>
-                Veja todos os seus cliente. Crie ou exclua um cliente como quiser.
+                Veja todos os seus clientes. Crie ou exclua um cliente como quiser.
               </Description>
 
               {add_customer &&

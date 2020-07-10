@@ -92,7 +92,7 @@ export default function CustonModal({ family, setIsVisible, reloadFamilies }) {
           <FormContainer>
             <Title>{family.name}</Title>
             <Description>
-              Edite ou exclua essa familia como quiser.
+              Edite ou exclua essa família como quiser.
             </Description>
 
             <InputTitle>Nome</InputTitle>

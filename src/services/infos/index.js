@@ -19,3 +19,7 @@ export function getBikeInfo(id) {
 export function getDashboardCustomer() {
   return api.get('/dashboard/customers');
 }
+
+export function getProviderInfo(id) {
+  return api.get(`/stock/provider/inf/${id}`);
+}

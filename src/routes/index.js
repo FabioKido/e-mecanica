@@ -42,6 +42,7 @@ import Vehicles from '../pages/CustomerModule/Vehicles';
 import CustomerDashboard from '../pages/CustomerModule/Dashboard';
 
 import Family from '../pages/StockModule/Family';
+import Provider from '../pages/StockModule/Provider';
 
 import Dashboard from '../pages/ServiceModule/Dashboard';
 import OrderService from '../pages/ServiceModule/OrderService';
@@ -65,6 +66,7 @@ const SignRoutes = createAnimatedSwitchNavigator(
 const StockBottomRoutes = createBottomTabNavigator(
   {
     Family,
+    Provider,
   },
   {
     tabBarOptions: {

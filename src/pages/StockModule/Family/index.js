@@ -89,7 +89,7 @@ export default function Family() {
       setFamilies(families);
     } catch (err) {
       Alert.alert(
-        'Erro ao obter lista de familias, tente novamente mais tarde!'
+        'Erro ao obter lista de famílias, tente novamente mais tarde!'
       );
     } finally {
       setRefreshing(false);
@@ -112,14 +112,14 @@ export default function Family() {
 
       await api.post('/stock/family', { name, description });
 
-      Alert.alert('Sucesso!', 'Nova familia registrada com sucesso.');
+      Alert.alert('Sucesso!', 'Nova família registrada com sucesso.');
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;
 
       Alert.alert(
         'Ooopsss',
-        message || 'Falha no registro da nova familia, confira seus dados.'
+        message || 'Falha no registro da nova família, confira seus dados.'
       );
     } finally {
       reloadFamilies();
@@ -160,11 +160,11 @@ export default function Family() {
                 onRefresh={reloadFamilies}
                 refreshing={refreshing}
                 ListFooterComponent={<View style={{ height: 20 }} />}
-                ListEmptyComponent={<Empty>Nenhuma familia encontrada.</Empty>}
+                ListEmptyComponent={<Empty>Nenhuma família encontrada.</Empty>}
               />
             )}
           <SubmitButton onPress={() => setAddFamily(true)}>
-            <SubmitButtonText>Nova Familia</SubmitButtonText>
+            <SubmitButtonText>Nova Família</SubmitButtonText>
           </SubmitButton>
         </>
       );
@@ -197,9 +197,9 @@ export default function Family() {
         <Container>
           <Content keyboardShouldPersistTaps="handled">
             <FormContainer>
-              <Title>Familias</Title>
+              <Title>Famílias</Title>
               <Description>
-                Veja todas as suas familias. Crie ou exclua uma familia como quiser.
+                Veja todas as suas famílias. Crie ou exclua uma família como quiser.
               </Description>
 
               {add_family &&
@@ -255,7 +255,7 @@ export default function Family() {
 }
 
 Family.navigationOptions = {
-  tabBarLabel: 'Familias',
+  tabBarLabel: 'Famílias',
   tabBarIcon: ({ tintColor }) => (
     <FontAwesome5 name="user-cog" size={18} color={tintColor} />
   ),
