@@ -32,6 +32,7 @@ import Category from '../pages/FinanceModule/Category';
 import Recipes from '../pages/FinanceModule/Recipes';
 import RecipeDetail from '../pages/FinanceModule/RecipeDetail';
 import Expenses from '../pages/FinanceModule/Expenses';
+import ExpenseDetail from '../pages/FinanceModule/ExpenseDetail';
 import Transfers from '../pages/FinanceModule/Transfers';
 import Accounts from '../pages/FinanceModule/Accounts';
 import PaymentMethods from '../pages/FinanceModule/PaymentMethods';
@@ -165,7 +166,8 @@ const StockRoutes = createStackNavigator(
 const FinanceRoutes = createStackNavigator(
   {
     FinanceBottomRoutes,
-    RecipeDetail
+    RecipeDetail,
+    ExpenseDetail
   },
   {
     headerMode: 'none',

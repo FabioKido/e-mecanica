@@ -34,23 +34,23 @@ import api from '../../../../services/api';
 
 import CheckBox from '../../../../components/CheckBox';
 
-export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeDetails, id_recipe }) {
+export default function CustonModal({ expense_detail, setIsVisible, reloadExpenseDetails, id_expense }) {
 
   const taxaAjusteInputRef = useRef();
   const observationInputRef = useRef();
 
-  const [payment_method, setPayment_method] = useState(recipe_detail.id_payment_method);
-  const [account_destiny, setAccount_destiny] = useState(recipe_detail.id_account_destiny);
+  const [payment_method, setPayment_method] = useState(expense_detail.id_payment_method);
+  const [account_destiny, setAccount_destiny] = useState(expense_detail.id_account_destiny);
 
   const [methods, setMethods] = useState([]);
   const [accounts, setAccounts] = useState([]);
 
-  const [value, setValue] = useState(recipe_detail.value);
-  const [document_number, setDocument_number] = useState(recipe_detail.document_number);
+  const [value, setValue] = useState(expense_detail.value);
+  const [document_number, setDocument_number] = useState(expense_detail.document_number);
   const [taxa_ajuste, setTaxa_ajuste] = useState();
-  const [observation, setObservation] = useState(recipe_detail.observations);
-  const [vencimento, setVencimento] = useState(recipe_detail.vencimento);
-  const [paid_out, setPaidOut] = useState(recipe_detail.paid_out);
+  const [observation, setObservation] = useState(expense_detail.observations);
+  const [vencimento, setVencimento] = useState(expense_detail.vencimento);
+  const [paid_out, setPaidOut] = useState(expense_detail.paid_out);
 
   const [date, setDate] = useState(() => vencimento ? moment(vencimento).format('DD-MM-YYYY') : '');
   const [loading, setLoading] = useState(false);
@@ -83,15 +83,15 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
     setVencimento(momentObj);
   };
 
-  const handleUpdateRecipeDetail = useCallback(async () => {
+  const handleUpdateExpenseDetail = useCallback(async () => {
     Keyboard.dismiss();
 
     try {
       setLoading(true);
 
-      const taxa_ant = recipe_detail.taxa_ajuste;
+      const taxa_ant = expense_detail.taxa_ajuste;
 
-      await api.put(`/finance/recipe-detail/${recipe_detail.id}`, {
+      await api.put(`/finance/expense-detail/${expense_detail.id}`, {
         value: Number(value) + ((Number(taxa_ajuste) - Number(taxa_ant)) || 0),
         document_number,
         taxa_ajuste,
@@ -102,7 +102,7 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
         id_account_destiny: account_destiny,
         taxa_ant
       }, {
-        params: { id_recipe }
+        params: { id_expense }
       });
 
       Alert.alert('Sucesso!', 'Parcela atualizada com sucesso.');
@@ -116,7 +116,7 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
       );
     } finally {
       setLoading(false);
-      reloadRecipeDetails();
+      reloadExpenseDetails();
     }
   }, [
     value,
@@ -131,13 +131,13 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
 
   return (
     <LinearGradient
-      colors={['#2b5b2e', '#000']}
+      colors={['#592f2a', '#000']}
       style={{ flex: 1 }}
     >
       <Container>
         <Content keyboardShouldPersistTaps="handled">
           <FormContainer>
-            <Title>Parcela - {recipe_detail.document_number}</Title>
+            <Title>Parcela - {expense_detail.document_number}</Title>
             <Description>
               Edite ou exclua essa parcela como quiser.
             </Description>
@@ -230,7 +230,7 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
             <InputTitle>Taxa de Ajuste</InputTitle>
             <InputContainer>
               <Input
-                placeholder={`Taxa de ajuste atual: ${recipe_detail.taxa_ajuste}`}
+                placeholder={`Taxa de ajuste atual: ${expense_detail.taxa_ajuste}`}
                 autoCapitalize="none"
                 autoCorrect={false}
                 keyboardType="numeric"
@@ -271,7 +271,7 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
               />
             </SwitchContainer>
 
-            <SubmitButton onPress={handleUpdateRecipeDetail}>
+            <SubmitButton onPress={handleUpdateExpenseDetail}>
               {loading ? (
                 <ActivityIndicator size="small" color="#333" />
               ) : (

@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { StyleSheet, Platform } from 'react-native';
 import Constants from 'expo-constants';
 
-import { colors } from '../../../styles';
+import { colors } from '../../../../styles';
 
 export const Container = styled.KeyboardAvoidingView.attrs({
   behavior: Platform.OS === 'ios' ? 'padding' : null,
@@ -32,6 +32,29 @@ export const Description = styled.Text`
   margin: 5px 0 30px;
   max-width: 260px;
   align-self: center;
+`;
+
+export const TitleSection = styled.Text`
+  font-size: 16px;
+  color: ${ colors.lighter};
+  margin-bottom: 30px;
+  font-weight: bold;
+  letter-spacing: 2.8px;
+`;
+
+export const SwitchContainer = styled.View`
+  margin-bottom: 30px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const ChoiceText = styled.Text`
+  color: ${colors.regular_yellow};
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 2.8px;
+  text-transform: uppercase;
 `;
 
 export const InputPicker = styled.View`
@@ -105,7 +128,7 @@ export const Card = styled.TouchableOpacity.attrs({
   width: 100%;
   height: 86px;
   align-items: stretch;
-  background: ${ colors.terciary};
+  background: ${ colors.secondary};
   margin-bottom: 15px;
   flex-direction: row;
   border-radius: 6;

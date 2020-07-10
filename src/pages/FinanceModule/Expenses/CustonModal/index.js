@@ -36,20 +36,21 @@ import {
 import api from '../../../../services/api';
 import NavigationService from '../../../../services/navigation';
 
-export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
+export default function CustonModal({ expense, setIsVisible, reloadExpenses }) {
 
   const descriptionInputRef = useRef();
   const observationsInputRef = useRef();
 
   const [categories, setCategories] = useState([]);
-  const [id_category, setIdCategory] = useState(recipe.id_category);
+  const [id_category, setIdCategory] = useState(expense.id_category);
 
-  const [total_value, setTotalValue] = useState(recipe.total_value);
-  const [description, setDescription] = useState(recipe.description);
-  const [observations, setObservations] = useState(recipe.observations);
-  const [date_recipe, setDateRecipe] = useState(recipe.date);
+  const [total_value, setTotalValue] = useState(expense.total_value);
+  const [description, setDescription] = useState(expense.description);
+  const [observations, setObservations] = useState(expense.observations);
+  const [classification, setClassification] = useState(expense.classification);
+  const [date_expense, setDateExpense] = useState(expense.date);
 
-  const [date, setDate] = useState(() => date_recipe ? moment(date_recipe).format('DD-MM-YYYY') : '');
+  const [date, setDate] = useState(() => date_expense ? moment(date_expense).format('DD-MM-YYYY') : '');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -74,18 +75,18 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
 
     const momentObj = moment(date, 'DD-MM-YYYY');
 
-    setDateRecipe(momentObj);
+    setDateExpense(momentObj);
   };
 
   const handleNavigateToDetailPage = () => {
     setIsVisible(false);
 
-    setTimeout(() => NavigationService.navigate('RecipeDetail', recipe), 100);
+    setTimeout(() => NavigationService.navigate('ExpenseDetail', expense), 100);
   }
 
-  const handleDeleteRecipe = async () => {
+  const handleDeleteExpense = async () => {
     try {
-      await api.delete(`/finance/recipe/${recipe.id}`);
+      await api.delete(`/finance/expense/${expense.id}`);
 
       Alert.alert('Excluído!', 'Receita deletada com sucesso.');
     } catch (err) {
@@ -98,21 +99,22 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
       );
     } finally {
       setIsVisible(false);
-      reloadRecipes();
+      reloadExpenses();
     }
   }
 
-  const handleUpdateRecipe = useCallback(async () => {
+  const handleUpdateExpense = useCallback(async () => {
     Keyboard.dismiss();
 
     try {
       setLoading(true);
 
-      await api.put(`/finance/recipe/${recipe.id}`, {
+      await api.put(`/finance/expense/${expense.id}`, {
         id_category,
         total_value,
         description,
-        date_recipe,
+        date_expense,
+        classification,
         observations
       });
 
@@ -127,27 +129,28 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
       );
     } finally {
       setLoading(false);
-      reloadRecipes();
+      reloadExpenses();
     }
   }, [
     id_category,
     total_value,
     description,
-    date_recipe,
+    date_expense,
+    classification,
     observations
   ]);
 
   return (
     <LinearGradient
-      colors={['#2b5b2e', '#000']}
+      colors={['#592f2a', '#000']}
       style={{ flex: 1 }}
     >
       <Container>
         <Content keyboardShouldPersistTaps="handled">
           <FormContainer>
-            <Title>{recipe.description}</Title>
+            <Title>{expense.description}</Title>
             <Description>
-              Edite ou exclua essa receita como quiser. Porem, ao atualizar o valor total, as taxas da(s) parcela(s) continuarão valendo.
+              Edite ou exclua essa despesa como quiser. Porem, ao atualizar o valor total, as taxas da(s) parcela(s) continuarão valendo.
             </Description>
 
             <InputTitle>Categoria</InputTitle>
@@ -221,6 +224,25 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
               />
             </InputContainer>
 
+            <InputTitle>Classificação</InputTitle>
+            <InputPicker>
+              <Picker
+                selectedValue={classification}
+                style={{
+                  flex: 1,
+                  color: '#f8a920',
+                  backgroundColor: 'transparent',
+                  fontSize: 17
+                }}
+                onValueChange={(itemValue, itemIndex) => setClassification(itemValue)}
+              >
+                <Picker.Item label="Selecione a Classificação" value={classification} />
+                <Picker.Item label="Despesa Variável" value="Despesa Variável" />
+                <Picker.Item label="Despesa Fixa" value="Despesa Fixa" />
+              </Picker>
+              <MaterialIcons name="lock" size={20} color="#999" />
+            </InputPicker>
+
             <InputTitle>Observações</InputTitle>
             <InputContainer>
               <Input
@@ -231,7 +253,7 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
                 onChangeText={setObservations}
                 value={observations}
                 returnKeyType="send"
-                onSubmitEditing={handleUpdateRecipe}
+                onSubmitEditing={handleUpdateExpense}
               />
               <MaterialIcons name="lock" size={20} color="#999" />
             </InputContainer>
@@ -243,10 +265,10 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
             </ChoiceButton>
 
             <DeleteButtonBox>
-              <DeleteButton onPress={handleDeleteRecipe}>
+              <DeleteButton onPress={handleDeleteExpense}>
                 <DeleteButtonText>Excluir</DeleteButtonText>
               </DeleteButton>
-              <SubmitButton style={{ width: 125 }} onPress={handleUpdateRecipe}>
+              <SubmitButton style={{ width: 125 }} onPress={handleUpdateExpense}>
                 {loading ? (
                   <ActivityIndicator size="small" color="#333" />
                 ) : (

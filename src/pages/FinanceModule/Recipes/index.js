@@ -239,7 +239,7 @@ export default function Recipes() {
           <CardTitle numberOfLines={2}>{recipe.description}</CardTitle>
           <CardContainer>
             <CardName>
-              Recebimento: {' '}
+              Registro {' '}
               <CardSubName>({recipe_date})</CardSubName>
             </CardName>
 
@@ -252,7 +252,9 @@ export default function Recipes() {
   }
 
   // TODO O id_payment(e a categoria de serviço) vem do pagamento de um serviço... resolverei com o redux.
-  // TODO Resolver as casa depois da virgula, podendo apenas duas.
+  // TODO Resolver as casas depois da virgula, podendo apenas duas.
+  // TODO Enviar o valor da parcela, quando quitar a parcela para a conta de destino.
+  // FIXME Prevenir o pagamento duplo de uma parcela de receita/despesa(Ou seja, bloquear o quitamento/recebimento e o campo Taxa de Ajuste).
   // FIXME Butão de Page no Dashboard para listar todas as parcelas(por ter algumas que não tem o id da receita)
 
   return (

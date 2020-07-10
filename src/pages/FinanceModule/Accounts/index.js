@@ -63,7 +63,7 @@ export default function Accounts() {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [is_visible, setIsVisible] = useState(false);
-  console.log('----', updated)
+
   useEffect(() => {
     async function loadAccounts() {
       try {
