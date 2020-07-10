@@ -31,7 +31,6 @@ import {
   CardTitle,
   CardContainer,
   CardName,
-  CardSubName,
   Empty
 } from './styles';
 
@@ -40,30 +39,30 @@ import CustonModal from './CustonModal';
 
 import api from '../../../services/api';
 
-export default function Category() {
+export default function Family() {
 
-  const indicatorInputRef = useRef();
+  const descriptionInputRef = useRef();
 
-  const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState({});
-  const [add_category, setAddCategory] = useState(false);
+  const [families, setFamilies] = useState([]);
+  const [family, setFamily] = useState({});
+  const [add_family, setAddFamily] = useState(false);
 
+  const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [indicator, setIndicator] = useState('');
 
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [is_visible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    async function loadCategories() {
+    async function loadFamilies() {
       try {
         setLoading(true);
 
-        const response = await api.get('/finance/categories');
-        const { categories } = response.data;
+        const response = await api.get('/stock/families');
+        const { families } = response.data;
 
-        setCategories(categories);
+        setFamilies(families);
       } catch (err) {
         console.log(err);
       } finally {
@@ -71,79 +70,78 @@ export default function Category() {
       }
     }
 
-    loadCategories();
+    loadFamilies();
   }, []);
 
-  function getCategory(category) {
-    setCategory(category);
-    setDescription(category.description);
-    setIndicator(category.indicator);
+  function getFamily(family) {
+    setFamily(family);
+
     setIsVisible(true);
   }
 
-  async function reloadCategories() {
+  async function reloadFamilies() {
     try {
       setRefreshing(true);
 
-      const response = await api.get('/finance/categories');
-      const { categories } = response.data;
+      const response = await api.get('/stock/families');
+      const { families } = response.data;
 
-      setCategories(categories);
+      setFamilies(families);
     } catch (err) {
       Alert.alert(
-        'Erro ao obter lista de categorias, tente novamente mais tarde!'
+        'Erro ao obter lista de familias, tente novamente mais tarde!'
       );
     } finally {
       setRefreshing(false);
     }
   }
 
-  const handleSaveCategory = useCallback(async () => {
+  const handleSaveFamily = useCallback(async () => {
     Keyboard.dismiss();
 
     try {
       setLoading(true);
 
       const schema = Yup.object().shape({
-        description: Yup.string().required('Descrição é obrigatório')
+        name: Yup.string().required('Nome é obrigatório')
       });
 
-      await schema.validate({ description }, {
+      await schema.validate({ name }, {
         abortEarly: false,
       });
 
-      await api.post('/finance/category', { description, indicator });
+      await api.post('/stock/family', { name, description });
 
-      Alert.alert('Sucesso!', 'Nova categoria registrada com sucesso.');
+      Alert.alert('Sucesso!', 'Nova familia registrada com sucesso.');
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;
 
       Alert.alert(
         'Ooopsss',
-        message || 'Falha no registro da nova categoria, confira seus dados.'
+        message || 'Falha no registro da nova familia, confira seus dados.'
       );
     } finally {
-      reloadCategories();
+      reloadFamilies();
       setLoading(false);
     }
   }, [
-    description,
-    indicator
+    name,
+    description
   ]);
 
   function ViewButton() {
-    if (add_category) {
+    if (add_family) {
       return (
         <>
-          <SubmitButton onPress={handleSaveCategory}>
+          <SubmitButton onPress={handleSaveFamily}>
             {loading ? (
               <ActivityIndicator size="small" color="#333" />
             ) : (
                 <SubmitButtonText>Salvar</SubmitButtonText>
               )}
           </SubmitButton>
-          <CancelarButton onPress={() => setAddCategory(false)}>
+          <CancelarButton onPress={() => setAddFamily(false)}>
             <CancelarButtonText>Voltar</CancelarButtonText>
           </CancelarButton>
         </>
@@ -155,35 +153,34 @@ export default function Category() {
             <Placeholder />
           ) : (
               <Cards
-                data={categories}
-                renderItem={renderCategories}
-                keyExtractor={categories => `category-${categories.id}`}
+                data={families}
+                renderItem={renderFamilies}
+                keyExtractor={families => `family-${families.id}`}
                 showsVerticalScrollIndicator={false}
-                onRefresh={reloadCategories}
+                onRefresh={reloadFamilies}
                 refreshing={refreshing}
                 ListFooterComponent={<View style={{ height: 20 }} />}
-                ListEmptyComponent={<Empty>Nenhuma categoria encontrada.</Empty>}
+                ListEmptyComponent={<Empty>Nenhuma familia encontrada.</Empty>}
               />
             )}
-          <SubmitButton onPress={() => setAddCategory(true)}>
-            <SubmitButtonText>Nova Categoria</SubmitButtonText>
+          <SubmitButton onPress={() => setAddFamily(true)}>
+            <SubmitButtonText>Nova Familia</SubmitButtonText>
           </SubmitButton>
         </>
       );
     }
   }
 
-  function renderCategories({ item: category }) {
+  function renderFamilies({ item: family }) {
     return (
       <Card
-        onPress={() => getCategory(category)}
+        onPress={() => getFamily(family)}
       >
         <CardInfo>
-          <CardTitle numberOfLines={1}>{category.description}</CardTitle>
+          <CardTitle numberOfLines={1}>{family.name}</CardTitle>
           <CardContainer>
-            <CardName>
-              Indicador{' '}
-              <CardSubName>({category.indicator})</CardSubName>
+            <CardName numberOfLines={2}>
+              {family.description}
             </CardName>
           </CardContainer>
         </CardInfo>
@@ -200,40 +197,40 @@ export default function Category() {
         <Container>
           <Content keyboardShouldPersistTaps="handled">
             <FormContainer>
-              <Title>Categorias</Title>
+              <Title>Familias</Title>
               <Description>
-                Veja todas as suas categorias. Crie ou exclua uma categoria como quiser.
+                Veja todas as suas familias. Crie ou exclua uma familia como quiser.
               </Description>
 
-              {add_category &&
+              {add_family &&
                 <>
+                  <InputTitle>Nome</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Insira o nome"
+                      autoCapitalize="words"
+                      autoCorrect={false}
+                      onChangeText={setName}
+                      value={name}
+                      returnKeyType="next"
+                      onSubmitEditing={() => descriptionInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
+
                   <InputTitle>Descrição</InputTitle>
                   <InputContainer>
                     <Input
                       placeholder="Digite uma descrição"
-                      autoCapitalize="words"
+                      autoCapitalize="none"
                       autoCorrect={false}
+                      ref={descriptionInputRef}
                       onChangeText={setDescription}
                       value={description}
-                      returnKeyType="next"
-                      onSubmitEditing={() => indicatorInputRef.current.focus()}
+                      returnKeyType="send"
+                      onSubmitEditing={handleSaveFamily}
                     />
                     <MaterialIcons name="person-pin" size={20} color="#999" />
-                  </InputContainer>
-
-                  <InputTitle>Indicador</InputTitle>
-                  <InputContainer>
-                    <Input
-                      placeholder="Insira o indicador, ex: impostos/etc"
-                      autoCapitalize="words"
-                      autoCorrect={false}
-                      ref={indicatorInputRef}
-                      onChangeText={setIndicator}
-                      value={indicator}
-                      returnKeyType="send"
-                      onSubmitEditing={handleSaveCategory}
-                    />
-                    <MaterialIcons name="lock" size={20} color="#999" />
                   </InputContainer>
                 </>
               }
@@ -251,14 +248,14 @@ export default function Category() {
         visible={is_visible}
         onRequestClose={() => setIsVisible(false)}
       >
-        <CustonModal category={category} setIsVisible={setIsVisible} reloadCategories={reloadCategories} />
+        <CustonModal family={family} setIsVisible={setIsVisible} reloadFamilies={reloadFamilies} />
       </Modal>
     </>
   );
 }
 
-Category.navigationOptions = {
-  tabBarLabel: 'Categorias',
+Family.navigationOptions = {
+  tabBarLabel: 'Familias',
   tabBarIcon: ({ tintColor }) => (
     <FontAwesome5 name="user-cog" size={18} color={tintColor} />
   ),

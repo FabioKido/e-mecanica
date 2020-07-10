@@ -41,6 +41,8 @@ import Customers from '../pages/CustomerModule/Customer';
 import Vehicles from '../pages/CustomerModule/Vehicles';
 import CustomerDashboard from '../pages/CustomerModule/Dashboard';
 
+import Family from '../pages/StockModule/Family';
+
 import Dashboard from '../pages/ServiceModule/Dashboard';
 import OrderService from '../pages/ServiceModule/OrderService';
 
@@ -57,6 +59,28 @@ const SignRoutes = createAnimatedSwitchNavigator(
         <Transition.In type="fade" durationMs={500} />
       </Transition.Together>
     ),
+  }
+);
+
+const StockBottomRoutes = createBottomTabNavigator(
+  {
+    Family,
+  },
+  {
+    tabBarOptions: {
+      keyboardHidesTabBar: true,
+      inactiveTintColor: 'rgba(255, 2555, 255, 0.5)',
+      activeTintColor: '#fff',
+      style: {
+        height: 54,
+        paddingVertical: 5,
+        backgroundColor: '#000',
+        borderTopColor: '#000',
+      },
+      labelStyle: {
+        fontSize: 13,
+      },
+    },
   }
 );
 
@@ -156,7 +180,7 @@ const RelationshipRoutes = createStackNavigator(
 
 const StockRoutes = createStackNavigator(
   {
-    Dashboard,
+    StockBottomRoutes,
   },
   {
     headerMode: 'none',
@@ -268,7 +292,7 @@ const AppRoutes = createDrawerNavigator(
     },
   },
   {
-    initialRouteName: 'Finance',
+    initialRouteName: 'Stock',
     contentComponent: CustomDrawer,
     drawerType: 'back',
     lazy: true,
