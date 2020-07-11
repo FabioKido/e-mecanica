@@ -16,7 +16,7 @@ export function* loadDashboardRequest() {
 
   } catch (err) {
     Alert.alert(
-      'Houve um erro.'
+      'Sem conexão com a internet!'
     );
   }
 }

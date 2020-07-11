@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import LottieView from "lottie-react-native";
 import { PieChart, BarChart, XAxis } from 'react-native-svg-charts';
 import * as scale from 'd3-scale';
 
@@ -20,6 +19,8 @@ import {
   CardTitle,
   CardName
 } from './styles';
+
+import Load from '../../../components/Loading';
 
 import { loadDashboardRequest } from '../../../store/modules/customer/actions';
 
@@ -70,13 +71,7 @@ export default function Dashboard() {
         colors={['#600080', '#000']}
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
       >
-        <LottieView
-          resizeMode='contain'
-          autoSize
-          autoPlay
-          loop
-          source={require('../../../assets/graficos.json')}
-        />
+        <Load />
       </LinearGradient>
     );
   } else {
