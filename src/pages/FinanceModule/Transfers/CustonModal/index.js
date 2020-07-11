@@ -45,6 +45,7 @@ export default function CustonModal({ transfer, setIsVisible, reloadTransfers, }
   const [account_destiny, setAccountDestiny] = useState('');
 
   const [loading, setLoading] = useState(false);
+  const [first_loading, setFirstLoading] = useState(true);
 
   useEffect(() => {
 
@@ -68,6 +69,8 @@ export default function CustonModal({ transfer, setIsVisible, reloadTransfers, }
         setAccountDestiny(acc_des.title);
       } catch (err) {
         console.log(err);
+      } finally {
+        setFirstLoading(false);
       }
     }
 
@@ -78,7 +81,7 @@ export default function CustonModal({ transfer, setIsVisible, reloadTransfers, }
     try {
       await api.delete(`/finance/transfer/${transfer.id}`);
 
-      Alert.alert('Excluído!', 'Transferência deletada com sucessa. As contas permanecem intactas!');
+      Alert.alert('Excluído!', 'Transferência deletada com sucesso. As contas permanecem intactas!');
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;
@@ -122,118 +125,129 @@ export default function CustonModal({ transfer, setIsVisible, reloadTransfers, }
     observations
   ]);
 
-  return (
-    <LinearGradient
-      colors={['#2b475c', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>{transfer.description}</Title>
-            <Description>
-              Edite ou exclua essa transferência. Alguns valores não podem ser alterados, por questão de integridade das informações.
-            </Description>
+  if (first_loading) {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <ActivityIndicator size="small" color="#fff" />
+      </LinearGradient>
+    );
+  } else {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>{transfer.description}</Title>
+              <Description>
+                Edite ou exclua essa transferência. Alguns valores não podem ser alterados, por questão de integridade das informações.
+              </Description>
 
-            <InputTitle>Categoria</InputTitle>
-            <InputPicker>
-              <Input
-                editable={false}
-                style={{ color: '#f8a920' }}
-                value={category}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputPicker>
+              <InputTitle>Categoria</InputTitle>
+              <InputPicker>
+                <Input
+                  editable={false}
+                  style={{ color: '#f8a920' }}
+                  value={category}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputPicker>
 
-            <InputTitle>Conta de Origem</InputTitle>
-            <InputContainer>
-              <Input
-                editable={false}
-                style={{ color: '#592f2a' }}
-                value={account_origin}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Conta de Origem</InputTitle>
+              <InputContainer>
+                <Input
+                  editable={false}
+                  style={{ color: '#592f2a' }}
+                  value={account_origin}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Valor Total</InputTitle>
-            <InputContainer>
-              <Input
-                editable={false}
-                style={{ color: '#f8a920' }}
-                value={String(transfer.total_value)}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Valor Total</InputTitle>
+              <InputContainer>
+                <Input
+                  editable={false}
+                  style={{ color: '#f8a920' }}
+                  value={String(transfer.total_value)}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Conta de destino</InputTitle>
-            <InputContainer>
-              <Input
-                editable={false}
-                style={{ color: '#2b5b2e' }}
-                value={account_destiny}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Conta de destino</InputTitle>
+              <InputContainer>
+                <Input
+                  editable={false}
+                  style={{ color: '#2b5b2e' }}
+                  value={account_destiny}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Transferência</InputTitle>
-            <InputContainer>
-              <Input
-                editable={false}
-                value={date_transfer}
-              />
-              <FontAwesome5 name="calendar-alt" size={18} color="#999" />
-            </InputContainer>
+              <InputTitle>Transferência</InputTitle>
+              <InputContainer>
+                <Input
+                  editable={false}
+                  value={date_transfer}
+                />
+                <FontAwesome5 name="calendar-alt" size={18} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Descrição</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Breve descrição"
-                autoCapitalize="words"
-                autoCorrect={false}
-                ref={descriptionInputRef}
-                onChangeText={setDescription}
-                value={description}
-                returnKeyType="next"
-                onSubmitEditing={() => observationsInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Descrição</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Breve descrição"
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  ref={descriptionInputRef}
+                  onChangeText={setDescription}
+                  value={description}
+                  returnKeyType="next"
+                  onSubmitEditing={() => observationsInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Observações</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Algo a ser observado"
-                autoCapitalize="none"
-                autoCorrect={false}
-                ref={observationsInputRef}
-                onChangeText={setObservations}
-                value={observations}
-                returnKeyType="send"
-                onSubmitEditing={handleUpdateTransfer}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Observações</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Algo a ser observado"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  ref={observationsInputRef}
+                  onChangeText={setObservations}
+                  value={observations}
+                  returnKeyType="send"
+                  onSubmitEditing={handleUpdateTransfer}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <DeleteButtonBox>
-              <DeleteButton onPress={handleDeleteTransfer}>
-                <DeleteButtonText>Excluir</DeleteButtonText>
-              </DeleteButton>
-              <SubmitButton style={{ width: 125 }} onPress={handleUpdateTransfer}>
-                {loading ? (
-                  <ActivityIndicator size="small" color="#333" />
-                ) : (
-                    <SubmitButtonText>Salvar</SubmitButtonText>
-                  )}
-              </SubmitButton>
-            </DeleteButtonBox>
-            <CancelarButton onPress={() => setIsVisible(false)}>
-              <CancelarButtonText>Voltar</CancelarButtonText>
-            </CancelarButton>
+              <DeleteButtonBox>
+                <DeleteButton onPress={handleDeleteTransfer}>
+                  <DeleteButtonText>Excluir</DeleteButtonText>
+                </DeleteButton>
+                <SubmitButton style={{ width: 125 }} onPress={handleUpdateTransfer}>
+                  {loading ? (
+                    <ActivityIndicator size="small" color="#333" />
+                  ) : (
+                      <SubmitButtonText>Salvar</SubmitButtonText>
+                    )}
+                </SubmitButton>
+              </DeleteButtonBox>
+              <CancelarButton onPress={() => setIsVisible(false)}>
+                <CancelarButtonText>Voltar</CancelarButtonText>
+              </CancelarButton>
 
-          </FormContainer>
+            </FormContainer>
 
-        </Content>
-      </Container>
-    </LinearGradient>
-  );
+          </Content>
+        </Container>
+      </LinearGradient>
+    );
+  }
 }

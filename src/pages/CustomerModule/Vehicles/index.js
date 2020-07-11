@@ -151,7 +151,7 @@ export default function Vehicles() {
       setVehicles(vehicles);
     } catch (err) {
       Alert.alert(
-        'Erro ao obter lista de clientes, tente novamente mais tarde!'
+        'Erro ao obter lista de veículos, tente novamente mais tarde!'
       );
     } finally {
       setRefreshing(false);

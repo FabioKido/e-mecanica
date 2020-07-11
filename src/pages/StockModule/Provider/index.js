@@ -12,8 +12,6 @@ import { TextInputMask } from 'react-native-masked-text';
 
 import * as Yup from 'yup';
 
-import { useDispatch } from 'react-redux';
-
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
 import {
