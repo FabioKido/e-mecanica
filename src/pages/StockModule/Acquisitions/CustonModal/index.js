@@ -251,7 +251,7 @@ export default function CustonModal({ product, setIsVisible, reloadProducts, }) 
               <InputTitle>Código da NFe</InputTitle>
               <InputContainer>
                 <Input
-                  placeholder="Código da Nota Fiscal"
+                  placeholder="Fabricante do produto"
                   autoCapitalize="words"
                   autoCorrect={false}
                   maxLength={60}

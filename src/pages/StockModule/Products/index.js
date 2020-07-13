@@ -118,7 +118,7 @@ export default function Products() {
 
   useEffect(() => {
     if (add_product) {
-      async function loadFamiliess() {
+      async function loadFamilies() {
         try {
 
           const response = await api.get('/stock/families');
@@ -130,7 +130,7 @@ export default function Products() {
         }
       }
 
-      loadFamiliess();
+      loadFamilies();
     }
   }, [add_product]);
 
@@ -362,7 +362,7 @@ export default function Products() {
                   <InputTitle>Código da NFe</InputTitle>
                   <InputContainer>
                     <Input
-                      placeholder="Fabricante do produto"
+                      placeholder="Código da Nota Fiscal"
                       autoCapitalize="words"
                       autoCorrect={false}
                       maxLength={60}

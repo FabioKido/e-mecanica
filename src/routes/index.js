@@ -44,6 +44,7 @@ import CustomerDashboard from '../pages/CustomerModule/Dashboard';
 import Family from '../pages/StockModule/Family';
 import Provider from '../pages/StockModule/Provider';
 import Products from '../pages/StockModule/Products';
+import Acquisitions from '../pages/StockModule/Acquisitions';
 
 import Dashboard from '../pages/ServiceModule/Dashboard';
 import OrderService from '../pages/ServiceModule/OrderService';
@@ -66,6 +67,7 @@ const SignRoutes = createAnimatedSwitchNavigator(
 
 const StockBottomRoutes = createBottomTabNavigator(
   {
+    Acquisitions,
     Products,
     Provider,
     Family,
