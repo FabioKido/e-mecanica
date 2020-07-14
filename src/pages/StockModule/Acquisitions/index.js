@@ -61,7 +61,8 @@ export default function Acquisitions() {
   const [add_acquisition, setAddAcquisition] = useState(false);
 
   const [products, setProducts] = useState([]);
-  const [id_product, setIdProduct] = useState({});
+  const [product, setProduct] = useState();
+  const [id_product, setIdProduct] = useState();
 
   const [providers, setProviders] = useState([]);
   const [id_provider, setIdProvider] = useState();
@@ -71,10 +72,11 @@ export default function Acquisitions() {
   const [nef_key, setNefKey] = useState('');
   const [nef_number, setNefNumber] = useState('');
   const [total_qtd, setTotalQtd] = useState('');
-  const [unity_cost, setUnityCost] = useState('');
-  const [discount, setDiscount] = useState('');
   const [acquisition_date, setAcquisitionDate] = useState('');
   const [approved, setApproved] = useState(false);
+
+  const [unity_cost, setUnityCost] = useState('');
+  const [discount, setDiscount] = useState('');
 
   const [date, setDate] = useState();
   const [loading, setLoading] = useState(false);
@@ -122,17 +124,39 @@ export default function Acquisitions() {
     }
   }, [add_acquisition]);
 
+  useEffect(() => {
+    if (id_product) {
+      async function loadProduct() {
+        try {
+
+          const response = await api.get(`/stock/product/${id_product}`);
+          const { product } = response.data;
+
+          setProduct(product);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      loadProduct();
+    }
+  }, [id_product]);
 
   useEffect(() => {
 
-    function getTotalValue() {
-      const total = Number(unity_cost) * Number(total_qtd) - (Number(discount) || 0);
+    const total = getTotalValue();
 
-      setTotalValue(total);
-    }
+    setTotalValue(total);
 
-    getTotalValue();
   }, [unity_cost, total_qtd, discount]);
+
+  function getTotalValue() {
+
+    if (product)
+      return (Number(unity_cost) || Number(product.unity_cost)) * Number(total_qtd) - (Number(discount) || 0);
+
+    return (Number(unity_cost) || 0) * Number(total_qtd) - (Number(discount) || 0);
+  }
 
   const onDateChange = date => {
     setDate(date);
@@ -172,21 +196,22 @@ export default function Acquisitions() {
       setLoading(true);
 
       const schema = Yup.object().shape({
-        unity_cost: Yup.number().required('Preço unitário é obrigatório'),
         total_qtd: Yup.number().required('Quantidade total é obrigatória')
       });
 
-      await schema.validate({ unity_cost, total_qtd }, {
+      await schema.validate({ total_qtd }, {
         abortEarly: false,
       });
+
+      const total = getTotalValue();
 
       await api.post('/stock/acquisition', {
         id_provider,
         nef_key,
         nef_number,
-        total_sale: total_value,
+        total_sale: total,
         total_qtd,
-        unity_cost,
+        unity_cost: unity_cost || product.unity_cost,
         discount,
         approved,
         acquisition: acquisition_date,
@@ -309,6 +334,24 @@ export default function Acquisitions() {
                     <MaterialIcons name="lock" size={20} color="#999" />
                   </InputContainer>
 
+                  <InputTitle>Fornecedor</InputTitle>
+                  <InputPicker>
+                    <Picker
+                      selectedValue={id_provider}
+                      style={{
+                        flex: 1,
+                        color: '#f8a920',
+                        backgroundColor: 'transparent',
+                        fontSize: 17
+                      }}
+                      onValueChange={(itemValue, itemIndex) => setIdProvider(itemValue)}
+                    >
+                      <Picker.Item label="Selecione o Fornecedor do Produto" value="" />
+                      {providers && providers.map(provider => <Picker.Item key={provider.id} label={provider.name} value={provider.id} />)}
+                    </Picker>
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputPicker>
+
                   <InputTitle>Produto</InputTitle>
                   <InputPicker>
                     <Picker
@@ -327,23 +370,19 @@ export default function Acquisitions() {
                     <MaterialIcons name="lock" size={20} color="#999" />
                   </InputPicker>
 
-                  <InputTitle>Fornecedor</InputTitle>
-                  <InputPicker>
-                    <Picker
-                      selectedValue={id_provider}
-                      style={{
-                        flex: 1,
-                        color: '#f8a920',
-                        backgroundColor: 'transparent',
-                        fontSize: 17
-                      }}
-                      onValueChange={(itemValue, itemIndex) => setIdProvider(itemValue)}
-                    >
-                      <Picker.Item label="Selecione o Fronecedor do Produto" value="" />
-                      {providers && providers.map(provider => <Picker.Item key={provider.id} label={provider.name} value={provider.id} />)}
-                    </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
-                  </InputPicker>
+                  {product &&
+                    <>
+                      <InputTitle>Quantidade Mínima</InputTitle>
+                      <InputContainer>
+                        <Input
+                          editable={false}
+                          style={{ color: '#f8a920' }}
+                          value={String(product.min_qtd)}
+                        />
+                        <MaterialIcons name="lock" size={20} color="#999" />
+                      </InputContainer>
+                    </>
+                  }
 
                   <InputTitle>Data da Aquisição</InputTitle>
                   <InputContainer>
@@ -419,7 +458,7 @@ export default function Acquisitions() {
                   <InputTitle>Preço Unitário</InputTitle>
                   <InputContainer>
                     <Input
-                      placeholder="Digite o Preço Unitário"
+                      placeholder={product ? `Preço Unitário Atual: ${product.unity_cost}` : 'Digite o Preço Unitário'}
                       autoCapitalize="none"
                       autoCorrect={false}
                       keyboardType='numeric'

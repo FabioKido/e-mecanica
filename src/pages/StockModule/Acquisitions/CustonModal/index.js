@@ -6,7 +6,6 @@ import {
   Picker
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { TextInputMask } from 'react-native-masked-text';
 
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
@@ -17,175 +16,183 @@ import {
   Container,
   Content,
   FormContainer,
-  InputPicker,
   InputContainer,
   Title,
   Description,
+  TitleSection,
   InputTitle,
   Input,
   SwitchContainer,
+  ChoiceButton,
   ChoiceText,
   SubmitButton,
   SubmitButtonText,
-  CancelarButton,
-  CancelarButtonText,
   DeleteButtonBox,
   DeleteButton,
-  DeleteButtonText
+  DeleteButtonText,
+  CancelarButton,
+  CancelarButtonText
 } from './styles';
 
 import api from '../../../../services/api';
 import CheckBox from "../../../../components/CheckBox";
 
-export default function CustonModal({ product, setIsVisible, reloadProducts, }) {
+export default function CustonModal({ acquisition, setIsVisible, reloadAcquisitions }) {
 
-  const nefCodInputRef = useRef();
-  const nameInputRef = useRef();
-  const locationInputRef = useRef();
-  const ncmInputRef = useRef();
-  const unidadeInputRef = useRef();
-  const unityCostInputRef = useRef();
-  const minQtdInputRef = useRef();
-  const priceSaleInputRef = useRef();
-  const CommissionInputRef = useRef();
-  const premiumInputRef = useRef();
-  const profitInputRef = useRef();
-  const kmLimitInputRef = useRef();
-  const applicationsInputRef = useRef();
-  const observationsInputRef = useRef();
+  const nefNumberInputRef = useRef();
+  const totalQtdInputRef = useRef();
+  const discountInputRef = useRef();
 
-  const [families, setFamilies] = useState([]);
-  const [id_family, setIdFamily] = useState(product.id_family);
+  const [providers, setProviders] = useState([]);
+  const [id_provider, setIdProvider] = useState(acquisition.id_provider);
 
-  const [nef_cod, setNefCod] = useState(product.nef_cod);
-  const [name, setName] = useState(product.name);
-  const [location, setLocation] = useState(product.location);
-  const [ncm, setNcm] = useState(product.ncm);
-  const [unidade, setUnidade] = useState(product.unidade);
-  const [unity_cost, setUnityCost] = useState(product.unity_cost);
-  const [min_qtd, setMinQtd] = useState(product.min_qtd);
-  const [price_sale, setPriceSale] = useState(product.price_sale);
-  const [premium, setPremium] = useState(product.premium);
-  const [commission, setCommission] = useState(product.commission);
-  const [profit, setProfit] = useState(product.profit);
-  const [km_limit, setKmLimit] = useState(product.km_limit);
-  const [applications, setApplications] = useState(product.applications);
-  const [observations, setObservations] = useState(product.observations);
-  const [repos, setRepos] = useState(product.repos);
-  const [origin_product, setOriginProduct] = useState(product.origin_product);
-  const [validity, setValidity] = useState(product.validity);
+  const [total_value, setTotalValue] = useState(acquisition.total_sale);
+  const [prod_acq, setProdAcq] = useState({});
+  const [product, setProduct] = useState({});
 
-  const [date, setDate] = useState(() => moment(product.validity).format('DD-MM-YYYY'));
-  const [loading, setLoading] = useState(false);
+  const [nef_key, setNefKey] = useState(acquisition.nef_key);
+  const [nef_number, setNefNumber] = useState(acquisition.nef_number);
+  const [total_qtd, setTotalQtd] = useState(acquisition.total_qtd);
+  const [acquisition_date, setAcquisitionDate] = useState(acquisition.acquisition);
+  const [approved, setApproved] = useState(acquisition.approved);
+
+  const [unity_cost, setUnityCost] = useState('');
+  const [discount, setDiscount] = useState('');
+
+  const [date, setDate] = useState(() => moment(acquisition_date).format('DD-MM-YYYY'));
+  const [more_info, setMoreInfo] = useState(false);
+  const [value_click, setValueClick] = useState(true);
   const [first_loading, setFirstLoading] = useState(true);
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
 
-    async function loadFamilies() {
-
+    async function loadInfos() {
       try {
+        const res_prov = await api.get('/stock/providers');
+        const { providers } = res_prov.data;
 
-        const response = await api.get('/stock/families');
-        const { families } = response.data;
+        const res_pacq = await api.get(`/stock/product/acquisition/${acquisition.id}`);
+        const { prod_acq } = res_pacq.data;
 
-        setFamilies(families);
+        setProviders(providers);
+        setProdAcq(prod_acq);
+        setUnityCost(prod_acq.unity_cost);
+        setDiscount(prod_acq.discount);
       } catch (err) {
         console.log(err);
       } finally {
-        setFirstLoading(false);
+        setFirstLoading(false)
       }
-
     }
 
-    setTimeout(loadFamilies, 1000);
+    setTimeout(loadInfos, 1000);
+
   }, []);
+
+  useEffect(() => {
+
+    const total = getTotalValue();
+
+    setTotalValue(total);
+
+  }, [unity_cost, total_qtd, discount]);
+
+  function getTotalValue() {
+    return Number(unity_cost) * Number(total_qtd) - (Number(discount) || 0);
+  }
+
+  async function getInfos() {
+    if (value_click) {
+      try {
+        setLoading(true);
+
+        const response = await api.get(`/stock/product/${prod_acq.id_product}`);
+        const { product } = response.data;
+
+        setProduct(product);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setValueClick(false);
+        setLoading(false);
+      }
+    }
+  }
 
   const onDateChange = date => {
     setDate(date);
 
     const momentObj = moment(date, 'DD-MM-YYYY');
 
-    setValidity(momentObj);
+    setAcquisitionDate(momentObj);
   };
 
-  const handleDeleteProduct = async () => {
+  const handleDeleteAcquisition = async () => {
     try {
-      await api.delete(`/stock/product/${product.id}`);
+      await api.delete(`/stock/acquisition/${acquisition.id}`);
 
-      Alert.alert('Excluído!', 'Produto deletado com sucesso.');
+      Alert.alert('Excluído!', 'Aquisição deletada com sucesso.');
+
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;
 
       Alert.alert(
         'Ooopsss',
-        message || 'Falha na exclusão do produto.'
+        message || 'Falha na exclusão da aquisição.'
       );
     } finally {
+      reloadAcquisitions();
       setIsVisible(false);
-      reloadProducts();
     }
   }
 
-  const handleUpdateProduct = useCallback(async () => {
+  const handleUpdateAcquisition = useCallback(async () => {
     Keyboard.dismiss();
 
     try {
       setLoading(true);
 
-      await api.put(`/stock/product/${product.id}`, {
-        id_family,
-        nef_cod,
-        name,
-        location,
-        ncm,
-        unidade,
+      const total = getTotalValue();
+
+      await api.put(`/stock/acquisition/${acquisition.id}`, {
+        id_provider,
+        nef_key,
+        nef_number,
+        total_sale: total,
+        total_qtd,
         unity_cost,
-        min_qtd,
-        price_sale,
-        premium,
-        commission,
-        profit,
-        km_limit,
-        applications,
-        observations,
-        repos,
-        validity,
-        origin_product
+        discount,
+        approved,
+        acquisition: acquisition_date,
+        id_prod_acq: prod_acq.id
       });
 
-      Alert.alert('Sucesso!', 'Produto atualizado com sucesso.');
+      Alert.alert('Sucesso!', 'Aquisição atualizada com sucesso.');
+
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;
 
       Alert.alert(
         'Ooopsss',
-        message || 'Falha na atualização do produto, confira seus dados.'
+        message || 'Falha na atualização da aquisição, confira seus dados.'
       );
     } finally {
       setLoading(false);
-      reloadProducts();
+      reloadAcquisitions();
     }
   }, [
-    id_family,
-    nef_cod,
-    name,
-    location,
-    ncm,
-    unidade,
+    id_provider,
+    nef_key,
+    nef_number,
+    total_qtd,
     unity_cost,
-    min_qtd,
-    price_sale,
-    premium,
-    commission,
-    profit,
-    km_limit,
-    applications,
-    observations,
-    repos,
-    validity,
-    origin_product
+    discount,
+    approved,
+    acquisition_date
   ]);
 
   if (first_loading) {
@@ -206,80 +213,40 @@ export default function CustonModal({ product, setIsVisible, reloadProducts, }) 
         <Container>
           <Content keyboardShouldPersistTaps="handled">
             <FormContainer>
-              <Title>{product.name}</Title>
+              <Title>R$ {String(acquisition.total_sale)}</Title>
               <Description>
-                Edite ou exclua esse produto com quiser.
+                Edite ou exclua essa aquisição como quiser.
               </Description>
 
-              <InputTitle>Família</InputTitle>
-              <InputPicker>
+              <SwitchContainer>
+                <ChoiceText>Aquisição Aprovada?</ChoiceText>
+                <CheckBox
+                  iconColor="#f8a920"
+                  checkColor="#f8a920"
+                  value={approved}
+                  onChange={() => setApproved(!approved)}
+                />
+              </SwitchContainer>
+
+              <InputTitle>Fornecedor</InputTitle>
+              <InputContainer>
                 <Picker
-                  selectedValue={id_family}
+                  selectedValue={id_provider}
                   style={{
                     flex: 1,
                     color: '#f8a920',
                     backgroundColor: 'transparent',
                     fontSize: 17
                   }}
-                  onValueChange={(itemValue, itemIndex) => setIdFamily(itemValue)}
+                  onValueChange={(itemValue, itemIndex) => setIdProvider(itemValue)}
                 >
-                  <Picker.Item label="Selecione a Família do Produto" value="" />
-                  {families && families.map(family => <Picker.Item key={family.id} label={family.name} value={family.id} />)}
+                  <Picker.Item label="Selecione o Fornecedor do Produto" value="" />
+                  {providers && providers.map(provider => <Picker.Item key={provider.id} label={provider.name} value={provider.id} />)}
                 </Picker>
-                <MaterialIcons name="lock" size={20} color="#999" />
-              </InputPicker>
-
-              <InputTitle>Origem do Produto</InputTitle>
-              <InputPicker>
-                <Picker
-                  selectedValue={origin_product}
-                  style={{
-                    flex: 1,
-                    color: '#f8a920',
-                    backgroundColor: 'transparent',
-                    fontSize: 17
-                  }}
-                  onValueChange={(itemValue, itemIndex) => setOriginProduct(itemValue)}
-                >
-                  <Picker.Item label="Selecione a Origem do Produto" value={origin_product} />
-                  <Picker.Item label="Origem Nacional" value="Origem Nacional" />
-                  <Picker.Item label="Origem Estrangeira" value="Origem Estrangeira" />
-                </Picker>
-                <MaterialIcons name="lock" size={20} color="#999" />
-              </InputPicker>
-
-              <InputTitle>Código da NFe</InputTitle>
-              <InputContainer>
-                <Input
-                  placeholder="Fabricante do produto"
-                  autoCapitalize="words"
-                  autoCorrect={false}
-                  maxLength={60}
-                  ref={nefCodInputRef}
-                  onChangeText={setNefCod}
-                  value={nef_cod}
-                  returnKeyType="next"
-                  onSubmitEditing={() => nameInputRef.current.focus()}
-                />
                 <MaterialIcons name="lock" size={20} color="#999" />
               </InputContainer>
 
-              <InputTitle>Nome</InputTitle>
-              <InputContainer>
-                <Input
-                  placeholder="Nome do produto"
-                  autoCapitalize="words"
-                  autoCorrect={false}
-                  ref={nameInputRef}
-                  onChangeText={setName}
-                  value={name}
-                  returnKeyType="next"
-                  onSubmitEditing={() => locationInputRef.current.focus()}
-                />
-                <MaterialIcons name="lock" size={20} color="#999" />
-              </InputContainer>
-
-              <InputTitle>Validade do Produto</InputTitle>
+              <InputTitle>Data da Aquisição</InputTitle>
               <InputContainer>
                 <Input
                   placeholder="Clique no calendário para editar"
@@ -301,60 +268,51 @@ export default function CustonModal({ product, setIsVisible, reloadProducts, }) 
                 />
               </InputContainer>
 
-              <InputTitle>Localização</InputTitle>
+              <InputTitle>Chave da NFe</InputTitle>
               <InputContainer>
                 <Input
-                  placeholder="Onde fica sua localização"
+                  placeholder="Chave da Nota Fiscal"
                   autoCapitalize="words"
                   autoCorrect={false}
-                  ref={locationInputRef}
-                  onChangeText={setLocation}
-                  value={location}
-                  returnKeyType="next"
-                  onSubmitEditing={() => ncmInputRef.current.focus()}
-                />
-                <MaterialIcons name="lock" size={20} color="#999" />
-              </InputContainer>
-
-              <InputTitle>Código NCM</InputTitle>
-              <InputContainer>
-                <TextInputMask
-                  placeholder="Nomeclatura Comum do Mercosul"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  maxLength={10}
                   keyboardType='numeric'
-                  type={'custom'}
-                  options={{
-                    mask: '9999.99.99'
-                  }}
-                  ref={ncmInputRef}
-                  onChangeText={text => setNcm(text)}
-                  value={ncm}
-                  style={{
-                    height: 48,
-                    fontSize: 17,
-                    color: '#FFF',
-                    flex: 1
-                  }}
-                  placeholderTextColor='#5f6368'
+                  maxLength={44}
+                  onChangeText={setNefKey}
+                  value={nef_key}
                   returnKeyType="next"
-                  onSubmitEditing={() => unidadeInputRef.current.focus()}
+                  onSubmitEditing={() => nefNumberInputRef.current.focus()}
                 />
                 <MaterialIcons name="lock" size={20} color="#999" />
               </InputContainer>
 
-              <InputTitle>Unidade</InputTitle>
+              <InputTitle>Número da NFe</InputTitle>
               <InputContainer>
                 <Input
-                  placeholder="Qual a Unidade, ex: Lote/Caixa/Peça"
+                  placeholder="Número da Nota Fiscal"
                   autoCapitalize="words"
                   autoCorrect={false}
-                  onChangeText={setUnidade}
-                  ref={unidadeInputRef}
-                  value={unidade}
+                  keyboardType='numeric'
+                  maxLength={9}
+                  ref={nefNumberInputRef}
+                  onChangeText={setNefNumber}
+                  value={nef_number}
                   returnKeyType="next"
-                  onSubmitEditing={() => unityCostInputRef.current.focus()}
+                  onSubmitEditing={() => totalQtdInputRef.current.focus()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
+
+              <InputTitle>Quantidade Total</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Quantidade total adquirida"
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  keyboardType='numeric'
+                  onChangeText={setTotalQtd}
+                  ref={totalQtdInputRef}
+                  value={String(total_qtd)}
+                  returnKeyType="next"
+                  onSubmitEditing={() => Keyboard.dismiss()}
                 />
                 <MaterialIcons name="lock" size={20} color="#999" />
               </InputContainer>
@@ -362,161 +320,87 @@ export default function CustonModal({ product, setIsVisible, reloadProducts, }) 
               <InputTitle>Preço Unitário</InputTitle>
               <InputContainer>
                 <Input
-                  placeholder="Digite o Preço Unitário"
+                  placeholder="Novo Preço Unitário"
                   autoCapitalize="none"
                   autoCorrect={false}
                   keyboardType='numeric'
-                  ref={unityCostInputRef}
                   onChangeText={setUnityCost}
-                  value={unity_cost}
+                  value={String(unity_cost)}
                   returnKeyType="next"
-                  onSubmitEditing={() => minQtdInputRef.current.focus()}
+                  onSubmitEditing={() => discountInputRef.current.focus()}
                 />
                 <MaterialIcons name="lock" size={20} color="#999" />
               </InputContainer>
 
-              <InputTitle>Quantidade Mínima</InputTitle>
+              <InputTitle>Desconto da Aquisição</InputTitle>
               <InputContainer>
                 <Input
-                  placeholder="Digite a quantidade mínima"
+                  placeholder="Digite o desconto, se houver"
                   autoCapitalize="none"
                   autoCorrect={false}
                   keyboardType='numeric'
-                  ref={minQtdInputRef}
-                  onChangeText={setMinQtd}
-                  value={String(min_qtd)}
+                  ref={discountInputRef}
+                  onChangeText={setDiscount}
+                  value={String(discount)}
                   returnKeyType="next"
-                  onSubmitEditing={() => priceSaleInputRef.current.focus()}
+                  onSubmitEditing={() => Keyboard.dismiss()}
                 />
                 <MaterialIcons name="lock" size={20} color="#999" />
               </InputContainer>
 
-              <InputTitle>Preço de Venda</InputTitle>
-              <InputContainer>
-                <Input
-                  placeholder="Digite o preço de sua venda"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  keyboardType='numeric'
-                  ref={priceSaleInputRef}
-                  onChangeText={setPriceSale}
-                  value={price_sale}
-                  returnKeyType="next"
-                  onSubmitEditing={() => premiumInputRef.current.focus()}
-                />
-                <MaterialIcons name="lock" size={20} color="#999" />
-              </InputContainer>
+              <ChoiceButton
+                onPress={() => {
+                  setMoreInfo(ant => !ant)
+                  getInfos()
+                }}
+              >
+                <ChoiceText>Informações Adicionais?</ChoiceText>
+              </ChoiceButton>
 
-              <InputTitle>Prêmio</InputTitle>
-              <InputContainer>
-                <Input
-                  placeholder="O prêmio para quem vendê-lo é?"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  keyboardType='numeric'
-                  onChangeText={setPremium}
-                  ref={premiumInputRef}
-                  value={premium}
-                  onSubmitEditing={() => CommissionInputRef.current.focus()}
-                  returnKeyType="next"
-                />
-                <MaterialIcons name="lock" size={20} color="#999" />
-              </InputContainer>
+              {more_info && (
+                <>
+                  <TitleSection>Produto Adquirido</TitleSection>
 
-              <InputTitle>Comissão</InputTitle>
-              <InputContainer>
-                <Input
-                  placeholder="A comissão para quem vendê-lo é?"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  keyboardType='numeric'
-                  ref={CommissionInputRef}
-                  maxLength={60}
-                  onChangeText={setCommission}
-                  value={commission}
-                  returnKeyType="next"
-                  onSubmitEditing={() => profitInputRef.current.focus()}
-                />
-                <MaterialIcons name="lock" size={20} color="#999" />
-              </InputContainer>
+                  <InputTitle>Nome</InputTitle>
+                  <InputContainer>
+                    <Input
+                      editable={false}
+                      style={{ color: '#f8a920' }}
+                      value={product.name || 'Produto não especificado'}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
 
-              <InputTitle>Lucro Desejado</InputTitle>
-              <InputContainer>
-                <Input
-                  placeholder="Digite o valor da porcentagem"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  keyboardType='numeric'
-                  onChangeText={setProfit}
-                  ref={profitInputRef}
-                  value={profit}
-                  returnKeyType="next"
-                  onSubmitEditing={() => kmLimitInputRef.current.focus()}
-                />
-                <MaterialIcons name="lock" size={20} color="#999" />
-              </InputContainer>
+                  <InputTitle>Unidade</InputTitle>
+                  <InputContainer>
+                    <Input
+                      editable={false}
+                      style={{ color: '#f8a920' }}
+                      value={product.unidade || 'Produto não especificado'}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
 
-              <InputTitle>Limite de KM</InputTitle>
-              <InputContainer>
-                <Input
-                  placeholder="Kilometragem limite do produto?"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  keyboardType="numeric"
-                  ref={kmLimitInputRef}
-                  onChangeText={setKmLimit}
-                  value={String(km_limit)}
-                  returnKeyType="next"
-                  onSubmitEditing={() => applicationsInputRef.current.focus()}
-                />
-                <MaterialIcons name="lock" size={20} color="#999" />
-              </InputContainer>
+                  <TitleSection>Valor Atualizado</TitleSection>
 
-              <InputTitle>Aplicações</InputTitle>
-              <InputContainer>
-                <Input
-                  placeholder="Insira as aplicações do produto"
-                  autoCapitalize="words"
-                  autoCorrect={false}
-                  onChangeText={setApplications}
-                  ref={applicationsInputRef}
-                  value={applications}
-                  returnKeyType="next"
-                  onSubmitEditing={() => observationsInputRef.current.focus()}
-                />
-                <MaterialIcons name="lock" size={20} color="#999" />
-              </InputContainer>
+                  <InputTitle>Novo Total</InputTitle>
+                  <InputContainer>
+                    <Input
+                      editable={false}
+                      style={{ color: '#f8a920' }}
+                      value={String(total_value)}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
 
-              <SwitchContainer>
-                <ChoiceText>Produto para Reposição?</ChoiceText>
-                <CheckBox
-                  iconColor="#f8a920"
-                  checkColor="#f8a920"
-                  value={repos}
-                  onChange={() => setRepos(!repos)}
-                />
-              </SwitchContainer>
-
-              <InputTitle>Observações</InputTitle>
-              <InputContainer>
-                <Input
-                  placeholder="Algo a ser observado sobre o produto"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  ref={observationsInputRef}
-                  onChangeText={setObservations}
-                  value={observations}
-                  returnKeyType="send"
-                  onSubmitEditing={handleUpdateProduct}
-                />
-                <MaterialIcons name="lock" size={20} color="#999" />
-              </InputContainer>
+                </>
+              )}
 
               <DeleteButtonBox>
-                <DeleteButton onPress={handleDeleteProduct}>
+                <DeleteButton onPress={handleDeleteAcquisition}>
                   <DeleteButtonText>Excluir</DeleteButtonText>
                 </DeleteButton>
-                <SubmitButton style={{ width: 125 }} onPress={handleUpdateProduct}>
+                <SubmitButton style={{ width: 125 }} onPress={handleUpdateAcquisition}>
                   {loading ? (
                     <ActivityIndicator size="small" color="#333" />
                   ) : (
