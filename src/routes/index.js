@@ -47,6 +47,7 @@ import Products from '../pages/StockModule/Products';
 import Acquisitions from '../pages/StockModule/Acquisitions';
 
 import Services from '../pages/ServiceModule/Services';
+import Diagnostics from '../pages/ServiceModule/Diagnostics';
 import Dashboard from '../pages/ServiceModule/Dashboard';
 
 const SignRoutes = createAnimatedSwitchNavigator(
@@ -170,6 +171,7 @@ const FinanceBottomRoutes = createBottomTabNavigator(
 
 const ServiceBottomRoutes = createBottomTabNavigator(
   {
+    Diagnostics,
     Services,
   },
   {
@@ -327,7 +329,7 @@ const AppRoutes = createDrawerNavigator(
     },
   },
   {
-    initialRouteName: 'Management',
+    initialRouteName: 'Service',
     contentComponent: CustomDrawer,
     drawerType: 'back',
     lazy: true,
