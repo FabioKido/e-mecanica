@@ -46,8 +46,8 @@ import Provider from '../pages/StockModule/Provider';
 import Products from '../pages/StockModule/Products';
 import Acquisitions from '../pages/StockModule/Acquisitions';
 
+import Services from '../pages/ServiceModule/Services';
 import Dashboard from '../pages/ServiceModule/Dashboard';
-import OrderService from '../pages/ServiceModule/OrderService';
 
 const SignRoutes = createAnimatedSwitchNavigator(
   {
@@ -64,6 +64,8 @@ const SignRoutes = createAnimatedSwitchNavigator(
     ),
   }
 );
+
+// Botton Routes
 
 const StockBottomRoutes = createBottomTabNavigator(
   {
@@ -166,6 +168,30 @@ const FinanceBottomRoutes = createBottomTabNavigator(
   }
 );
 
+const ServiceBottomRoutes = createBottomTabNavigator(
+  {
+    Services,
+  },
+  {
+    tabBarOptions: {
+      keyboardHidesTabBar: true,
+      inactiveTintColor: 'rgba(255, 2555, 255, 0.5)',
+      activeTintColor: '#fff',
+      style: {
+        height: 54,
+        paddingVertical: 5,
+        backgroundColor: '#000',
+        borderTopColor: '#000',
+      },
+      labelStyle: {
+        fontSize: 10,
+      },
+    },
+  }
+);
+
+// Stack Routes
+
 const ManagementRoutes = createStackNavigator(
   {
     Dashboard,
@@ -222,14 +248,17 @@ const SettingsRoutes = createStackNavigator(
   }
 );
 
-const OrderRoutes = createStackNavigator(
+const ServiceRoutes = createStackNavigator(
   {
-    Dashboard,
+    ServiceBottomRoutes,
   },
   {
     headerMode: 'none',
   }
 );
+
+
+// Drawer Routes
 
 const AppRoutes = createDrawerNavigator(
   {
@@ -242,8 +271,8 @@ const AppRoutes = createDrawerNavigator(
         ),
       },
     },
-    Order: {
-      screen: OrderRoutes,
+    Service: {
+      screen: ServiceRoutes,
       navigationOptions: {
         drawerLabel: 'Serviços',
         drawerIcon: ({ tintColor }) => (
@@ -298,7 +327,7 @@ const AppRoutes = createDrawerNavigator(
     },
   },
   {
-    initialRouteName: 'Stock',
+    initialRouteName: 'Management',
     contentComponent: CustomDrawer,
     drawerType: 'back',
     lazy: true,
