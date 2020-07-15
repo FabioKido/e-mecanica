@@ -57,6 +57,8 @@ export default function Diagnostics() {
   const [diagnostic, setDiagnostic] = useState({});
   const [add_diagnostic, setAddDiagnostic] = useState(false);
 
+  const [checklist, setChecklist] = useState({});
+
   const [customers, setCustomers] = useState([]);
   const [id_customer, setIdCustomer] = useState();
 
@@ -165,12 +167,16 @@ export default function Diagnostics() {
         abortEarly: false,
       });
 
-      await api.post('/service/diagnostic', {
+      const response = await api.post('/service/diagnostic', {
         id_vehicle,
         value,
         approved,
         observations
       });
+
+      const { diagnostic } = response.data;
+
+      await api.post(`/service/checklist/${diagnostic}`);
 
       Alert.alert('Sucesso!', 'Novo diagnóstico registrado com sucesso.');
     } catch (err) {

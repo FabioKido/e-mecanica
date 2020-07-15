@@ -13,6 +13,7 @@ import {
   Content,
   FormContainer,
   SwitchContainer,
+  SwitchText,
   InputContainer,
   Title,
   Description,
@@ -74,6 +75,12 @@ export default function CustonModal({ diagnostic, setIsVisible, reloadDiagnostic
     setIsVisible(false);
 
     // setTimeout(() => NavigationService.navigate('OrderService', diagnostic.id), 100);
+  }
+
+  const handleNavigateToChecklistPage = () => {
+    setIsVisible(false);
+
+    setTimeout(() => NavigationService.navigate('Checklist', diagnostic.id), 100);
   }
 
   const handleDeleteDiagnostic = async () => {
@@ -139,6 +146,17 @@ export default function CustonModal({ diagnostic, setIsVisible, reloadDiagnostic
               Edite ou exclua esse diagnóstico como quiser.
             </Description>
 
+            <SwitchContainer>
+              <ChoiceText>Diagnóstico Aprovado?</ChoiceText>
+
+              <CheckBox
+                iconColor="#f8a920"
+                checkColor="#f8a920"
+                value={approved}
+                onChange={() => setApproved(!approved)}
+              />
+            </SwitchContainer>
+
             <InputTitle>Veículo</InputTitle>
             <InputContainer>
               <Input
@@ -184,26 +202,15 @@ export default function CustonModal({ diagnostic, setIsVisible, reloadDiagnostic
                 onChangeText={setObservations}
                 value={observations}
                 returnKeyType="next"
-                onSubmitEditing={() => Keyboard.dismiss()}
+                onSubmitEditing={handleUpdateDiagnostic}
               />
               <MaterialIcons name="lock" size={20} color="#999" />
             </InputContainer>
 
-            <SwitchContainer>
-              <ChoiceText>Diagnóstico Aprovado?</ChoiceText>
-
-              <CheckBox
-                iconColor="#f8a920"
-                checkColor="#f8a920"
-                value={approved}
-                onChange={() => setApproved(!approved)}
-              />
-            </SwitchContainer>
-
             <ChoiceButton
-              onPress={handleNavigateToOrderServicePage}
+              onPress={handleNavigateToChecklistPage}
             >
-              <ChoiceText>Checklist</ChoiceText>
+              <SwitchText>Abrir Checklist</SwitchText>
             </ChoiceButton>
 
             <ChoiceButton

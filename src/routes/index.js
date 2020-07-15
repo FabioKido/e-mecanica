@@ -48,6 +48,7 @@ import Acquisitions from '../pages/StockModule/Acquisitions';
 
 import Services from '../pages/ServiceModule/Services';
 import Diagnostics from '../pages/ServiceModule/Diagnostics';
+import Checklist from '../pages/ServiceModule/Checklist';
 import Dashboard from '../pages/ServiceModule/Dashboard';
 
 const SignRoutes = createAnimatedSwitchNavigator(
@@ -253,6 +254,7 @@ const SettingsRoutes = createStackNavigator(
 const ServiceRoutes = createStackNavigator(
   {
     ServiceBottomRoutes,
+    Checklist,
   },
   {
     headerMode: 'none',
