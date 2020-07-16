@@ -57,8 +57,6 @@ export default function Diagnostics() {
   const [diagnostic, setDiagnostic] = useState({});
   const [add_diagnostic, setAddDiagnostic] = useState(false);
 
-  const [checklist, setChecklist] = useState({});
-
   const [customers, setCustomers] = useState([]);
   const [id_customer, setIdCustomer] = useState();
 

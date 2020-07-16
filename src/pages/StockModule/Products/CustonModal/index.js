@@ -37,7 +37,7 @@ import {
 import api from '../../../../services/api';
 import CheckBox from "../../../../components/CheckBox";
 
-export default function CustonModal({ product, setIsVisible, reloadProducts, }) {
+export default function CustonModal({ product, setIsVisible, reloadProducts }) {
 
   const nefCodInputRef = useRef();
   const nameInputRef = useRef();
