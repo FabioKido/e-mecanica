@@ -32,6 +32,7 @@ import {
 } from './styles';
 
 import api from '../../../../services/api';
+import NavigationService from '../../../../services/navigation';
 
 export default function CustonModal({ preventive, setIsVisible, reloadPreventives }) {
 
@@ -79,6 +80,12 @@ export default function CustonModal({ preventive, setIsVisible, reloadPreventive
 
     setTimeout(loadInfos, 1000);
   }, []);
+
+  const handleNavigateToOrderServicePage = () => {
+    setIsVisible(false);
+
+    // setTimeout(() => NavigationService.navigate('OrderService', preventive.id), 100);
+  }
 
   const onDateChange = date => {
     setDate(date);
@@ -228,6 +235,12 @@ export default function CustonModal({ preventive, setIsVisible, reloadPreventive
                 </Picker>
                 <MaterialIcons name="lock" size={20} color="#999" />
               </InputPicker>
+
+              <ChoiceButton
+                onPress={handleNavigateToOrderServicePage}
+              >
+                <ChoiceText>Criar OS?</ChoiceText>
+              </ChoiceButton>
 
               <DeleteButtonBox>
                 <DeleteButton onPress={handleDeletePreventive}>
