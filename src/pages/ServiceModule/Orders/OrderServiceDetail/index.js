@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ActivityIndicator,
   View,
@@ -23,7 +23,7 @@ import api from '../../../../services/api';
 
 import CheckBox from "../../../../components/CheckBox";
 
-export default function ({ order_service, loading }) {
+export default function ({ order_service, loading, handleSaveOrder }) {
 
   const [all_services, setAllServices] = useState([]);
   const [services, setServices] = useState("");
@@ -36,11 +36,11 @@ export default function ({ order_service, loading }) {
   const [approveds, setApproveds] = useState("");
 
   let rows = [];
-  let rows_parcels = [];
+  let rows_details = [];
 
   for (let i = 0; i < order_service; i++) {
     rows.push(i);
-    rows_parcels.push({});
+    rows_details.push({});
   }
 
   useEffect(() => {
@@ -89,7 +89,7 @@ export default function ({ order_service, loading }) {
 
   function renderParcelRow(row, index) {
 
-    rows_parcels[index] = {
+    rows_details[index] = {
       id_service: services[`service${row}`] || '',
       type: types[`type${row}`] || '',
       commission: commissions[`commission${row}`] || 0,
@@ -115,6 +115,7 @@ export default function ({ order_service, loading }) {
             }}
             onValueChange={(itemValue, itemIndex) => handlePickerChange(itemValue, `service${row}`)}
           >
+            <Picker.Item label="Selecione o Serviço" value="" />
             {all_services && all_services.map(service => <Picker.Item key={service.id} label={service.name} value={service.id} />)}
           </Picker>
           <MaterialIcons name="lock" size={20} color="#999" />
@@ -206,18 +207,19 @@ export default function ({ order_service, loading }) {
 
   const listItems = rows.map(renderParcelRow);
 
+  // TODO Resolver o preço negativo, quando o desconto é maior que o preço.
   return (
     <>
 
       {listItems}
 
-      {/* <SubmitButton onPress={() => { }}>
+      <SubmitButton onPress={() => handleSaveOrder(rows_details)}>
         {loading ? (
           <ActivityIndicator size="small" color="#333" />
         ) : (
             <SubmitButtonText>Salvar</SubmitButtonText>
           )}
-      </SubmitButton> */}
+      </SubmitButton>
     </>
   )
 }

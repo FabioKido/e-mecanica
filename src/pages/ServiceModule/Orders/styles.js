@@ -63,6 +63,58 @@ export const Input = styled.TextInput.attrs({
   flex: 1;
 `;
 
+export const ItemButtonBox = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+`;
+
+export const AddButton = styled.TouchableOpacity`
+  height: 42px;
+  background-color: transparent;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid ${colors.secondary};
+  border-radius: 50px;
+`;
+
+export const AddItemButton = styled.TouchableOpacity`
+  height: 42px;
+  width: 125px;
+  background-color: transparent;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid ${colors.secondary};
+  border-radius: 50px;
+`;
+
+export const DeleteItemButton = styled.TouchableOpacity`
+  height: 42px;
+  width: 125px;
+  background-color: transparent;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid ${colors.terciary};
+  border-radius: 50px;
+`;
+
+export const AddItemButtonText = styled.Text`
+  color: ${ colors.secondary};
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 2.8px;
+  text-transform: uppercase;
+`;
+
+export const DeleteItemButtonText = styled.Text`
+  color: ${ colors.terciary};
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 2.8px;
+  text-transform: uppercase;
+`;
+
 export const SubmitButton = styled.TouchableOpacity`
   height: 42px;
   background-color: ${ colors.regular_yellow};

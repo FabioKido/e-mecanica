@@ -8,8 +8,6 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import * as Yup from 'yup';
-
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
 
@@ -25,6 +23,12 @@ import {
   Description,
   InputTitle,
   Input,
+  ItemButtonBox,
+  AddButton,
+  AddItemButton,
+  DeleteItemButton,
+  AddItemButtonText,
+  DeleteItemButtonText,
   SubmitButton,
   SubmitButtonText,
   CancelarButton,
@@ -166,45 +170,54 @@ export default function Orders() {
     }
   }
 
-  // const handleSaveOrder = useCallback(async () => {
-  //   Keyboard.dismiss();
+  const handleSaveOrder = useCallback(async (obj_details) => {
+    Keyboard.dismiss();
 
-  //   try {
-  //     setLoading(true);
+    try {
+      setLoading(true);
 
-  //     const res_recipe = await api.post('/order/os', {
+      const response = await api.post('/order/os', {
+        id_vehicle,
+        km,
+        tanque,
+        internal_control,
+        prevision_exit,
+        observations
+      });
 
-  //     });
+      await obj_details.map(obj_detail =>
+        api.post(`/order/order-service/${response.data.data.id}`, {
+          id_service: obj_detail.id_service,
+          type: obj_detail.type,
+          commission: obj_detail.commission,
+          price: obj_detail.price,
+          discount: obj_detail.discount,
+          premium: obj_detail.premium,
+          approved: obj_detail.approved
+        })
+      );
 
-  //     // await obj_parcels.map(obj_parcel =>
-  //     //   api.post(`/order/recipe-detail/${res_recipe.data.data.id}`, {
-  //     //     value: obj_parcel.parcel,
-  //     //     vencimento: obj_parcel.vencimento,
-  //     //     document_number: obj_parcel.number,
-  //     //     taxa_ajuste: obj_parcel.taxa,
-  //     //     observations: obj_parcel.observation,
-  //     //     paid_out: obj_parcel.paid_out,
-  //     //     id_payment_method: obj_parcel.payment_method,
-  //     //     id_account_destiny: obj_parcel.account_destiny
-  //     //   })
-  //     // );
-
-  //     Alert.alert('Sucesso!', 'Nova OS registrada com sucesso.');
-  //   } catch (err) {
-  //     const message =
-  //       err.response && err.response.data && err.response.data.error;
-  //     console.log(err)
-  //     Alert.alert(
-  //       'Ooopsss',
-  //       message || 'Falha no registro da nova os, confira seus dados.'
-  //     );
-  //   } finally {
-  //     reloadOrders();
-  //     setLoading(false);
-  //   }
-  // }, [
-
-  // ]);
+      Alert.alert('Sucesso!', 'Nova OS registrada com sucesso.');
+    } catch (err) {
+      const message =
+        err.response && err.response.data && err.response.data.error;
+      console.log(err)
+      Alert.alert(
+        'Ooopsss',
+        message || 'Falha no registro da nova os, confira seus dados.'
+      );
+    } finally {
+      reloadOrders();
+      setLoading(false);
+    }
+  }, [
+    id_vehicle,
+    km,
+    tanque,
+    internal_control,
+    prevision_exit,
+    observations
+  ]);
 
   function ViewButton() {
     if (add_order) {
@@ -239,19 +252,21 @@ export default function Orders() {
   }
 
   function renderOrders({ item: order }) {
+    const date_order = moment(order.created_at).format('DD-MM-YYYY');
+
     return (
       <Card
         onPress={() => getOrder(order)}
       >
         <CardInfo>
-          <CardTitle numberOfLines={1}>{order.id}</CardTitle>
+          <CardTitle numberOfLines={1}>Ordem de Serviço - {order.id}</CardTitle>
           <CardContainer>
             <CardName>
-              algo {' '}
-              <CardSubName>({})</CardSubName>
+              Registro {' '}
+              <CardSubName>({date_order})</CardSubName>
             </CardName>
 
-            <CardStatus>{order.active ? 'Ativa' : 'Finalizada'}</CardStatus>
+            <CardStatus>OS - {order.active ? 'Ativa' : 'Finalizada'}</CardStatus>
 
           </CardContainer>
         </CardInfo>
@@ -259,7 +274,7 @@ export default function Orders() {
     );
   }
 
-  // TODO A commission e o premium vem da configuração do DONO no app(Usar Redux p/ Incluílas se tiver).
+  // FIXME A commission e o premium vem da configuração do DONO no app(Usar Redux p/ Incluílas se tiver).
 
   return (
     <>
@@ -398,17 +413,24 @@ export default function Orders() {
                     <MaterialIcons name="lock" size={20} color="#999" />
                   </InputContainer>
 
-                  <SubmitButton onPress={() => setOrderService(ant => ant + 1)}>
-                    <SubmitButtonText>Adicionar Serviço</SubmitButtonText>
-                  </SubmitButton>
+                  {order_service === 0 &&
+                    <AddButton onPress={() => setOrderService(ant => ant + 1)}>
+                      <AddItemButtonText>Adicionar Serviço</AddItemButtonText>
+                    </AddButton>
+                  }
 
                   {order_service > 0 &&
                     <>
-                      <OrderServiceDetail order_service={order_service} loading={loading} />
+                      <ItemButtonBox>
+                        <DeleteItemButton onPress={() => setOrderService(ant => ant === 0 ? ant = 0 : ant - 1)}>
+                          <DeleteItemButtonText>Deletar</DeleteItemButtonText>
+                        </DeleteItemButton>
+                        <AddItemButton onPress={() => setOrderService(ant => ant + 1)}>
+                          <AddItemButtonText>Adicionar</AddItemButtonText>
+                        </AddItemButton>
+                      </ItemButtonBox>
 
-                      <SubmitButton onPress={() => setOrderService(ant => ant === 0 ? ant = 0 : ant - 1)}>
-                        <SubmitButtonText>Deletar Serviço</SubmitButtonText>
-                      </SubmitButton>
+                      <OrderServiceDetail order_service={order_service} loading={loading} handleSaveOrder={handleSaveOrder} />
                     </>
                   }
                 </>
