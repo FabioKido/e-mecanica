@@ -2,8 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Keyboard,
-  Picker
+  Keyboard
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -16,12 +15,12 @@ import {
   Container,
   Content,
   FormContainer,
-  InputPicker,
   InputContainer,
   Title,
   Description,
   InputTitle,
   Input,
+  SwitchContainer,
   SubmitButton,
   SubmitButtonText,
   DeleteButtonBox,
@@ -36,37 +35,48 @@ import {
 import api from '../../../../services/api';
 import NavigationService from '../../../../services/navigation';
 
-export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
+import CheckBox from '../../../../components/CheckBox';
 
-  const descriptionInputRef = useRef();
+export default function CustonModal({ order, setIsVisible, reloadOrders }) {
+
+  const tanqueInputRef = useRef();
+  const internalControlInputRef = useRef();
   const observationsInputRef = useRef();
 
-  const [categories, setCategories] = useState([]);
-  const [id_category, setIdCategory] = useState(recipe.id_category);
+  const [vehicle, setVehicle] = useState('');
 
-  const [total_value, setTotalValue] = useState(recipe.total_value);
-  const [description, setDescription] = useState(recipe.description);
-  const [observations, setObservations] = useState(recipe.observations);
-  const [date_recipe, setDateRecipe] = useState(recipe.date);
+  const [customer, setCustomer] = useState('');
 
-  const [date, setDate] = useState(() => date_recipe ? moment(date_recipe).format('DD-MM-YYYY') : '');
+  const [km, setKM] = useState(order.km);
+  const [tanque, setTanque] = useState(order.tanque);
+  const [internal_control, setInternalControl] = useState(order.internal_control);
+  const [observations, setObservations] = useState(order.observations);
+  const [prevision_exit, setPrevisionExit] = useState(order.prevision_exit);
+  const [active, setActive] = useState(order.active);
+
+  const [date, setDate] = useState(() => prevision_exit ? moment(prevision_exit).format('DD-MM-YYYY') : '');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
 
-    async function loadCategories() {
+    async function loadVehicleAndCustomer() {
       try {
 
-        const response = await api.get('/finance/categories');
-        const { categories } = response.data;
+        const res_veh = await api.get(`/vehicles/${order.id_vehicle}/one`);
+        const { vehicle } = res_veh.data;
 
-        setCategories(categories);
+        const res_cus = await api.get(`/customers/${vehicle.id_customer}`);
+        const { customer } = res_cus.data;
+
+        setVehicle(vehicle);
+        setCustomer(customer.name);
+
       } catch (err) {
         console.log(err);
       }
     }
 
-    setTimeout(loadCategories, 1000);
+    setTimeout(loadVehicleAndCustomer, 1000);
   }, []);
 
   const onDateChange = date => {
@@ -74,67 +84,69 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
 
     const momentObj = moment(date, 'DD-MM-YYYY');
 
-    setDateRecipe(momentObj);
+    setPrevisionExit(momentObj);
   };
 
   const handleNavigateToDetailPage = () => {
     setIsVisible(false);
 
-    setTimeout(() => NavigationService.navigate('RecipeDetail', recipe), 100);
+    // setTimeout(() => NavigationService.navigate('RecipeDetail', recipe), 100);
   }
 
-  const handleDeleteRecipe = async () => {
+  const handleDeleteOrder = async () => {
     try {
-      await api.delete(`/finance/recipe/${recipe.id}`);
+      await api.delete(`/order/os/${order.id}`);
 
-      Alert.alert('Excluído!', 'Receita deletada com sucesso.');
+      Alert.alert('Excluído!', 'OS deletada com sucesso.');
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;
 
       Alert.alert(
         'Ooopsss',
-        message || 'Falha na exclusão da receita.'
+        message || 'Falha na exclusão da OS.'
       );
     } finally {
       setIsVisible(false);
-      reloadRecipes();
+      reloadOrders();
     }
   }
 
-  const handleUpdateRecipe = useCallback(async () => {
+  const handleUpdateOrder = useCallback(async () => {
     Keyboard.dismiss();
 
     try {
       setLoading(true);
 
-      await api.put(`/finance/recipe/${recipe.id}`, {
-        id_category,
-        total_value,
-        description,
-        date_recipe,
-        observations
+      await api.put(`/order/os/${order.id}`, {
+        km,
+        tanque,
+        internal_control,
+        prevision_exit,
+        observations,
+        active
       });
 
-      Alert.alert('Sucesso!', 'Receita atualizada com sucesso.');
+      Alert.alert('Sucesso!', 'OS atualizada com sucesso.');
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;
 
       Alert.alert(
         'Ooopsss',
-        message || 'Falha na atualização da Receita, confira seus dados.'
+        message || 'Falha na atualização da OS, confira seus dados.'
       );
     } finally {
       setLoading(false);
-      reloadRecipes();
+      reloadOrders();
     }
   }, [
-    id_category,
-    total_value,
-    description,
-    date_recipe,
-    observations
+    km,
+    tanque,
+    internal_control,
+    prevision_exit,
+    observations,
+    active
   ]);
 
   return (
@@ -145,61 +157,91 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
       <Container>
         <Content keyboardShouldPersistTaps="handled">
           <FormContainer>
-            <Title>{recipe.description}</Title>
+            <Title>OS - {order.id}</Title>
             <Description>
-              Edite ou exclua essa receita como quiser. Porem, ao atualizar o valor total, as taxas da(s) parcela(s) continuarão valendo.
+              Edite ou exclua essa OS como quiser.
             </Description>
 
-            <InputTitle>Categoria</InputTitle>
-            <InputPicker>
-              <Picker
-                selectedValue={id_category}
-                style={{
-                  flex: 1,
-                  color: '#f8a920',
-                  backgroundColor: 'transparent',
-                  fontSize: 17
-                }}
-                onValueChange={(itemValue, itemIndex) => setIdCategory(itemValue)}
-              >
-                <Picker.Item label="Selecione a Categoria" value="" />
-                {categories && categories.map(category => <Picker.Item key={category.id} label={category.description} value={category.id} />)}
-              </Picker>
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputPicker>
+            <SwitchContainer>
+              <ChoiceText>Está Ativa?</ChoiceText>
 
-            <InputTitle>Valor Total</InputTitle>
+              <CheckBox
+                iconColor="#f8a920"
+                checkColor="#f8a920"
+                value={active}
+                onChange={() => setActive(!active)}
+              />
+            </SwitchContainer>
+
+            <InputTitle>Veículo</InputTitle>
             <InputContainer>
               <Input
-                placeholder="Valor total da receita"
+                editable={false}
+                style={{ color: '#f8a920' }}
+                value={vehicle.model || 'Não foi especificado'}
+              />
+              <MaterialIcons name="lock" size={20} color="#999" />
+            </InputContainer>
+
+            <InputTitle>Proprietário</InputTitle>
+            <InputContainer>
+              <Input
+                editable={false}
+                style={{ color: '#f8a920' }}
+                value={customer || 'Não foi especificado'}
+              />
+              <MaterialIcons name="lock" size={20} color="#999" />
+            </InputContainer>
+
+            <InputTitle>Kilometragem</InputTitle>
+            <InputContainer>
+              <Input
+                placeholder="Novo valor em Kilometros"
                 autoCapitalize="none"
                 autoCorrect={false}
                 keyboardType="numeric"
-                maxLength={60}
-                onChangeText={setTotalValue}
-                value={total_value}
+                maxLength={8}
+                onChangeText={setKM}
+                value={String(km) || ''}
                 returnKeyType="next"
-                onSubmitEditing={() => descriptionInputRef.current.focus()}
+                onSubmitEditing={() => tanqueInputRef.current.focus()}
               />
               <MaterialIcons name="person-pin" size={20} color="#999" />
             </InputContainer>
 
-            <InputTitle>Descrição</InputTitle>
+            <InputTitle>Tanque</InputTitle>
             <InputContainer>
               <Input
-                placeholder="Breve descrição"
-                autoCapitalize="words"
+                placeholder="Novo valor em litros"
+                autoCapitalize="none"
                 autoCorrect={false}
-                ref={descriptionInputRef}
-                onChangeText={setDescription}
-                value={description}
+                ref={tanqueInputRef}
+                keyboardType="numeric"
+                maxLength={4}
+                onChangeText={setTanque}
+                value={String(tanque) || ''}
+                returnKeyType="next"
+                onSubmitEditing={() => internalControlInputRef.current.focus()}
+              />
+              <MaterialIcons name="person-pin" size={20} color="#999" />
+            </InputContainer>
+
+            <InputTitle>Controle Interno</InputTitle>
+            <InputContainer>
+              <Input
+                placeholder="Digite uma descrição"
+                autoCapitalize="none"
+                autoCorrect={false}
+                ref={internalControlInputRef}
+                onChangeText={setInternalControl}
+                value={internal_control}
                 returnKeyType="next"
                 onSubmitEditing={() => observationsInputRef.current.focus()}
               />
               <MaterialIcons name="person-pin" size={20} color="#999" />
             </InputContainer>
 
-            <InputTitle>Data</InputTitle>
+            <InputTitle>Previsão de Saída</InputTitle>
             <InputContainer>
               <Input
                 placeholder="Clique no calendário para editar"
@@ -231,7 +273,7 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
                 onChangeText={setObservations}
                 value={observations}
                 returnKeyType="send"
-                onSubmitEditing={handleUpdateRecipe}
+                onSubmitEditing={handleUpdateOrder}
               />
               <MaterialIcons name="lock" size={20} color="#999" />
             </InputContainer>
@@ -239,14 +281,14 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
             <ChoiceButton
               onPress={handleNavigateToDetailPage}
             >
-              <ChoiceText>Atualizar Parcelas?</ChoiceText>
+              <ChoiceText>Atualizar Detalhes?</ChoiceText>
             </ChoiceButton>
 
             <DeleteButtonBox>
-              <DeleteButton onPress={handleDeleteRecipe}>
+              <DeleteButton onPress={handleDeleteOrder}>
                 <DeleteButtonText>Excluir</DeleteButtonText>
               </DeleteButton>
-              <SubmitButton style={{ width: 125 }} onPress={handleUpdateRecipe}>
+              <SubmitButton style={{ width: 125 }} onPress={handleUpdateOrder}>
                 {loading ? (
                   <ActivityIndicator size="small" color="#333" />
                 ) : (

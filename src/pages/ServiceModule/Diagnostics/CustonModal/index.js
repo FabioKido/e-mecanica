@@ -51,7 +51,7 @@ export default function CustonModal({ diagnostic, setIsVisible, reloadDiagnostic
 
   useEffect(() => {
 
-    async function loadVehicle() {
+    async function loadVehicleAndCustomer() {
       try {
 
         const res_veh = await api.get(`/vehicles/${diagnostic.id_vehicle}/one`);
@@ -68,7 +68,7 @@ export default function CustonModal({ diagnostic, setIsVisible, reloadDiagnostic
       }
     }
 
-    setTimeout(loadVehicle, 1000);
+    setTimeout(loadVehicleAndCustomer, 1000);
   }, []);
 
   const handleNavigateToOrderServicePage = () => {
@@ -162,7 +162,7 @@ export default function CustonModal({ diagnostic, setIsVisible, reloadDiagnostic
               <Input
                 editable={false}
                 style={{ color: '#f8a920' }}
-                value={vehicle.model}
+                value={vehicle.model || 'Não foi especificado'}
               />
               <MaterialIcons name="lock" size={20} color="#999" />
             </InputContainer>
@@ -172,7 +172,7 @@ export default function CustonModal({ diagnostic, setIsVisible, reloadDiagnostic
               <Input
                 editable={false}
                 style={{ color: '#f8a920' }}
-                value={customer}
+                value={customer || 'Não foi especificado'}
               />
               <MaterialIcons name="lock" size={20} color="#999" />
             </InputContainer>
