@@ -72,6 +72,14 @@ export const SwitchText = styled.Text`
   text-transform: uppercase;
 `;
 
+export const ChoiceText = styled.Text`
+  color: ${colors.regular_yellow};
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 2.8px;
+  text-transform: uppercase;
+`;
+
 export const SubmitButton = styled.TouchableOpacity`
   height: 42px;
   background-color: ${ colors.regular_yellow};

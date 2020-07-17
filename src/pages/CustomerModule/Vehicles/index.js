@@ -290,7 +290,7 @@ export default function Vehicles() {
               <CardSubName>{vehicle.model}</CardSubName>
             </CardName>
 
-            <CardStatus>{vehicle.year_fab || ''}</CardStatus>
+            <CardStatus>{vehicle.year_model || ''}</CardStatus>
 
           </CardContainer>
         </CardInfo>

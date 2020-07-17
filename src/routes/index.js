@@ -51,6 +51,7 @@ import Diagnostics from '../pages/ServiceModule/Diagnostics';
 import Checklist from '../pages/ServiceModule/Checklist';
 import Preventives from '../pages/ServiceModule/Preventives';
 import Schedules from '../pages/ServiceModule/Schedules';
+import Orders from '../pages/ServiceModule/Orders';
 import Dashboard from '../pages/ServiceModule/Dashboard';
 
 const SignRoutes = createAnimatedSwitchNavigator(
@@ -174,6 +175,7 @@ const FinanceBottomRoutes = createBottomTabNavigator(
 
 const ServiceBottomRoutes = createBottomTabNavigator(
   {
+    Orders,
     Diagnostics,
     Preventives,
     Schedules,

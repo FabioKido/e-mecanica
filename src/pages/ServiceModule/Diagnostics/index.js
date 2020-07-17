@@ -92,7 +92,7 @@ export default function Diagnostics() {
 
   useEffect(() => {
     if (add_diagnostic) {
-      async function loadCustomersAndVehicles() {
+      async function loadCustomers() {
         try {
 
           const response = await api.get('/customers');
@@ -105,7 +105,7 @@ export default function Diagnostics() {
         }
       }
 
-      loadCustomersAndVehicles();
+      loadCustomers();
     }
   }, [add_diagnostic]);
 

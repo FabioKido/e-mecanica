@@ -29,7 +29,7 @@ import {
   BackToLoginButton,
   BackToLoginButtonText,
   SwitchContainer,
-  SwitchText
+  ChoiceText
 } from './styles';
 
 export default function CreateAccount({ navigation }) {
@@ -129,7 +129,7 @@ export default function CreateAccount({ navigation }) {
               <InputContainer>
                 <Input
                   placeholder="Digite o nome de usuário"
-                  autoCapitalize="none"
+                  autoCapitalize="words"
                   autoCorrect={false}
                   onChangeText={setUsername}
                   value={username}
@@ -158,16 +158,6 @@ export default function CreateAccount({ navigation }) {
                 />
                 <MaterialIcons name="mail-outline" size={20} color="#999" />
               </InputContainer>
-
-              <SwitchContainer>
-                <SwitchText>Pessoa Juridica?</SwitchText>
-                <CheckBox
-                  iconColor="#f8a920"
-                  checkColor="#f8a920"
-                  value={company}
-                  onChange={() => setCompany(!company)}
-                />
-              </SwitchContainer>
 
               <InputTitle>Senha de Acesso</InputTitle>
               <InputContainer>
@@ -200,9 +190,9 @@ export default function CreateAccount({ navigation }) {
                   ref={confirmPasswordInputRef}
                   onChangeText={setPasswordConfirmation}
                   value={password_confirmation}
-                  returnKeyType="send"
+                  returnKeyType="next"
                   textContentType="oneTimeCode"
-                  onSubmitEditing={handleCreateAccount}
+                  onSubmitEditing={() => Keyboard.dismiss()}
                 />
                 <MaterialCommunityIcons
                   name="lock-outline"
@@ -210,6 +200,16 @@ export default function CreateAccount({ navigation }) {
                   color="#999"
                 />
               </InputContainer>
+
+              <SwitchContainer>
+                <ChoiceText>Pessoa Juridica?</ChoiceText>
+                <CheckBox
+                  iconColor="#f8a920"
+                  checkColor="#f8a920"
+                  value={company}
+                  onChange={() => setCompany(!company)}
+                />
+              </SwitchContainer>
 
               <SubmitButton onPress={handleCreateAccount}>
                 {loading ? (
