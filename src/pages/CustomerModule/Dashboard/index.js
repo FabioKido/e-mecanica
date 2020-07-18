@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Image } from 'react-native';
 import { PieChart, BarChart, XAxis } from 'react-native-svg-charts';
 import * as scale from 'd3-scale';
 
@@ -20,7 +21,7 @@ import {
   CardName
 } from './styles';
 
-import Load from '../../../components/Loading';
+import LoadGif from '../../../assets/loading.gif';
 
 import { loadDashboardRequest } from '../../../store/modules/customer/actions';
 
@@ -71,7 +72,7 @@ export default function Dashboard() {
         colors={['#600080', '#000']}
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
       >
-        <Load />
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
       </LinearGradient>
     );
   } else {

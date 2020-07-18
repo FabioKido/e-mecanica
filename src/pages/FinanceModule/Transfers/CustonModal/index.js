@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Keyboard
+  Keyboard,
+  Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -30,6 +31,7 @@ import {
 } from './styles';
 
 import api from '../../../../services/api';
+import LoadGif from '../../../../assets/loading.gif';
 
 export default function CustonModal({ transfer, setIsVisible, reloadTransfers, }) {
 
@@ -131,7 +133,7 @@ export default function CustonModal({ transfer, setIsVisible, reloadTransfers, }
         colors={['#2b475c', '#000']}
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
       >
-        <ActivityIndicator size="small" color="#fff" />
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
       </LinearGradient>
     );
   } else {
