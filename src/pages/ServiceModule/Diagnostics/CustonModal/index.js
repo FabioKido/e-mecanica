@@ -54,14 +54,16 @@ export default function CustonModal({ diagnostic, setIsVisible, reloadDiagnostic
     async function loadVehicleAndCustomer() {
       try {
 
-        const res_veh = await api.get(`/vehicles/${diagnostic.id_vehicle}/one`);
-        const { vehicle } = res_veh.data;
+        if (diagnostic.id_vehicle) {
+          const res_veh = await api.get(`/vehicles/${diagnostic.id_vehicle}/one`);
+          const { vehicle } = res_veh.data;
 
-        const res_cus = await api.get(`/customers/${vehicle.id_customer}`);
-        const { customer } = res_cus.data;
+          const res_cus = await api.get(`/customers/${vehicle.id_customer}`);
+          const { customer } = res_cus.data;
 
-        setVehicle(vehicle);
-        setCustomer(customer.name);
+          setVehicle(vehicle);
+          setCustomer(customer.name);
+        }
 
       } catch (err) {
         console.log(err);

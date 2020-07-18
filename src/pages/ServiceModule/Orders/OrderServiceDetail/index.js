@@ -93,7 +93,7 @@ export default function ({ order_service, loading, handleSaveOrder }) {
       id_service: services[`service${row}`] || '',
       type: types[`type${row}`] || '',
       commission: commissions[`commission${row}`] || 0,
-      price: (Number(prices[`price${row}`]) || 0) - (Number(discounts[`discount${row}`]) || 0),
+      price: prices[`price${row}`] || 0,
       discount: discounts[`discount${row}`] || 0,
       premium: premiums[`premium${row}`] || 0,
       approved: approveds[`approved${row}`] || false

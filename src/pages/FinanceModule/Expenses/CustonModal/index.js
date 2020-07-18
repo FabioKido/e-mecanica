@@ -261,7 +261,7 @@ export default function CustonModal({ expense, setIsVisible, reloadExpenses }) {
             <ChoiceButton
               onPress={handleNavigateToDetailPage}
             >
-              <ChoiceText>Atualizar Parcelas?</ChoiceText>
+              <ChoiceText>Ir para Parcelas?</ChoiceText>
             </ChoiceButton>
 
             <DeleteButtonBox>

@@ -139,7 +139,7 @@ export default function CustonModal({ expense_detail, setIsVisible, reloadExpens
           <FormContainer>
             <Title>Parcela - {expense_detail.document_number}</Title>
             <Description>
-              Edite ou exclua essa parcela como quiser.
+              Edite essa parcela como quiser.
             </Description>
 
             <InputTitle>Método de Pagamento</InputTitle>

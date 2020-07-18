@@ -239,7 +239,7 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
             <ChoiceButton
               onPress={handleNavigateToDetailPage}
             >
-              <ChoiceText>Atualizar Parcelas?</ChoiceText>
+              <ChoiceText>Ir para Parcelas?</ChoiceText>
             </ChoiceButton>
 
             <DeleteButtonBox>

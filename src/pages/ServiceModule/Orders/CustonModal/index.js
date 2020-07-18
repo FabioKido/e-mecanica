@@ -62,14 +62,16 @@ export default function CustonModal({ order, setIsVisible, reloadOrders }) {
     async function loadVehicleAndCustomer() {
       try {
 
-        const res_veh = await api.get(`/vehicles/${order.id_vehicle}/one`);
-        const { vehicle } = res_veh.data;
+        if (order.id_vehicle) {
+          const res_veh = await api.get(`/vehicles/${order.id_vehicle}/one`);
+          const { vehicle } = res_veh.data;
 
-        const res_cus = await api.get(`/customers/${vehicle.id_customer}`);
-        const { customer } = res_cus.data;
+          const res_cus = await api.get(`/customers/${vehicle.id_customer}`);
+          const { customer } = res_cus.data;
 
-        setVehicle(vehicle);
-        setCustomer(customer.name);
+          setVehicle(vehicle);
+          setCustomer(customer.name);
+        }
 
       } catch (err) {
         console.log(err);
@@ -90,7 +92,7 @@ export default function CustonModal({ order, setIsVisible, reloadOrders }) {
   const handleNavigateToDetailPage = () => {
     setIsVisible(false);
 
-    // setTimeout(() => NavigationService.navigate('RecipeDetail', recipe), 100);
+    setTimeout(() => NavigationService.navigate('OrderServiceDetail', order), 100);
   }
 
   const handleDeleteOrder = async () => {
@@ -202,7 +204,7 @@ export default function CustonModal({ order, setIsVisible, reloadOrders }) {
                 keyboardType="numeric"
                 maxLength={8}
                 onChangeText={setKM}
-                value={String(km) || ''}
+                value={String(km)}
                 returnKeyType="next"
                 onSubmitEditing={() => tanqueInputRef.current.focus()}
               />
@@ -219,7 +221,7 @@ export default function CustonModal({ order, setIsVisible, reloadOrders }) {
                 keyboardType="numeric"
                 maxLength={4}
                 onChangeText={setTanque}
-                value={String(tanque) || ''}
+                value={String(tanque)}
                 returnKeyType="next"
                 onSubmitEditing={() => internalControlInputRef.current.focus()}
               />
@@ -281,7 +283,7 @@ export default function CustonModal({ order, setIsVisible, reloadOrders }) {
             <ChoiceButton
               onPress={handleNavigateToDetailPage}
             >
-              <ChoiceText>Atualizar Detalhes?</ChoiceText>
+              <ChoiceText>Ir para Detalhes?</ChoiceText>
             </ChoiceButton>
 
             <DeleteButtonBox>
