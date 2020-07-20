@@ -58,6 +58,7 @@ export default function CustonModal({ acquisition, setIsVisible, reloadAcquisiti
 
   const [unity_cost, setUnityCost] = useState('');
   const [discount, setDiscount] = useState('');
+  const [qtd, setQtd] = useState('');
 
   const [date, setDate] = useState(() => moment(acquisition_date).format('DD-MM-YYYY'));
   const [more_info, setMoreInfo] = useState(false);
@@ -80,6 +81,7 @@ export default function CustonModal({ acquisition, setIsVisible, reloadAcquisiti
         setProdAcq(prod_acq);
         setUnityCost(prod_acq.unity_cost);
         setDiscount(prod_acq.discount);
+        setQtd(prod_acq.qtd);
       } catch (err) {
         console.log(err);
       } finally {
@@ -215,7 +217,7 @@ export default function CustonModal({ acquisition, setIsVisible, reloadAcquisiti
             <FormContainer>
               <Title>R$ {String(acquisition.total_sale)}</Title>
               <Description>
-                Edite ou exclua essa aquisição como quiser.
+                Edite ou exclua essa aquisição como quiser. Sua quantidade irá diminuir a partir do uso ou venda.
               </Description>
 
               <SwitchContainer>
@@ -313,6 +315,16 @@ export default function CustonModal({ acquisition, setIsVisible, reloadAcquisiti
                   value={String(total_qtd)}
                   returnKeyType="next"
                   onSubmitEditing={() => Keyboard.dismiss()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
+
+              <InputTitle>Quantidade Atual</InputTitle>
+              <InputContainer>
+                <Input
+                  editable={false}
+                  style={{ color: '#f8a920' }}
+                  value={String(qtd)}
                 />
                 <MaterialIcons name="lock" size={20} color="#999" />
               </InputContainer>
