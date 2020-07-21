@@ -234,7 +234,8 @@ export default function OrderServiceDetail({ navigation }) {
     total_price,
     unit_sale,
     discount,
-    id_acquisition_product
+    id_acquisition_product,
+    order_service
   ]);
 
   function ViewButton() {
@@ -299,6 +300,7 @@ export default function OrderServiceDetail({ navigation }) {
     );
   }
 
+  // TODO Resolver o provide id, que não funciona bem, talvez pelo delay do banco.
   // FIXME Buscar apenas os produtos que a quantidade for maior que zero e previnir qtd maior que o qtd do estoque.
   return (
     <>
@@ -367,7 +369,7 @@ export default function OrderServiceDetail({ navigation }) {
                           onValueChange={(itemValue, itemIndex) => setIdAcquisitionProduct(itemValue)}
                         >
                           <Picker.Item label="Selecione a Aquisição" value="" />
-                          {acquisition_products && acquisition_products.map(product_acq => <Picker.Item key={product_acq.id} label={String(product_acq.qtd)} value={product_acq.id} />)}
+                          {acquisition_products && acquisition_products.map(product_acq => <Picker.Item key={product_acq.id} label={`Quantidade - ${String(product_acq.qtd)}`} value={product_acq.id} />)}
                         </Picker>
                         <MaterialIcons name="lock" size={20} color="#999" />
                       </InputPicker>

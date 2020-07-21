@@ -107,51 +107,43 @@ export default function CustonModal({ order_product_detail, setIsVisible, reload
     }
   }
 
-  // const handleUpdateAcquisition = useCallback(async () => {
-  //   Keyboard.dismiss();
+  const handleUpdateAcquisition = useCallback(async () => {
+    Keyboard.dismiss();
 
-  //   try {
-  //     setLoading(true);
+    try {
+      setLoading(true);
 
-  //     const total = getTotalPrice();
+      const total = getTotalPrice();
 
-  //     await api.put(`/order/order-product/${order_product_detail.id}`, {
-  //       id_provider,
-  //       nef_key,
-  //       nef_number,
-  //       total_sale: total,
-  //       total_qtd,
-  //       unit_cost,
-  //       discount,
-  //       approved,
-  //       acquisition: acquisition_date,
-  //       id_prod_acq: prod_acq.id
-  //     });
+      await api.put(`/order/order-product/${order_product_detail.id}`, {
+        total_sale: total,
+        qtd,
+        unit_sale,
+        discount,
+        qtd_ant: order_product_detail.qtd,
+        id_prod_acq: order_product_detail.id_prod_acq
+      });
 
-  //     Alert.alert('Sucesso!', 'Aquisição atualizada com sucesso.');
+      Alert.alert('Sucesso!', 'Produto atualizado com sucesso.');
 
-  //   } catch (err) {
-  //     const message =
-  //       err.response && err.response.data && err.response.data.error;
+    } catch (err) {
+      const message =
+        err.response && err.response.data && err.response.data.error;
 
-  //     Alert.alert(
-  //       'Ooopsss',
-  //       message || 'Falha na atualização da aquisição, confira seus dados.'
-  //     );
-  //   } finally {
-  //     setLoading(false);
-  //     reloadOrderProductDetails();
-  //   }
-  // }, [
-  //   id_provider,
-  //   nef_key,
-  //   nef_number,
-  //   total_qtd,
-  //   unit_cost,
-  //   discount,
-  //   approved,
-  //   acquisition_date
-  // ]);
+      Alert.alert(
+        'Ooopsss',
+        message || 'Falha na atualização do produto, confira seus dados.'
+      );
+    } finally {
+      setLoading(false);
+      reloadOrderProductDetails();
+      setIsVisible(false);
+    }
+  }, [
+    qtd,
+    unit_sale,
+    discount,
+  ]);
 
   // TODO Diminuir qtd quando atualizar e aumentar qtd quando excluir um produto!
   if (first_loading) {
@@ -268,7 +260,7 @@ export default function CustonModal({ order_product_detail, setIsVisible, reload
                 <DeleteButton onPress={handleDeleteOrderProduct}>
                   <DeleteButtonText>Excluir</DeleteButtonText>
                 </DeleteButton>
-                <SubmitButton style={{ width: 125 }} onPress={() => { }}>
+                <SubmitButton style={{ width: 125 }} onPress={handleUpdateAcquisition}>
                   {loading ? (
                     <ActivityIndicator size="small" color="#333" />
                   ) : (
