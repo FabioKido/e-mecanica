@@ -89,6 +89,7 @@ export default function Accounts() {
     }
   }, [updated]);
 
+  // TODO Ver depois esse tanto de set.
   function getAccount(account) {
     setAccount(account);
     setTitle(account.title);

@@ -22,12 +22,16 @@ import {
   SubmitButtonText,
   CancelarButton,
   CancelarButtonText,
-  ChoiceText
+  ChoiceButton,
+  ChoiceText,
+  SwitchText
 } from './styles';
 
 import api from '../../../../services/api';
 
 import CheckBox from '../../../../components/CheckBox';
+
+import NavigationService from '../../../../services/navigation';
 
 export default function CustonModal({ order_service_detail, setIsVisible, reloadOrderServiceDetails }) {
 
@@ -63,6 +67,12 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
 
     setTimeout(loadService, 1000);
   }, []);
+
+  const handleNavigateToDetailPage = () => {
+    setIsVisible(false);
+
+    setTimeout(() => NavigationService.navigate('OrderProductDetail', order_service_detail), 100);
+  }
 
   const handleUpdateOrderServiceDetail = useCallback(async () => {
     Keyboard.dismiss();
@@ -214,6 +224,12 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
                 onChange={() => setApproved(!approved)}
               />
             </SwitchContainer>
+
+            <ChoiceButton
+              onPress={handleNavigateToDetailPage}
+            >
+              <SwitchText>Ir para Produtos</SwitchText>
+            </ChoiceButton>
 
             <SubmitButton onPress={handleUpdateOrderServiceDetail}>
               {loading ? (

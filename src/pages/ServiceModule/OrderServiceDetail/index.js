@@ -64,7 +64,10 @@ export default function OrderServiceDetail({ navigation }) {
   const [id_acquisition_product, setIdAcquisitionProduct] = useState();
 
   const [add_order_product, setAddOrderProduct] = useState(false);
+  const [id_prod_acq, setIdProdAcq] = useState();
 
+  const [id_provider, setIdProvider] = useState();
+  const [unity_cost, setUnityCost] = useState('');
   const [unit_sale, setUnitSale] = useState('');
   const [discount, setDiscount] = useState(0);
   const [qtd, setQtd] = useState(1);
@@ -149,7 +152,10 @@ export default function OrderServiceDetail({ navigation }) {
           const date = moment(prod_acq.acquisition.acquisition).format('DD-MM-YYYY');
 
           setDate(date);
+          setIdProdAcq(prod_acq.id);
+          setUnityCost(prod_acq.unity_cost);
           setAcquisition(prod_acq.acquisition.acquisition);
+          setIdProvider(prod_acq.acquisition.id_provider);
           setAcquisitionProduct(prod_acq);
         } catch (err) {
           console.log(err);
@@ -199,13 +205,13 @@ export default function OrderServiceDetail({ navigation }) {
 
       await api.post(`/order/order-product/${order_service}`, {
         id_product,
-        id_provider: acquisition_product.id_provider,
+        id_provider,
         qtd,
         acquisition,
-        total_sale: total_price,
         unit_sale,
-        unit_cost: acquisition_product.unity_cost,
-        discount
+        unit_cost: unity_cost,
+        discount,
+        id_prod_acq
       });
 
       Alert.alert('Sucesso!', 'Produto registrado com sucesso.');
@@ -213,14 +219,13 @@ export default function OrderServiceDetail({ navigation }) {
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;
-
+      console.log(err)
       Alert.alert(
         'Ooopsss',
         message || 'Falha no registro do produto, confira seus dados.'
       );
     } finally {
       setLoading(false);
-      // reloadProducts();
     }
   }, [
     id_product,
@@ -254,28 +259,16 @@ export default function OrderServiceDetail({ navigation }) {
           {loading ? (
             <Placeholder />
           ) : (
-              <>
-                <Cards
-                  data={order_service_details}
-                  renderItem={renderOrderServiceDetails}
-                  keyExtractor={order_service_details => `details-${order_service_details.id}`}
-                  showsVerticalScrollIndicator={false}
-                  onRefresh={reloadOrderServiceDetails}
-                  refreshing={refreshing}
-                  ListFooterComponent={<View style={{ height: 20 }} />}
-                  ListEmptyComponent={<Empty>Não foi possivel encontrar serviços</Empty>}
-                />
-                <Cards
-                  data={order_service_details}
-                  renderItem={renderOrderServiceDetails}
-                  keyExtractor={order_service_details => `details-${order_service_details.id}`}
-                  showsVerticalScrollIndicator={false}
-                  onRefresh={reloadOrderServiceDetails}
-                  refreshing={refreshing}
-                  ListFooterComponent={<View style={{ height: 20 }} />}
-                  ListEmptyComponent={<Empty>Não foi possivel encontrar serviços</Empty>}
-                />
-              </>
+              <Cards
+                data={order_service_details}
+                renderItem={renderOrderServiceDetails}
+                keyExtractor={order_service_details => `details-${order_service_details.id}`}
+                showsVerticalScrollIndicator={false}
+                onRefresh={reloadOrderServiceDetails}
+                refreshing={refreshing}
+                ListFooterComponent={<View style={{ height: 20 }} />}
+                ListEmptyComponent={<Empty>Não foi possivel encontrar serviços</Empty>}
+              />
             )}
           <SubmitButton onPress={() => setAddOrderProduct(true)}>
             <SubmitButtonText>Adicionar Produto</SubmitButtonText>
@@ -306,6 +299,7 @@ export default function OrderServiceDetail({ navigation }) {
     );
   }
 
+  // FIXME Buscar apenas os produtos que a quantidade for maior que zero e previnir qtd maior que o qtd do estoque.
   return (
     <>
       <LinearGradient
@@ -397,7 +391,7 @@ export default function OrderServiceDetail({ navigation }) {
                         <Input
                           editable={false}
                           style={{ color: '#f8a920' }}
-                          value={String(acquisition_product.unity_cost)}
+                          value={String(unity_cost)}
                         />
                         <MaterialIcons name="lock" size={20} color="#999" />
                       </InputContainer>
