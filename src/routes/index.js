@@ -49,6 +49,7 @@ import Acquisitions from '../pages/StockModule/Acquisitions';
 import Services from '../pages/ServiceModule/Services';
 import Diagnostics from '../pages/ServiceModule/Diagnostics';
 import Checklist from '../pages/ServiceModule/Checklist';
+import Timeline from '../pages/ServiceModule/Timeline';
 import Preventives from '../pages/ServiceModule/Preventives';
 import Schedules from '../pages/ServiceModule/Schedules';
 import Orders from '../pages/ServiceModule/Orders';
@@ -263,6 +264,7 @@ const ServiceRoutes = createStackNavigator(
   {
     ServiceBottomRoutes,
     Checklist,
+    Timeline,
     OrderServiceDetail,
     OrderProductDetail,
   },

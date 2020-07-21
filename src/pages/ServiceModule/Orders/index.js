@@ -197,6 +197,8 @@ export default function Orders() {
         })
       );
 
+      await api.post(`/service/timeline/${response.data.data.id}`);
+
       Alert.alert('Sucesso!', 'Nova OS registrada com sucesso.');
     } catch (err) {
       const message =

@@ -29,7 +29,8 @@ import {
   CancelarButton,
   CancelarButtonText,
   ChoiceButton,
-  ChoiceText
+  ChoiceText,
+  SwitchText
 } from './styles';
 
 import api from '../../../../services/api';
@@ -93,6 +94,12 @@ export default function CustonModal({ order, setIsVisible, reloadOrders }) {
     setIsVisible(false);
 
     setTimeout(() => NavigationService.navigate('OrderServiceDetail', order), 100);
+  }
+
+  const handleNavigateToTimelinePage = () => {
+    setIsVisible(false);
+
+    setTimeout(() => NavigationService.navigate('Timeline', order.id), 100);
   }
 
   const handleDeleteOrder = async () => {
@@ -279,6 +286,12 @@ export default function CustonModal({ order, setIsVisible, reloadOrders }) {
               />
               <MaterialIcons name="lock" size={20} color="#999" />
             </InputContainer>
+
+            <ChoiceButton
+              onPress={handleNavigateToTimelinePage}
+            >
+              <SwitchText>Abrir Timeline</SwitchText>
+            </ChoiceButton>
 
             <ChoiceButton
               onPress={handleNavigateToDetailPage}
