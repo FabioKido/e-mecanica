@@ -46,6 +46,9 @@ import Provider from '../pages/StockModule/Provider';
 import Products from '../pages/StockModule/Products';
 import Acquisitions from '../pages/StockModule/Acquisitions';
 
+import CreateWorker from '../pages/RelationshipModule/CreateWorker';
+import Groups from '../pages/RelationshipModule/Groups';
+
 import Services from '../pages/ServiceModule/Services';
 import Diagnostics from '../pages/ServiceModule/Diagnostics';
 import Checklist from '../pages/ServiceModule/Checklist';
@@ -149,6 +152,29 @@ const SettingBottomRoutes = createBottomTabNavigator(
   }
 );
 
+const RelationshipBottomRoutes = createBottomTabNavigator(
+  {
+    CreateWorker,
+    Groups,
+  },
+  {
+    tabBarOptions: {
+      keyboardHidesTabBar: true,
+      inactiveTintColor: 'rgba(255, 2555, 255, 0.5)',
+      activeTintColor: '#fff',
+      style: {
+        height: 54,
+        paddingVertical: 5,
+        backgroundColor: '#000',
+        borderTopColor: '#000',
+      },
+      labelStyle: {
+        fontSize: 13,
+      },
+    },
+  }
+);
+
 const FinanceBottomRoutes = createBottomTabNavigator(
   {
     Transfers,
@@ -215,7 +241,7 @@ const ManagementRoutes = createStackNavigator(
 
 const RelationshipRoutes = createStackNavigator(
   {
-    Dashboard,
+    RelationshipBottomRoutes,
   },
   {
     headerMode: 'none',
@@ -343,7 +369,7 @@ const AppRoutes = createDrawerNavigator(
     },
   },
   {
-    initialRouteName: 'Service',
+    initialRouteName: 'Relationship',
     contentComponent: CustomDrawer,
     drawerType: 'back',
     lazy: true,

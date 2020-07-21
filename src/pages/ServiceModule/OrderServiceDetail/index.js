@@ -42,7 +42,6 @@ import Placeholder from './Placeholder';
 import CustonModal from './CustonModal';
 
 import api from '../../../services/api';
-import NavigationService from '../../../services/navigation';
 
 export default function OrderServiceDetail({ navigation }) {
 
