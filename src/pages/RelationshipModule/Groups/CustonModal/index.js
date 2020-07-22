@@ -25,7 +25,7 @@ import {
   CancelarButton,
   CancelarButtonText,
   ChoiceButton,
-  SwitchText
+  ChoiceText
 } from './styles';
 
 import api from '../../../../services/api';
@@ -43,7 +43,7 @@ export default function CustonModal({ group, setIsVisible, reloadGroups }) {
   const handleNavigateToPermissions = () => {
     setIsVisible(false);
 
-    // setTimeout(() => NavigationService.navigate('Permissions', group), 100);
+    setTimeout(() => NavigationService.navigate('Permissions', group), 100);
   }
 
   const handleDeleteGroup = async () => {
@@ -139,7 +139,7 @@ export default function CustonModal({ group, setIsVisible, reloadGroups }) {
             <ChoiceButton
               onPress={handleNavigateToPermissions}
             >
-              <SwitchText>Ir para Permissões</SwitchText>
+              <ChoiceText>Ir para Permissões</ChoiceText>
             </ChoiceButton>
 
             <DeleteButtonBox>

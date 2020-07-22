@@ -9,8 +9,6 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import moment from 'moment';
-
 import { MaterialIcons } from '@expo/vector-icons';
 
 import {
@@ -34,7 +32,6 @@ import {
   CardContainer,
   CardName,
   CardSubName,
-  CardStatus,
   Empty
 } from './styles';
 
@@ -51,6 +48,7 @@ export default function GroupPermission({ navigation }) {
   const [group, setGroup] = useState(navigation.state.params);
 
   const [permissions, setPermissions] = useState([]);
+  const [permission, setPermission] = useState();
   const [id_permission, setIdPermission] = useState();
 
   const [add_group_permission, setAddGroupPermission] = useState(false);
@@ -64,8 +62,12 @@ export default function GroupPermission({ navigation }) {
       try {
         setLoading(true);
 
+        const response = await api.get('/user/permissions/group', {
+          params: { id_group: group.id }
+        });
+        const group_permissions = response.data;
 
-
+        setGroupPermissions(group_permissions);
       } catch (err) {
         console.log(err);
       } finally {
@@ -81,8 +83,10 @@ export default function GroupPermission({ navigation }) {
       async function loadPermissions() {
         try {
 
+          const response = await api.get('/user/permissions');
+          const { permissions } = response.data;
 
-
+          setPermissions(permissions);
         } catch (err) {
           console.log(err);
         }
@@ -92,12 +96,34 @@ export default function GroupPermission({ navigation }) {
     }
   }, [add_group_permission]);
 
+  useEffect(() => {
+    if (id_permission) {
+      async function loadPermission() {
+        try {
+
+          const response = await api.get(`/user/permission/${id_permission}`);
+          const { permission } = response.data;
+
+          setPermission(permission);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      loadPermission();
+    }
+  }, [id_permission]);
+
   async function reloadGroupPermissions() {
     try {
       setRefreshing(true);
 
+      const response = await api.get('/user/permissions/group', {
+        params: { id_group: group.id }
+      });
+      const group_permissions = response.data;
 
-
+      setGroupPermissions(group_permissions);
     } catch (err) {
       Alert.alert(
         'Erro ao obter lista de permissões, tente novamente mais tarde!'
@@ -119,7 +145,7 @@ export default function GroupPermission({ navigation }) {
     try {
       setLoading(true);
 
-      await api.post(`/${permission.id}`, {
+      await api.post(`/user/permission/group/${id_permission}`, {
         id_group: group.id
       });
 
@@ -135,9 +161,10 @@ export default function GroupPermission({ navigation }) {
       );
     } finally {
       setLoading(false);
+      reloadGroupPermissions();
     }
   }, [
-
+    id_permission
   ]);
 
   function ViewButton() {
@@ -148,7 +175,7 @@ export default function GroupPermission({ navigation }) {
             {loading ? (
               <ActivityIndicator size="small" color="#333" />
             ) : (
-                <SubmitButtonText>Salvar</SubmitButtonText>
+                <SubmitButtonText>Adicionar</SubmitButtonText>
               )}
           </SubmitButton>
           <CancelarButton onPress={() => setAddGroupPermission(false)}>
@@ -174,7 +201,7 @@ export default function GroupPermission({ navigation }) {
               />
             )}
           <SubmitButton onPress={() => setAddGroupPermission(true)}>
-            <SubmitButtonText>Adicionar Permissão</SubmitButtonText>
+            <SubmitButtonText>Nova Permissão</SubmitButtonText>
           </SubmitButton>
         </>
       );
@@ -187,15 +214,12 @@ export default function GroupPermission({ navigation }) {
         onPress={() => getGroupPermission(group_permission)}
       >
         <CardInfo>
-          <CardTitle numberOfLines={1}>{group_permission.id}</CardTitle>
+          <CardTitle numberOfLines={1}>{group_permission.name}</CardTitle>
           <CardContainer>
-            <CardName>
-              Permissão {' '}
-              <CardSubName>({})</CardSubName>
+            <CardName numberOfLines={2}>
+              Ação: {' '}
+              <CardSubName>{group_permission.action}</CardSubName>
             </CardName>
-
-            <CardStatus>{}</CardStatus>
-
           </CardContainer>
         </CardInfo>
       </Card>
@@ -219,9 +243,36 @@ export default function GroupPermission({ navigation }) {
 
               {add_group_permission &&
                 <>
+                  <InputTitle>Permissões</InputTitle>
+                  <InputPicker>
+                    <Picker
+                      selectedValue={id_permission}
+                      style={{
+                        flex: 1,
+                        color: '#f8a920',
+                        backgroundColor: 'transparent',
+                        fontSize: 17
+                      }}
+                      onValueChange={(itemValue, itemIndex) => setIdPermission(itemValue)}
+                    >
+                      <Picker.Item label="Selecione o Proprietário do Veículo" value="" />
+                      {permissions && permissions.map(permission => <Picker.Item key={permission.id} label={permission.name} value={permission.id} />)}
+                    </Picker>
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputPicker>
 
-
-
+                  {permission &&
+                    <>
+                      <InputTitle>Ação</InputTitle>
+                      <InputContainer>
+                        <Input
+                          editable={false}
+                          style={{ color: '#fff' }}
+                          value={permission.action}
+                        />
+                      </InputContainer>
+                    </>
+                  }
                 </>
               }
 
@@ -239,7 +290,7 @@ export default function GroupPermission({ navigation }) {
         visible={is_visible}
         onRequestClose={() => setIsVisible(false)}
       >
-        <CustonModal group_permission={group_permission} setIsVisible={setIsVisible} reloadGroupPermissions={reloadGroupPermissions} />
+        <CustonModal group_permission={group_permission} setIsVisible={setIsVisible} reloadGroupPermissions={reloadGroupPermissions} id_group={group.id} />
       </Modal>
     </>
   );

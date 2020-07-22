@@ -125,7 +125,6 @@ export const DeleteButtonBox = styled.View`
 
 export const DeleteButton = styled.TouchableOpacity`
   height: 42px;
-  width: 125px;
   background-color: transparent;
   justify-content: center;
   align-items: center;

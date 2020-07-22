@@ -48,6 +48,7 @@ import Acquisitions from '../pages/StockModule/Acquisitions';
 
 import CreateWorker from '../pages/RelationshipModule/CreateWorker';
 import Groups from '../pages/RelationshipModule/Groups';
+import Permissions from '../pages/RelationshipModule/Permissions';
 
 import Services from '../pages/ServiceModule/Services';
 import Diagnostics from '../pages/ServiceModule/Diagnostics';
@@ -242,6 +243,7 @@ const ManagementRoutes = createStackNavigator(
 const RelationshipRoutes = createStackNavigator(
   {
     RelationshipBottomRoutes,
+    Permissions,
   },
   {
     headerMode: 'none',

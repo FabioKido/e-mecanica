@@ -145,6 +145,7 @@ export const CardContainer = styled.View`
   align-items: center;
   justify-content: space-between;
   margin-left: 15px;
+  margin-right: 15px;
 `;
 
 export const CardName = styled.Text`
