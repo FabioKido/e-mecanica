@@ -121,7 +121,9 @@ export default function CustonModal({ order_product_detail, setIsVisible, reload
         unit_sale,
         discount,
         qtd_ant: order_product_detail.qtd,
-        id_prod_acq: order_product_detail.id_prod_acq
+        total_ant: order_product_detail.total_sale,
+        id_prod_acq: order_product_detail.id_prod_acq,
+        id_os: order_product_detail.id_order_service
       });
 
       Alert.alert('Sucesso!', 'Produto atualizado com sucesso.');

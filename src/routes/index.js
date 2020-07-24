@@ -371,7 +371,7 @@ const AppRoutes = createDrawerNavigator(
     },
   },
   {
-    initialRouteName: 'Relationship',
+    initialRouteName: 'Service',
     contentComponent: CustomDrawer,
     drawerType: 'back',
     lazy: true,

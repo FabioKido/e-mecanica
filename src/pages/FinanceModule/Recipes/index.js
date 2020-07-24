@@ -251,11 +251,11 @@ export default function Recipes() {
     );
   }
 
-  // TODO O id_payment(e a categoria de serviço) vem do pagamento de um serviço... resolverei com o redux.
+  // TODO O id_payment(e a categoria 'serviço') vem do pagamento de um serviço... resolverei com o redux.
   // TODO Resolver as casas depois da virgula, podendo apenas duas.
   // TODO Enviar o valor da parcela, quando quitar a parcela para a conta de destino.
   // FIXME Prevenir o pagamento duplo de uma parcela de receita/despesa(Ou seja, bloquear o quitamento/recebimento e o campo Taxa de Ajuste).
-  // FIXME Butão de Page no Dashboard para listar todas as parcelas(por ter algumas que não tem o id da receita)
+  // FIXME Botão de Page no Dashboard para listar todas as [parcelas e tem outras tabelas do mesmo jeito, tem que verificar](por ter algumas que não tem o id da receita).
 
   return (
     <>

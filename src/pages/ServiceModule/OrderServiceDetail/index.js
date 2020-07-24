@@ -225,6 +225,7 @@ export default function OrderServiceDetail({ navigation }) {
       );
     } finally {
       setLoading(false);
+      reloadOrderServiceDetails();
     }
   }, [
     id_product,

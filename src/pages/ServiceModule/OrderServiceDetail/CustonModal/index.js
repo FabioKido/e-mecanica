@@ -41,6 +41,7 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
   const premiumInputRef = useRef();
 
   const [service, setService] = useState('');
+  const [products_value, setProductsValue] = useState('');
 
   const [type, setType] = useState(order_service_detail.type);
   const [commission, setCommission] = useState(order_service_detail.commission);
@@ -59,6 +60,7 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
           const { service } = response.data;
 
           setService(service.name);
+          loadOrderProducts(order_service_detail.id);
         }
       } catch (err) {
         console.log(err);
@@ -67,6 +69,32 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
 
     setTimeout(loadService, 1000);
   }, []);
+
+  async function loadOrderProducts(id_serv) {
+    const response = await api.get('/order/order-products', {
+      params: { id_os: id_serv }
+    });
+    const { order_products } = response.data;
+
+    // TODO Resolver depois o array vazio.
+    if (!order_products) {
+      return;
+    } else {
+      const soma = (acumulador, total) => Number(total) + Number(acumulador);
+
+      const total = order_products
+        .map(prod => prod.total_sale)
+        .reduce(soma);
+
+      setProductsValue(total);
+    }
+  }
+
+  const handleNavigateToPaymentPage = () => {
+    setIsVisible(false);
+
+    // setTimeout(() => NavigationService.navigate('Payments', order_service_detail, products_value), 100);
+  }
 
   const handleNavigateToDetailPage = () => {
     setIsVisible(false);
@@ -83,10 +111,11 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
       await api.put(`/order/order-service/${order_service_detail.id}`, {
         price,
         type,
-        commission,
-        discount,
-        premium,
-        approved
+        commission: commission || 0,
+        discount: discount || 0,
+        premium: premium || 0,
+        approved,
+        disc_ant: order_service_detail.discount
       });
 
       Alert.alert('Sucesso!', 'Serviço atualizado com sucesso.');
@@ -101,6 +130,7 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
     } finally {
       setLoading(false);
       reloadOrderServiceDetails();
+      setIsVisible(false);
     }
   }, [
     price,
@@ -150,7 +180,7 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
               <MaterialIcons name="person-pin" size={20} color="#999" />
             </InputContainer>
 
-            <InputTitle>Preço do Serviço - R$ {Number(price) - Number(discount)}</InputTitle>
+            <InputTitle>Preço do Serviço</InputTitle>
             <InputContainer>
               <Input
                 placeholder="Novo Preço do Serviço"
@@ -162,6 +192,16 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
                 value={String(price)}
                 returnKeyType="next"
                 onSubmitEditing={() => discountInputRef.current.focus()}
+              />
+              <MaterialIcons name="person-pin" size={20} color="#999" />
+            </InputContainer>
+
+            <InputTitle>Preço dos Produtos</InputTitle>
+            <InputContainer>
+              <Input
+                value={products_value ? String(products_value) : 'Não possui produtos'}
+                editable={false}
+                style={{ color: '#f8a920' }}
               />
               <MaterialIcons name="person-pin" size={20} color="#999" />
             </InputContainer>
@@ -229,6 +269,12 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
               onPress={handleNavigateToDetailPage}
             >
               <SwitchText>Ir para Produtos</SwitchText>
+            </ChoiceButton>
+
+            <ChoiceButton
+              onPress={handleNavigateToPaymentPage}
+            >
+              <SwitchText>Ir para Pagamento</SwitchText>
             </ChoiceButton>
 
             <SubmitButton onPress={handleUpdateOrderServiceDetail}>

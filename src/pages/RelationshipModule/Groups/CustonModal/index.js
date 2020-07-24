@@ -46,6 +46,12 @@ export default function CustonModal({ group, setIsVisible, reloadGroups }) {
     setTimeout(() => NavigationService.navigate('Permissions', group), 100);
   }
 
+  const handleNavigateToUsers = () => {
+    setIsVisible(false);
+
+    // setTimeout(() => NavigationService.navigate('UserGroup', group), 100);
+  }
+
   const handleDeleteGroup = async () => {
     try {
       await api.delete(`/user/group/${group.id}`);
@@ -140,6 +146,12 @@ export default function CustonModal({ group, setIsVisible, reloadGroups }) {
               onPress={handleNavigateToPermissions}
             >
               <ChoiceText>Ir para Permissões</ChoiceText>
+            </ChoiceButton>
+
+            <ChoiceButton
+              onPress={handleNavigateToUsers}
+            >
+              <ChoiceText>Ir para Colaboradores</ChoiceText>
             </ChoiceButton>
 
             <DeleteButtonBox>

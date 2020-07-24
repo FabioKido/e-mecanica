@@ -276,7 +276,7 @@ export default function Orders() {
     );
   }
 
-  // FIXME A commission e o premium vem da configuração do DONO no app(Usar Redux p/ Incluílas se tiver).
+  // FIXME A commission e o premium vem da configuração do (DONO ou Colaborador) no app(Usar Redux p/ Incluílas se tiver).
   // TODO Fazer as telas que recebem os ids de diag, prev e Agendamentos.
   // TODO Criar a Page de Ordens Rápidas ou Fast Records.
 
