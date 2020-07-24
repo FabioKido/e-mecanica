@@ -56,7 +56,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
   const phoneInputRef = useRef();
   const eMailInputRef = useRef();
 
-  const logradouroInputRef = useRef();
+  const streetInputRef = useRef();
   const numberInputRef = useRef();
   const neighborhoodInputRef = useRef();
   const complementInputRef = useRef();
@@ -533,7 +533,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                     onChangeText={setEmail}
                     value={email}
                     returnKeyType={'next'}
-                    onSubmitEditing={() => logradouroInputRef.current.focus()}
+                    onSubmitEditing={() => streetInputRef.current.focus()}
                   />
                   <MaterialIcons name="mail-outline" size={20} color="#999" />
                 </InputContainer>
@@ -546,7 +546,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                     placeholder="Digite uma rua/av/outros"
                     autoCapitalize="words"
                     autoCorrect={false}
-                    ref={logradouroInputRef}
+                    ref={streetInputRef}
                     onChangeText={setStreet}
                     value={street}
                     returnKeyType="next"

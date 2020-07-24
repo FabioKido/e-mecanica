@@ -139,7 +139,7 @@ export default function Profile() {
                 returnKeyType={changePassword ? 'next' : 'send'}
                 onSubmitEditing={() =>
                   changePassword
-                    ? oldPasswordInputRef.current.focus()
+                    ? passwordInputRef.current.focus()
                     : handleSaveProfile()
                 }
               />
