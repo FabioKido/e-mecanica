@@ -47,6 +47,12 @@ export const InputTitle = styled.Text`
   font-weight: bold;
 `;
 
+export const StatusContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-around;
+  margin-bottom: 30px;
+`;
+
 export const InputContainer = styled.View`
   flex-direction: row;
   border-bottom-width: ${StyleSheet.hairlineWidth};

@@ -371,7 +371,7 @@ const AppRoutes = createDrawerNavigator(
     },
   },
   {
-    initialRouteName: 'Finance',
+    initialRouteName: 'Customer',
     contentComponent: CustomDrawer,
     drawerType: 'back',
     lazy: true,

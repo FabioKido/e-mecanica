@@ -4,7 +4,8 @@ import {
   Alert,
   Keyboard,
   Picker,
-  Image
+  Image,
+  TouchableWithoutFeedback
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TextInputMask } from 'react-native-masked-text';
@@ -20,6 +21,7 @@ import {
   Container,
   Content,
   FormContainer,
+  StatusContainer,
   InputContainer,
   Title,
   Description,
@@ -253,7 +255,33 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
     uf
   ]);
 
-  // TODO Resolver o status, colocar ele como estrelinhas de 0 a 5.
+  function StarIcons() {
+    return (
+      <>
+        <TouchableWithoutFeedback onPress={() => setStatus(1)}>
+          <MaterialIcons name={status === 1 || status === 2 || status === 3 || status === 4 || status === 5 ? "star" : "star-border"} size={25} color="#fff" />
+        </TouchableWithoutFeedback>
+
+        <TouchableWithoutFeedback onPress={() => setStatus(2)}>
+          <MaterialIcons name={status === 2 || status === 3 || status === 4 || status === 5 ? "star" : "star-border"} size={25} color="#fff" />
+        </TouchableWithoutFeedback>
+
+        <TouchableWithoutFeedback onPress={() => setStatus(3)}>
+          <MaterialIcons name={status === 3 || status === 4 || status === 5 ? "star" : "star-border"} size={25} color="#fff" />
+        </TouchableWithoutFeedback>
+
+        <TouchableWithoutFeedback onPress={() => setStatus(4)}>
+          <MaterialIcons name={status === 4 || status === 5 ? "star" : "star-border"} size={25} color="#fff" />
+        </TouchableWithoutFeedback>
+
+        <TouchableWithoutFeedback onPress={() => setStatus(5)}>
+          <MaterialIcons name={status === 5 ? "star" : "star-border"} size={25} color="#fff" />
+        </TouchableWithoutFeedback>
+      </>
+    );
+  }
+
+  // TODO Resolver o status, colocar eles 'dinâmicos' ou otimizados.
   if (first_loading) {
     return (
       <LinearGradient
@@ -277,31 +305,9 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                 Edite ou exclua esse cliente como quiser.
             </Description>
 
-              <InputTitle>Status do Cliente</InputTitle>
-              <InputContainer>
-                <Input
-                  placeholder="Insira um nº de 0 a 5"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  keyboardType="numeric"
-                  onChangeText={setStatus}
-                  value={status === null ? '' : String(status)}
-                  returnKeyType="next"
-                  onSubmitEditing={() => neighborhoodInputRef.current.focus()}
-                />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
-              </InputContainer>
-
-              <SwitchContainer>
-                {inadimplente ? <ChoiceText>Não é mais Inadiplente?</ChoiceText> : <ChoiceText>Tornar Inadiplente?</ChoiceText>}
-
-                <CheckBox
-                  iconColor="#f8a920"
-                  checkColor="#f8a920"
-                  value={inadimplente}
-                  onChange={() => setInadimplente(!inadimplente)}
-                />
-              </SwitchContainer>
+              <StatusContainer>
+                <StarIcons />
+              </StatusContainer>
 
               <InputTitle>Nome</InputTitle>
               <InputContainer>
@@ -465,6 +471,17 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                     </InputContainer>
                   </>
                 )}
+
+              <SwitchContainer>
+                {inadimplente ? <ChoiceText>Não é mais Inadiplente?</ChoiceText> : <ChoiceText>Tornar Inadiplente?</ChoiceText>}
+
+                <CheckBox
+                  iconColor="#f8a920"
+                  checkColor="#f8a920"
+                  value={inadimplente}
+                  onChange={() => setInadimplente(!inadimplente)}
+                />
+              </SwitchContainer>
 
               <ChoiceButton
                 onPress={() => {
