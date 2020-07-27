@@ -52,7 +52,6 @@ export default function Dashboard() {
     loadInfos();
   }, []);
 
-  // TODO Resolver o loading, com gradient e lottie talves.
   // TODO Resolver quando estiver sem informações.
   // TODO Resolver quando fabricators ou models não tiver nome.
 
@@ -221,8 +220,8 @@ export default function Dashboard() {
 }
 
 Dashboard.navigationOptions = {
-  tabBarLabel: 'Dashboard',
+  tabBarLabel: 'Visão',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
+    <FontAwesome5 name="chart-line" size={18} color={tintColor} />
   ),
 };

@@ -257,6 +257,6 @@ export default function Family() {
 Family.navigationOptions = {
   tabBarLabel: 'Famílias',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
+    <FontAwesome5 name="boxes" size={18} color={tintColor} />
   ),
 };

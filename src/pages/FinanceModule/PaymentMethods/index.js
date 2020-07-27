@@ -290,6 +290,6 @@ export default function PaymentMethods() {
 PaymentMethods.navigationOptions = {
   tabBarLabel: 'Métodos',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
+    <FontAwesome5 name="credit-card" size={18} color={tintColor} />
   ),
 };

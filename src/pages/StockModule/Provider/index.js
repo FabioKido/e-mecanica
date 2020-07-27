@@ -340,6 +340,6 @@ export default function Providers() {
 Providers.navigationOptions = {
   tabBarLabel: 'Fornecedores',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
+    <FontAwesome5 name="shipping-fast" size={18} color={tintColor} />
   ),
 };

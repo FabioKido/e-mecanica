@@ -398,7 +398,9 @@ export default function CustonModal({ worker, setIsVisible, reloadWorkers }) {
                   getInfo(worker.id)
                 }}
               >
-                <ChoiceText>Configurações Adicionais?</ChoiceText>
+                <ChoiceText>Configurações Extras?</ChoiceText>
+
+                <MaterialIcons name="youtube-searched-for" size={20} color="#f8a920" />
               </ChoiceButton>
 
               {more_info && (

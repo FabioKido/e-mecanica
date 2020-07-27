@@ -164,12 +164,16 @@ export default function CustonModal({ group, setIsVisible, reloadGroups }) {
                 onPress={handleNavigateToPermissions}
               >
                 <ChoiceText>Ir para Permissões</ChoiceText>
+
+                <MaterialIcons name="open-in-new" size={20} color="#f8a920" />
               </ChoiceButton>
 
               <ChoiceButton
                 onPress={handleNavigateToUsers}
               >
                 <ChoiceText>Ir para Colaboradores</ChoiceText>
+
+                <MaterialIcons name="open-in-new" size={20} color="#f8a920" />
               </ChoiceButton>
 
               <DeleteButtonBox>

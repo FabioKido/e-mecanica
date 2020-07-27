@@ -9,7 +9,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import * as Yup from 'yup';
 
-import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import {
   Container,
@@ -216,6 +216,6 @@ export default function Services() {
 Services.navigationOptions = {
   tabBarLabel: 'Serviços',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
+    <MaterialIcons name="build" size={18} color={tintColor} />
   ),
 };

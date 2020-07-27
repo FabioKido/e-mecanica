@@ -328,6 +328,6 @@ export default function CreateWorker() {
 CreateWorker.navigationOptions = {
   tabBarLabel: 'Colaboradores',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
+    <FontAwesome5 name="user-tie" size={18} color={tintColor} />
   ),
 };

@@ -521,6 +521,6 @@ export default function Acquisitions() {
 Acquisitions.navigationOptions = {
   tabBarLabel: 'Aquisições',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
+    <FontAwesome5 name="layer-group" size={18} color={tintColor} />
   ),
 };

@@ -407,6 +407,6 @@ export default function Recipes() {
 Recipes.navigationOptions = {
   tabBarLabel: 'Receitas',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
+    <MaterialIcons name="trending-up" size={28} color={tintColor} />
   ),
 };

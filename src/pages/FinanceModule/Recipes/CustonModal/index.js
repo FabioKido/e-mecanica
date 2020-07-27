@@ -256,6 +256,8 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
                 onPress={handleNavigateToDetailPage}
               >
                 <ChoiceText>Ir para Parcelas?</ChoiceText>
+
+                <MaterialIcons name="open-in-new" size={20} color="#f8a920" />
               </ChoiceButton>
 
               <DeleteButtonBox>

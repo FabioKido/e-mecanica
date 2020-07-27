@@ -498,7 +498,7 @@ export default function CustonModal({ product, setIsVisible, reloadProducts }) {
                   ref={observationsInputRef}
                   onChangeText={setObservations}
                   value={observations}
-                  returnKeyType="send"
+                  returnKeyType="next"
                   onSubmitEditing={() => Keyboard.dismiss()}
                 />
                 <MaterialIcons name="lock" size={20} color="#999" />

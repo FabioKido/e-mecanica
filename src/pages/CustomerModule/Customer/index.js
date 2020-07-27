@@ -449,6 +449,6 @@ export default function Customers() {
 Customers.navigationOptions = {
   tabBarLabel: 'Clientes',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
+    <FontAwesome5 name="users" size={18} color={tintColor} />
   ),
 };

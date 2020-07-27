@@ -243,7 +243,9 @@ export default function CustonModal({ schedule, setIsVisible, reloadSchedules })
               <ChoiceButton
                 onPress={handleNavigateToOrderServicePage}
               >
-                <ChoiceText>Criar OS?</ChoiceText>
+                <ChoiceText>Ir criar OS?</ChoiceText>
+
+                <MaterialIcons name="open-in-new" size={20} color="#f8a920" />
               </ChoiceButton>
 
               <DeleteButtonBox>

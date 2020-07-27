@@ -260,6 +260,6 @@ export default function Category() {
 Category.navigationOptions = {
   tabBarLabel: 'Categorias',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
+    <FontAwesome5 name="file-invoice-dollar" size={18} color={tintColor} />
   ),
 };

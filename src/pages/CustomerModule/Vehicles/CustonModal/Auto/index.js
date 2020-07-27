@@ -326,7 +326,9 @@ export default function Auto({ vehicle, setIsVisible, reloadVehicles }) {
                   getInfos()
                 }}
               >
-                <ChoiceText>Informações Adicionais?</ChoiceText>
+                <ChoiceText>Informações Extras?</ChoiceText>
+
+                <MaterialIcons name="youtube-searched-for" size={20} color="#f8a920" />
               </ChoiceButton>
 
               {more_info &&

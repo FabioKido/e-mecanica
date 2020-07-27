@@ -218,6 +218,6 @@ export default function Profile() {
 Profile.navigationOptions = {
   tabBarLabel: 'Contato',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="phone" size={22} color={tintColor} />
+    <FontAwesome5 name="mobile-alt" size={22} color={tintColor} />
   ),
 };

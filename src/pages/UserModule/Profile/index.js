@@ -20,7 +20,7 @@ export default function Profile() {
 }
 
 Profile.navigationOptions = {
-  tabBarLabel: 'Meu Perfil',
+  tabBarLabel: 'Perfil',
   tabBarIcon: ({ tintColor }) => (
     <FontAwesome5 name="user-edit" size={22} color={tintColor} />
   ),

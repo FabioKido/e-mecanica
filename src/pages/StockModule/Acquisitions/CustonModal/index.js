@@ -368,7 +368,9 @@ export default function CustonModal({ acquisition, setIsVisible, reloadAcquisiti
                   getInfos()
                 }}
               >
-                <ChoiceText>Informações Adicionais?</ChoiceText>
+                <ChoiceText>Informações Extras?</ChoiceText>
+
+                <MaterialIcons name="youtube-searched-for" size={20} color="#f8a920" />
               </ChoiceButton>
 
               {more_info && (

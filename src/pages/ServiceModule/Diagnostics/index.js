@@ -382,6 +382,6 @@ export default function Diagnostics() {
 Diagnostics.navigationOptions = {
   tabBarLabel: 'Diagnósticos',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
+    <FontAwesome5 name="clipboard-list" size={18} color={tintColor} />
   ),
 };

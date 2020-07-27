@@ -284,12 +284,16 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
                 onPress={handleNavigateToDetailPage}
               >
                 <SwitchText>Ir para Produtos</SwitchText>
+
+                <MaterialIcons name="open-in-new" size={20} color="#fff" />
               </ChoiceButton>
 
               <ChoiceButton
                 onPress={handleNavigateToPaymentPage}
               >
                 <SwitchText>Ir para Pagamento</SwitchText>
+
+                <MaterialIcons name="open-in-new" size={20} color="#fff" />
               </ChoiceButton>
 
               <SubmitButton onPress={handleUpdateOrderServiceDetail}>

@@ -621,6 +621,6 @@ export default function Vehicles() {
 Vehicles.navigationOptions = {
   tabBarLabel: 'Veículos',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
+    <FontAwesome5 name="bicycle" size={18} color={tintColor} />
   ),
 };

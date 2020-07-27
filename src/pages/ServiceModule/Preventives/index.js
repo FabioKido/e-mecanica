@@ -407,6 +407,6 @@ export default function Preventives() {
 Preventives.navigationOptions = {
   tabBarLabel: 'Preventivas',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
+    <FontAwesome5 name="clipboard-check" size={18} color={tintColor} />
   ),
 };

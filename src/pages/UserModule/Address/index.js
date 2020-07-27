@@ -276,6 +276,6 @@ export default function Profile() {
 Profile.navigationOptions = {
   tabBarLabel: 'Endereço',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="shipping-fast" size={22} color={tintColor} />
+    <FontAwesome5 name="map-marked-alt" size={22} color={tintColor} />
   ),
 };

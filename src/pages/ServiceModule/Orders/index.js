@@ -463,6 +463,6 @@ export default function Orders() {
 Orders.navigationOptions = {
   tabBarLabel: 'Ordens',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
+    <FontAwesome5 name="car-crash" size={18} color={tintColor} />
   ),
 };

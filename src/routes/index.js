@@ -178,10 +178,10 @@ const RelationshipBottomRoutes = createBottomTabNavigator(
 
 const FinanceBottomRoutes = createBottomTabNavigator(
   {
+    Accounts,
     Transfers,
     Recipes,
     Expenses,
-    Accounts,
     PaymentMethods,
     Category
   },
@@ -311,7 +311,7 @@ const AppRoutes = createDrawerNavigator(
       navigationOptions: {
         drawerLabel: 'Dashboard',
         drawerIcon: ({ tintColor }) => (
-          <FontAwesome5 name="chart-line" size={19} color={tintColor} />
+          <FontAwesome5 name="th-large" size={19} color={tintColor} />
         ),
       },
     },
@@ -371,7 +371,7 @@ const AppRoutes = createDrawerNavigator(
     },
   },
   {
-    initialRouteName: 'Service',
+    initialRouteName: 'Finance',
     contentComponent: CustomDrawer,
     drawerType: 'back',
     lazy: true,

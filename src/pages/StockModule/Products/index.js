@@ -598,16 +598,6 @@ export default function Products() {
                     <MaterialIcons name="lock" size={20} color="#999" />
                   </InputContainer>
 
-                  <SwitchContainer>
-                    <ChoiceText>Produto para Reposição?</ChoiceText>
-                    <CheckBox
-                      iconColor="#f8a920"
-                      checkColor="#f8a920"
-                      value={repos}
-                      onChange={() => setRepos(!repos)}
-                    />
-                  </SwitchContainer>
-
                   <InputTitle>Observações</InputTitle>
                   <InputContainer>
                     <Input
@@ -617,11 +607,21 @@ export default function Products() {
                       ref={observationsInputRef}
                       onChangeText={setObservations}
                       value={observations}
-                      returnKeyType="send"
-                      onSubmitEditing={handleSaveProduct}
+                      returnKeyType="next"
+                      onSubmitEditing={() => Keyboard.dismiss()}
                     />
                     <MaterialIcons name="lock" size={20} color="#999" />
                   </InputContainer>
+
+                  <SwitchContainer>
+                    <ChoiceText>Produto para Reposição?</ChoiceText>
+                    <CheckBox
+                      iconColor="#f8a920"
+                      checkColor="#f8a920"
+                      value={repos}
+                      onChange={() => setRepos(!repos)}
+                    />
+                  </SwitchContainer>
                 </>
               }
 
@@ -647,6 +647,6 @@ export default function Products() {
 Products.navigationOptions = {
   tabBarLabel: 'Produtos',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
+    <FontAwesome5 name="box-open" size={18} color={tintColor} />
   ),
 };

@@ -318,6 +318,6 @@ export default function Accounts() {
 Accounts.navigationOptions = {
   tabBarLabel: 'Contas',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
+    <FontAwesome5 name="wallet" size={18} color={tintColor} />
   ),
 };

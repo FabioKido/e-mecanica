@@ -306,12 +306,16 @@ export default function CustonModal({ order, setIsVisible, reloadOrders }) {
                 onPress={handleNavigateToTimelinePage}
               >
                 <SwitchText>Abrir Timeline</SwitchText>
+
+                <MaterialIcons name="open-in-new" size={20} color="#fff" />
               </ChoiceButton>
 
               <ChoiceButton
                 onPress={handleNavigateToDetailPage}
               >
                 <ChoiceText>Ir para Detalhes?</ChoiceText>
+
+                <MaterialIcons name="open-in-new" size={20} color="#f8a920" />
               </ChoiceButton>
 
               <DeleteButtonBox>

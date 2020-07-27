@@ -229,12 +229,16 @@ export default function CustonModal({ diagnostic, setIsVisible, reloadDiagnostic
                 onPress={handleNavigateToChecklistPage}
               >
                 <SwitchText>Abrir Checklist</SwitchText>
+
+                <MaterialIcons name="open-in-new" size={20} color="#fff" />
               </ChoiceButton>
 
               <ChoiceButton
                 onPress={handleNavigateToOrderServicePage}
               >
-                <ChoiceText>Criar OS?</ChoiceText>
+                <ChoiceText>Ir criar OS?</ChoiceText>
+
+                <MaterialIcons name="open-in-new" size={20} color="#f8a920" />
               </ChoiceButton>
 
               <DeleteButtonBox>

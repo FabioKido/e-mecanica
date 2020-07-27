@@ -398,6 +398,6 @@ export default function Schedules() {
 Schedules.navigationOptions = {
   tabBarLabel: 'Agendamentos',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
+    <FontAwesome5 name="calendar-alt" size={18} color={tintColor} />
   ),
 };

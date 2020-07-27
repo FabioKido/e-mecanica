@@ -436,6 +436,6 @@ export default function Accounts() {
 Accounts.navigationOptions = {
   tabBarLabel: 'Transferir',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
+    <FontAwesome5 name="exchange-alt" size={18} color={tintColor} />
   ),
 };

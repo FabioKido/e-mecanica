@@ -427,6 +427,6 @@ export default function Expenses() {
 Expenses.navigationOptions = {
   tabBarLabel: 'Despesas',
   tabBarIcon: ({ tintColor }) => (
-    <FontAwesome5 name="user-cog" size={18} color={tintColor} />
+    <MaterialIcons name="trending-down" size={28} color={tintColor} />
   ),
 };
