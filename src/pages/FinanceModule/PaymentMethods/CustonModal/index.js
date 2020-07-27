@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Keyboard
+  Keyboard,
+  Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -27,6 +28,7 @@ import {
 } from './styles';
 
 import api from '../../../../services/api';
+import LoadGif from '../../../../assets/loading.gif';
 
 export default function CustonModal({ payment_method, setIsVisible, reloadPaymentMethods }) {
 
@@ -38,6 +40,11 @@ export default function CustonModal({ payment_method, setIsVisible, reloadPaymen
   const [taxa, setTaxa] = useState(payment_method.taxa);
 
   const [loading, setLoading] = useState(false);
+  const [first_loading, setFirstLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => setFirstLoading(false), 300);
+  });
 
   const handleDeletePaymentMethod = async () => {
     try {
@@ -85,86 +92,97 @@ export default function CustonModal({ payment_method, setIsVisible, reloadPaymen
     taxa
   ]);
 
-  return (
-    <LinearGradient
-      colors={['#2b475c', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>{payment_method.method}</Title>
-            <Description>
-              Edite ou exclua esse método de pagamento como quiser.
+  if (first_loading) {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
+      </LinearGradient>
+    );
+  } else {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>{payment_method.method}</Title>
+              <Description>
+                Edite ou exclua esse método de pagamento como quiser.
             </Description>
 
-            <InputTitle>Método de Pagamento</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite um Método, ex: Crédito/Débito"
-                autoCapitalize="words"
-                autoCorrect={false}
-                maxLength={60}
-                onChangeText={setMethod}
-                value={method}
-                returnKeyType="next"
-                onSubmitEditing={() => operatorInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Método de Pagamento</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Digite um Método, ex: Crédito/Débito"
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  maxLength={60}
+                  onChangeText={setMethod}
+                  value={method}
+                  returnKeyType="next"
+                  onSubmitEditing={() => operatorInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Operadora</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Insira o título ou operadora"
-                autoCapitalize="words"
-                autoCorrect={false}
-                maxLength={10}
-                ref={operatorInputRef}
-                onChangeText={setOperator}
-                value={operator}
-                returnKeyType="next"
-                onSubmitEditing={() => taxaInputRef.current.focus()}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Operadora</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Insira o título ou operadora"
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  maxLength={10}
+                  ref={operatorInputRef}
+                  onChangeText={setOperator}
+                  value={operator}
+                  returnKeyType="next"
+                  onSubmitEditing={() => taxaInputRef.current.focus()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Taxa</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Insira o valor da taxa do método"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="numeric"
-                ref={taxaInputRef}
-                onChangeText={setTaxa}
-                value={taxa}
-                returnKeyType="send"
-                onSubmitEditing={handleUpdatePaymentMethod}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Taxa</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Insira o valor da taxa do método"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="numeric"
+                  ref={taxaInputRef}
+                  onChangeText={setTaxa}
+                  value={taxa}
+                  returnKeyType="send"
+                  onSubmitEditing={handleUpdatePaymentMethod}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <DeleteButtonBox>
-              <DeleteButton onPress={handleDeletePaymentMethod}>
-                <DeleteButtonText>Excluir</DeleteButtonText>
-              </DeleteButton>
-              <SubmitButton style={{ width: 125 }} onPress={handleUpdatePaymentMethod}>
-                {loading ? (
-                  <ActivityIndicator size="small" color="#333" />
-                ) : (
-                    <SubmitButtonText>Salvar</SubmitButtonText>
-                  )}
-              </SubmitButton>
-            </DeleteButtonBox>
-            <CancelarButton onPress={() => setIsVisible(false)}>
-              <CancelarButtonText>Voltar</CancelarButtonText>
-            </CancelarButton>
+              <DeleteButtonBox>
+                <DeleteButton onPress={handleDeletePaymentMethod}>
+                  <DeleteButtonText>Excluir</DeleteButtonText>
+                </DeleteButton>
+                <SubmitButton style={{ width: 125 }} onPress={handleUpdatePaymentMethod}>
+                  {loading ? (
+                    <ActivityIndicator size="small" color="#333" />
+                  ) : (
+                      <SubmitButtonText>Salvar</SubmitButtonText>
+                    )}
+                </SubmitButton>
+              </DeleteButtonBox>
+              <CancelarButton onPress={() => setIsVisible(false)}>
+                <CancelarButtonText>Voltar</CancelarButtonText>
+              </CancelarButton>
 
-          </FormContainer>
+            </FormContainer>
 
-        </Content>
-      </Container>
-    </LinearGradient>
-  );
+          </Content>
+        </Container>
+      </LinearGradient>
+    );
+  }
 }

@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Keyboard
+  Keyboard,
+  Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -35,6 +36,8 @@ import CheckBox from '../../../../components/CheckBox';
 import api from '../../../../services/api';
 import NavigationService from '../../../../services/navigation';
 
+import LoadGif from '../../../../assets/loading.gif';
+
 export default function CustonModal({ diagnostic, setIsVisible, reloadDiagnostics, id_customer }) {
 
   const observationsInputRef = useRef();
@@ -48,6 +51,7 @@ export default function CustonModal({ diagnostic, setIsVisible, reloadDiagnostic
   const [approved, setApproved] = useState(diagnostic.approved);
 
   const [loading, setLoading] = useState(false);
+  const [first_loading, setFirstLoading] = useState(true);
 
   useEffect(() => {
 
@@ -67,6 +71,8 @@ export default function CustonModal({ diagnostic, setIsVisible, reloadDiagnostic
 
       } catch (err) {
         console.log(err);
+      } finally {
+        setFirstLoading(false);
       }
     }
 
@@ -135,112 +141,123 @@ export default function CustonModal({ diagnostic, setIsVisible, reloadDiagnostic
     observations
   ]);
 
-  return (
-    <LinearGradient
-      colors={['#2b475c', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>Diagnóstico - {diagnostic.id}</Title>
-            <Description>
-              Edite ou exclua esse diagnóstico como quiser.
+  if (first_loading) {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
+      </LinearGradient>
+    );
+  } else {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>Diagnóstico - {diagnostic.id}</Title>
+              <Description>
+                Edite ou exclua esse diagnóstico como quiser.
             </Description>
 
-            <SwitchContainer>
-              <ChoiceText>Diagnóstico Aprovado?</ChoiceText>
+              <SwitchContainer>
+                <ChoiceText>Diagnóstico Aprovado?</ChoiceText>
 
-              <CheckBox
-                iconColor="#f8a920"
-                checkColor="#f8a920"
-                value={approved}
-                onChange={() => setApproved(!approved)}
-              />
-            </SwitchContainer>
+                <CheckBox
+                  iconColor="#f8a920"
+                  checkColor="#f8a920"
+                  value={approved}
+                  onChange={() => setApproved(!approved)}
+                />
+              </SwitchContainer>
 
-            <InputTitle>Veículo</InputTitle>
-            <InputContainer>
-              <Input
-                editable={false}
-                style={{ color: '#f8a920' }}
-                value={vehicle.model || 'Não foi especificado'}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Veículo</InputTitle>
+              <InputContainer>
+                <Input
+                  editable={false}
+                  style={{ color: '#f8a920' }}
+                  value={vehicle.model || 'Não foi especificado'}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Proprietário</InputTitle>
-            <InputContainer>
-              <Input
-                editable={false}
-                style={{ color: '#f8a920' }}
-                value={customer || 'Não foi especificado'}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Proprietário</InputTitle>
+              <InputContainer>
+                <Input
+                  editable={false}
+                  style={{ color: '#f8a920' }}
+                  value={customer || 'Não foi especificado'}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Valor</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Novo valor, sendo diagnóstico pago"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="numeric"
-                onChangeText={setValue}
-                value={String(value)}
-                returnKeyType="next"
-                onSubmitEditing={() => observationsInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Valor</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Novo valor, sendo diagnóstico pago"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="numeric"
+                  onChangeText={setValue}
+                  value={String(value)}
+                  returnKeyType="next"
+                  onSubmitEditing={() => observationsInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Observações</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite algo a ser observado"
-                autoCapitalize="none"
-                autoCorrect={false}
-                ref={observationsInputRef}
-                onChangeText={setObservations}
-                value={observations}
-                returnKeyType="next"
-                onSubmitEditing={handleUpdateDiagnostic}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Observações</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Digite algo a ser observado"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  ref={observationsInputRef}
+                  onChangeText={setObservations}
+                  value={observations}
+                  returnKeyType="next"
+                  onSubmitEditing={handleUpdateDiagnostic}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <ChoiceButton
-              onPress={handleNavigateToChecklistPage}
-            >
-              <SwitchText>Abrir Checklist</SwitchText>
-            </ChoiceButton>
+              <ChoiceButton
+                onPress={handleNavigateToChecklistPage}
+              >
+                <SwitchText>Abrir Checklist</SwitchText>
+              </ChoiceButton>
 
-            <ChoiceButton
-              onPress={handleNavigateToOrderServicePage}
-            >
-              <ChoiceText>Criar OS?</ChoiceText>
-            </ChoiceButton>
+              <ChoiceButton
+                onPress={handleNavigateToOrderServicePage}
+              >
+                <ChoiceText>Criar OS?</ChoiceText>
+              </ChoiceButton>
 
-            <DeleteButtonBox>
-              <DeleteButton onPress={handleDeleteDiagnostic}>
-                <DeleteButtonText>Excluir</DeleteButtonText>
-              </DeleteButton>
-              <SubmitButton style={{ width: 125 }} onPress={handleUpdateDiagnostic}>
-                {loading ? (
-                  <ActivityIndicator size="small" color="#333" />
-                ) : (
-                    <SubmitButtonText>Salvar</SubmitButtonText>
-                  )}
-              </SubmitButton>
-            </DeleteButtonBox>
-            <CancelarButton onPress={() => setIsVisible(false)}>
-              <CancelarButtonText>Voltar</CancelarButtonText>
-            </CancelarButton>
+              <DeleteButtonBox>
+                <DeleteButton onPress={handleDeleteDiagnostic}>
+                  <DeleteButtonText>Excluir</DeleteButtonText>
+                </DeleteButton>
+                <SubmitButton style={{ width: 125 }} onPress={handleUpdateDiagnostic}>
+                  {loading ? (
+                    <ActivityIndicator size="small" color="#333" />
+                  ) : (
+                      <SubmitButtonText>Salvar</SubmitButtonText>
+                    )}
+                </SubmitButton>
+              </DeleteButtonBox>
+              <CancelarButton onPress={() => setIsVisible(false)}>
+                <CancelarButtonText>Voltar</CancelarButtonText>
+              </CancelarButton>
 
-          </FormContainer>
+            </FormContainer>
 
-        </Content>
-      </Container>
-    </LinearGradient>
-  );
+          </Content>
+        </Container>
+      </LinearGradient>
+    );
+  }
 }

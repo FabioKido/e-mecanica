@@ -3,6 +3,7 @@ import {
   Keyboard,
   ActivityIndicator,
   Alert,
+  Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TextInputMask } from 'react-native-masked-text';
@@ -15,6 +16,8 @@ import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
 import api from '../../../services/api';
 import { getUserInfo } from '../../../services/infos';
+
+import LoadGif from '../../../assets/loading.gif';
 
 import {
   Container,
@@ -41,11 +44,11 @@ export default function Profile() {
   const [email, setEmail] = useState('');
 
   const [loading, setLoading] = useState(false);
+  const [first_loading, setFirstLoading] = useState(true);
 
   useEffect(() => {
     async function getInfos() {
       try {
-        setLoading(true);
 
         const response = await getUserInfo();
         const { contact } = response.data.data;
@@ -56,7 +59,7 @@ export default function Profile() {
       } catch (err) {
         console.log(err);
       } finally {
-        setLoading(false);
+        setFirstLoading(false);
       }
     }
 
@@ -99,106 +102,117 @@ export default function Profile() {
     phone
   ]);
 
-  return (
-    <LinearGradient
-      colors={['#2b475c', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>Contato</Title>
-            <Description>
-              Atualize suas informaçoes de contato editando os campos abaixo, logo depois, clique em Salvar.
+  if (first_loading) {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
+      </LinearGradient>
+    );
+  } else {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>Contato</Title>
+              <Description>
+                Atualize suas informaçoes de contato editando os campos abaixo, logo depois, clique em Salvar.
           </Description>
 
-            <InputTitle>Celular</InputTitle>
-            <InputContainer>
-              <TextInputMask
-                placeholder="Digite o número do celular"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="phone-pad"
-                maxLength={15}
-                type={'cel-phone'}
-                options={{
-                  maskType: 'BRL',
-                  withDDD: true,
-                  dddMask: '(99) '
-                }}
-                style={{
-                  height: 48,
-                  fontSize: 17,
-                  color: '#FFF',
-                  flex: 1
-                }}
-                placeholderTextColor='#5f6368'
-                onChangeText={text => setCelphone(text)}
-                value={celphone}
-                returnKeyType="next"
-                onSubmitEditing={() => phoneInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Celular</InputTitle>
+              <InputContainer>
+                <TextInputMask
+                  placeholder="Digite o número do celular"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="phone-pad"
+                  maxLength={15}
+                  type={'cel-phone'}
+                  options={{
+                    maskType: 'BRL',
+                    withDDD: true,
+                    dddMask: '(99) '
+                  }}
+                  style={{
+                    height: 48,
+                    fontSize: 17,
+                    color: '#FFF',
+                    flex: 1
+                  }}
+                  placeholderTextColor='#5f6368'
+                  onChangeText={text => setCelphone(text)}
+                  value={celphone}
+                  returnKeyType="next"
+                  onSubmitEditing={() => phoneInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Telefone</InputTitle>
-            <InputContainer>
-              <TextInputMask
-                placeholder="Digite o número do telefone"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="phone-pad"
-                maxLength={15}
-                type={'cel-phone'}
-                options={{
-                  maskType: 'BRL',
-                  withDDD: true,
-                  dddMask: '(99) '
-                }}
-                style={{
-                  height: 48,
-                  fontSize: 17,
-                  color: '#FFF',
-                  flex: 1
-                }}
-                placeholderTextColor='#5f6368'
-                ref={phoneInputRef}
-                onChangeText={text => setPhone(text)}
-                value={phone}
-                returnKeyType="next"
-                onSubmitEditing={() => eMailInputRef.current.focus()}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Telefone</InputTitle>
+              <InputContainer>
+                <TextInputMask
+                  placeholder="Digite o número do telefone"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="phone-pad"
+                  maxLength={15}
+                  type={'cel-phone'}
+                  options={{
+                    maskType: 'BRL',
+                    withDDD: true,
+                    dddMask: '(99) '
+                  }}
+                  style={{
+                    height: 48,
+                    fontSize: 17,
+                    color: '#FFF',
+                    flex: 1
+                  }}
+                  placeholderTextColor='#5f6368'
+                  ref={phoneInputRef}
+                  onChangeText={text => setPhone(text)}
+                  value={phone}
+                  returnKeyType="next"
+                  onSubmitEditing={() => eMailInputRef.current.focus()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>E-mail</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Seu endereço de e-mail"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="email-address"
-                ref={eMailInputRef}
-                onChangeText={setEmail}
-                value={email}
-                returnKeyType={'send'}
-                onSubmitEditing={handleSaveProfile}
-              />
-              <MaterialIcons name="mail-outline" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>E-mail</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Seu endereço de e-mail"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="email-address"
+                  ref={eMailInputRef}
+                  onChangeText={setEmail}
+                  value={email}
+                  returnKeyType={'send'}
+                  onSubmitEditing={handleSaveProfile}
+                />
+                <MaterialIcons name="mail-outline" size={20} color="#999" />
+              </InputContainer>
 
-            <SubmitButton onPress={handleSaveProfile}>
-              {loading ? (
-                <ActivityIndicator size="small" color="#333" />
-              ) : (
-                  <SubmitButtonText>Salvar</SubmitButtonText>
-                )}
-            </SubmitButton>
-          </FormContainer>
-        </Content>
-      </Container>
-    </LinearGradient>
-  );
+              <SubmitButton onPress={handleSaveProfile}>
+                {loading ? (
+                  <ActivityIndicator size="small" color="#333" />
+                ) : (
+                    <SubmitButtonText>Salvar</SubmitButtonText>
+                  )}
+              </SubmitButton>
+            </FormContainer>
+          </Content>
+        </Container>
+      </LinearGradient>
+    );
+  }
 }
 
 Profile.navigationOptions = {

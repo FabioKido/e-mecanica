@@ -38,7 +38,7 @@ export default function Dashboard() {
   const [customer_type, setCustomerType] = useState('');
   const [customer_value, setCustomerValue] = useState(0);
   const [customer_index, setCustomerIndex] = useState(0);
-  const [fabricator_value, setFabricatorValue] = useState('Clique na Cor');
+  const [fabricator_value, setFabricatorValue] = useState('');
   const [fabricator_index, setFabricatorIndex] = useState(1);
   const [model_label, setModelLabel] = useState('');
   const [model_value, setModelValue] = useState(0);
@@ -154,9 +154,16 @@ export default function Dashboard() {
                     scale={scale.scaleBand}
                     formatLabel={(_, index) => fabData[index].label}
                   />
-                  <CardName style={{ color: colors[fabricator_index], alignSelf: 'center' }}>
-                    {fabricator_value}
-                  </CardName>
+                  {fabricator_value ?
+                    <CardName style={{ color: colors[fabricator_index], alignSelf: 'center' }}>
+                      {`Veículos - ${fabricator_value}`}
+                    </CardName>
+                    :
+                    <CardName style={{ color: colors[fabricator_index], alignSelf: 'center' }}>
+                      Clique na Cor
+                    </CardName>
+                  }
+
                 </CardInfo>
               </Card>
 

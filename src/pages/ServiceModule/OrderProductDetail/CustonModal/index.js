@@ -3,14 +3,13 @@ import {
   ActivityIndicator,
   Alert,
   Keyboard,
-  Picker
+  Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import moment from 'moment';
-import DatePicker from 'react-native-datepicker';
 
-import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import {
   Container,
@@ -19,12 +18,8 @@ import {
   InputContainer,
   Title,
   Description,
-  TitleSection,
   InputTitle,
   Input,
-  SwitchContainer,
-  ChoiceButton,
-  ChoiceText,
   SubmitButton,
   SubmitButtonText,
   DeleteButtonBox,
@@ -35,7 +30,7 @@ import {
 } from './styles';
 
 import api from '../../../../services/api';
-import CheckBox from "../../../../components/CheckBox";
+import LoadGif from '../../../../assets/loading.gif';
 
 export default function CustonModal({ order_product_detail, setIsVisible, reloadOrderProductDetails }) {
 
@@ -52,9 +47,9 @@ export default function CustonModal({ order_product_detail, setIsVisible, reload
   const [total_price, setTotalPrice] = useState(order_product_detail.total_sale);
 
   const [date, setDate] = useState(() => moment(acquisition).format('DD-MM-YYYY'));
-  const [first_loading, setFirstLoading] = useState(true);
 
   const [loading, setLoading] = useState(false);
+  const [first_loading, setFirstLoading] = useState(true);
 
   useEffect(() => {
 
@@ -154,7 +149,7 @@ export default function CustonModal({ order_product_detail, setIsVisible, reload
         colors={['#2b475c', '#000']}
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
       >
-        <ActivityIndicator size="small" color="#fff" />
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
       </LinearGradient>
     );
   } else {

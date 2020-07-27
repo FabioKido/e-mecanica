@@ -3,7 +3,8 @@ import {
   ActivityIndicator,
   Alert,
   Keyboard,
-  Picker
+  Picker,
+  Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -33,6 +34,7 @@ import {
 import api from '../../../../services/api';
 
 import CheckBox from '../../../../components/CheckBox';
+import LoadGif from '../../../../assets/loading.gif';
 
 export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeDetails, id_recipe }) {
 
@@ -54,6 +56,7 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
 
   const [date, setDate] = useState(() => vencimento ? moment(vencimento).format('DD-MM-YYYY') : '');
   const [loading, setLoading] = useState(false);
+  const [first_loading, setFirstLoading] = useState(true);
 
   useEffect(() => {
     async function loadMethodsAndAccounts() {
@@ -69,6 +72,8 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
         setMethods(payment_methods);
       } catch (err) {
         console.log(err);
+      } finally {
+        setFirstLoading(false);
       }
     }
 
@@ -129,164 +134,175 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
     account_destiny
   ]);
 
-  return (
-    <LinearGradient
-      colors={['#2b5b2e', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>Parcela - {recipe_detail.document_number}</Title>
-            <Description>
-              Edite essa parcela como quiser.
+  if (first_loading) {
+    return (
+      <LinearGradient
+        colors={['#2b5b2e', '#000']}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
+      </LinearGradient>
+    );
+  } else {
+    return (
+      <LinearGradient
+        colors={['#2b5b2e', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>Parcela - {recipe_detail.document_number}</Title>
+              <Description>
+                Edite essa parcela como quiser.
             </Description>
 
-            <InputTitle>Método de Pagamento</InputTitle>
-            <InputPicker>
-              <Picker
-                selectedValue={payment_method}
-                style={{
-                  flex: 1,
-                  color: '#f8a920',
-                  backgroundColor: 'transparent',
-                  fontSize: 17
-                }}
-                onValueChange={(itemValue, itemIndex) => setPayment_method(itemValue)}
-              >
-                <Picker.Item label="Selecione o Método de Pagamento" value="" />
-                {methods && methods.map(method => <Picker.Item key={method.id} label={method.method} value={method.id} />)}
-              </Picker>
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputPicker>
+              <InputTitle>Método de Pagamento</InputTitle>
+              <InputPicker>
+                <Picker
+                  selectedValue={payment_method}
+                  style={{
+                    flex: 1,
+                    color: '#f8a920',
+                    backgroundColor: 'transparent',
+                    fontSize: 17
+                  }}
+                  onValueChange={(itemValue, itemIndex) => setPayment_method(itemValue)}
+                >
+                  <Picker.Item label="Selecione o Método de Pagamento" value="" />
+                  {methods && methods.map(method => <Picker.Item key={method.id} label={method.method} value={method.id} />)}
+                </Picker>
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputPicker>
 
-            <InputTitle>Conta de Destino</InputTitle>
-            <InputPicker>
-              <Picker
-                selectedValue={account_destiny}
-                style={{
-                  flex: 1,
-                  color: '#f8a920',
-                  backgroundColor: 'transparent',
-                  fontSize: 17
-                }}
-                onValueChange={(itemValue, itemIndex) => setAccount_destiny(itemValue)}
-              >
-                <Picker.Item label="Selecione a Conta de Destino" value="" />
-                {accounts && accounts.map(account => <Picker.Item key={account.id} label={account.title} value={account.id} />)}
-              </Picker>
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputPicker>
+              <InputTitle>Conta de Destino</InputTitle>
+              <InputPicker>
+                <Picker
+                  selectedValue={account_destiny}
+                  style={{
+                    flex: 1,
+                    color: '#f8a920',
+                    backgroundColor: 'transparent',
+                    fontSize: 17
+                  }}
+                  onValueChange={(itemValue, itemIndex) => setAccount_destiny(itemValue)}
+                >
+                  <Picker.Item label="Selecione a Conta de Destino" value="" />
+                  {accounts && accounts.map(account => <Picker.Item key={account.id} label={account.title} value={account.id} />)}
+                </Picker>
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputPicker>
 
-            <InputTitle>Valor</InputTitle>
-            <InputContainer>
-              <Input
-                name='value'
-                editable={false}
-                style={{ color: '#f8a920' }}
-                value={String(value)}
-              />
-              <FontAwesome5 name="file-invoice-dollar" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Valor</InputTitle>
+              <InputContainer>
+                <Input
+                  name='value'
+                  editable={false}
+                  style={{ color: '#f8a920' }}
+                  value={String(value)}
+                />
+                <FontAwesome5 name="file-invoice-dollar" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Vencimento</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Clique no calendário para editar"
-                editable={false}
-                value={date}
-              />
-              <DatePicker
-                date={date}
-                is24Hour={true}
-                format="DD-MM-YYYY"
-                minDate="01-01-2001"
-                maxDate="31-12-2030"
-                hideText={true}
-                iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
-                style={{
-                  width: 21
-                }}
-                onDateChange={onDateChange}
-              />
-            </InputContainer>
+              <InputTitle>Vencimento</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Clique no calendário para editar"
+                  editable={false}
+                  value={date}
+                />
+                <DatePicker
+                  date={date}
+                  is24Hour={true}
+                  format="DD-MM-YYYY"
+                  minDate="01-01-2001"
+                  maxDate="31-12-2030"
+                  hideText={true}
+                  iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
+                  style={{
+                    width: 21
+                  }}
+                  onDateChange={onDateChange}
+                />
+              </InputContainer>
 
-            <InputTitle>Número do Documento</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite o número do documento"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="numeric"
-                maxLength={60}
-                onChangeText={setDocument_number}
-                value={String(document_number)}
-                returnKeyType="next"
-                onSubmitEditing={() => taxaAjusteInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Número do Documento</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Digite o número do documento"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="numeric"
+                  maxLength={60}
+                  onChangeText={setDocument_number}
+                  value={String(document_number)}
+                  returnKeyType="next"
+                  onSubmitEditing={() => taxaAjusteInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Taxa de Ajuste</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder={`Taxa de ajuste atual: ${recipe_detail.taxa_ajuste}`}
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="numeric"
-                maxLength={60}
-                onChangeText={setTaxa_ajuste}
-                value={taxa_ajuste}
-                ref={taxaAjusteInputRef}
-                returnKeyType="next"
-                onSubmitEditing={() => observationInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Taxa de Ajuste</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder={`Taxa de ajuste atual: ${recipe_detail.taxa_ajuste}`}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="numeric"
+                  maxLength={60}
+                  onChangeText={setTaxa_ajuste}
+                  value={taxa_ajuste}
+                  ref={taxaAjusteInputRef}
+                  returnKeyType="next"
+                  onSubmitEditing={() => observationInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Observações</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Algo a observar referente a parcela"
-                autoCapitalize="none"
-                autoCorrect={false}
-                maxLength={60}
-                onChangeText={setObservation}
-                value={observation}
-                ref={observationInputRef}
-                returnKeyType="next"
-                onSubmitEditing={() => Keyboard.dismiss()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Observações</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Algo a observar referente a parcela"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  maxLength={60}
+                  onChangeText={setObservation}
+                  value={observation}
+                  ref={observationInputRef}
+                  returnKeyType="next"
+                  onSubmitEditing={() => Keyboard.dismiss()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <SwitchContainer>
-              <ChoiceText>Parcela Recebida?</ChoiceText>
+              <SwitchContainer>
+                <ChoiceText>Parcela Recebida?</ChoiceText>
 
-              <CheckBox
-                iconColor="#f8a920"
-                checkColor="#f8a920"
-                value={paid_out}
-                onChange={() => setPaidOut(!paid_out)}
-              />
-            </SwitchContainer>
+                <CheckBox
+                  iconColor="#f8a920"
+                  checkColor="#f8a920"
+                  value={paid_out}
+                  onChange={() => setPaidOut(!paid_out)}
+                />
+              </SwitchContainer>
 
-            <SubmitButton onPress={handleUpdateRecipeDetail}>
-              {loading ? (
-                <ActivityIndicator size="small" color="#333" />
-              ) : (
-                  <SubmitButtonText>Salvar</SubmitButtonText>
-                )}
-            </SubmitButton>
+              <SubmitButton onPress={handleUpdateRecipeDetail}>
+                {loading ? (
+                  <ActivityIndicator size="small" color="#333" />
+                ) : (
+                    <SubmitButtonText>Salvar</SubmitButtonText>
+                  )}
+              </SubmitButton>
 
-            <CancelarButton onPress={() => setIsVisible(false)}>
-              <CancelarButtonText>Voltar</CancelarButtonText>
-            </CancelarButton>
+              <CancelarButton onPress={() => setIsVisible(false)}>
+                <CancelarButtonText>Voltar</CancelarButtonText>
+              </CancelarButton>
 
-          </FormContainer>
+            </FormContainer>
 
-        </Content>
-      </Container>
-    </LinearGradient>
-  );
+          </Content>
+        </Container>
+      </LinearGradient>
+    );
+  }
 }

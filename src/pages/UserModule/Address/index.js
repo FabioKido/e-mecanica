@@ -3,7 +3,8 @@ import {
   Keyboard,
   ActivityIndicator,
   Alert,
-  Picker
+  Picker,
+  Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -15,6 +16,8 @@ import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
 import api from '../../../services/api';
 import { getUserInfo } from '../../../services/infos';
+
+import LoadGif from '../../../assets/loading.gif';
 
 import {
   Container,
@@ -46,6 +49,7 @@ export default function Profile() {
   const [uf, setUf] = useState('');
 
   const [loading, setLoading] = useState(false);
+  const [first_loading, setFirstLoading] = useState(true);
 
   const states = [
     { uf: 'AC', name: 'Acre - AC' },
@@ -80,7 +84,6 @@ export default function Profile() {
   useEffect(() => {
     async function getInfos() {
       try {
-        setLoading(true);
 
         const response = await getUserInfo();
         const { address } = response.data.data;
@@ -94,7 +97,7 @@ export default function Profile() {
       } catch (err) {
         console.log(err);
       } finally {
-        setLoading(false);
+        setFirstLoading(false);
       }
     }
 
@@ -139,124 +142,135 @@ export default function Profile() {
     uf
   ]);
 
-  return (
-    <LinearGradient
-      colors={['#2b475c', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>Endereço</Title>
-            <Description>
-              Atualize suas informaçoes de endereço editando os campos abaixo, logo depois, clique em Salvar.
+  if (first_loading) {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
+      </LinearGradient>
+    );
+  } else {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>Endereço</Title>
+              <Description>
+                Atualize suas informaçoes de endereço editando os campos abaixo, logo depois, clique em Salvar.
           </Description>
 
-            <InputTitle>Logradouro</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite uma rua/av/outros"
-                autoCapitalize="words"
-                autoCorrect={false}
-                onChangeText={setStreet}
-                value={street}
-                returnKeyType="next"
-                onSubmitEditing={() => numberInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Logradouro</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Digite uma rua/av/outros"
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  onChangeText={setStreet}
+                  value={street}
+                  returnKeyType="next"
+                  onSubmitEditing={() => numberInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Número</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite o nº do local"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="numeric"
-                ref={numberInputRef}
-                onChangeText={setNumber}
-                value={number === null ? '' : String(number)}
-                returnKeyType="next"
-                onSubmitEditing={() => neighborhoodInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Número</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Digite o nº do local"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="numeric"
+                  ref={numberInputRef}
+                  onChangeText={setNumber}
+                  value={number === null ? '' : String(number)}
+                  returnKeyType="next"
+                  onSubmitEditing={() => neighborhoodInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Bairro</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite o nome do bairro"
-                autoCapitalize="words"
-                autoCorrect={false}
-                ref={neighborhoodInputRef}
-                onChangeText={setNeighborhood}
-                value={neighborhood}
-                returnKeyType="next"
-                onSubmitEditing={() => complementInputRef.current.focus()}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Bairro</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Digite o nome do bairro"
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  ref={neighborhoodInputRef}
+                  onChangeText={setNeighborhood}
+                  value={neighborhood}
+                  returnKeyType="next"
+                  onSubmitEditing={() => complementInputRef.current.focus()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Complemento</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Complemente se necessário"
-                autoCapitalize="none"
-                autoCorrect={false}
-                ref={complementInputRef}
-                onChangeText={setComplement}
-                value={complement}
-                returnKeyType="next"
-                onSubmitEditing={() => cityInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Complemento</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Complemente se necessário"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  ref={complementInputRef}
+                  onChangeText={setComplement}
+                  value={complement}
+                  returnKeyType="next"
+                  onSubmitEditing={() => cityInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Cidade</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Sua cidade atual"
-                autoCapitalize="words"
-                autoCorrect={false}
-                ref={cityInputRef}
-                onChangeText={setCity}
-                value={city}
-                returnKeyType="next"
-                onSubmitEditing={() => Keyboard.dismiss()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Cidade</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Sua cidade atual"
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  ref={cityInputRef}
+                  onChangeText={setCity}
+                  value={city}
+                  returnKeyType="next"
+                  onSubmitEditing={() => Keyboard.dismiss()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>UF</InputTitle>
-            <InputContainer>
-              <Picker
-                selectedValue={uf}
-                style={{
-                  flex: 1,
-                  color: '#f8a920',
-                  backgroundColor: 'transparent',
-                  fontSize: 17
-                }}
-                onValueChange={(itemValue, itemIndex) => setUf(itemValue)}
-              >
-                <Picker.Item label='Selecione a UF' value={uf} />
-                {states && states.map(state => <Picker.Item key={state.uf} label={state.name} value={state.uf} />)}
-              </Picker>
-              <MaterialIcons name="mail-outline" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>UF</InputTitle>
+              <InputContainer>
+                <Picker
+                  selectedValue={uf}
+                  style={{
+                    flex: 1,
+                    color: '#f8a920',
+                    backgroundColor: 'transparent',
+                    fontSize: 17
+                  }}
+                  onValueChange={(itemValue, itemIndex) => setUf(itemValue)}
+                >
+                  <Picker.Item label='Selecione a UF' value={uf} />
+                  {states && states.map(state => <Picker.Item key={state.uf} label={state.name} value={state.uf} />)}
+                </Picker>
+                <MaterialIcons name="mail-outline" size={20} color="#999" />
+              </InputContainer>
 
-            <SubmitButton onPress={handleSaveProfile}>
-              {loading ? (
-                <ActivityIndicator size="small" color="#333" />
-              ) : (
-                  <SubmitButtonText>Salvar</SubmitButtonText>
-                )}
-            </SubmitButton>
-          </FormContainer>
-        </Content>
-      </Container>
-    </LinearGradient>
-  );
+              <SubmitButton onPress={handleSaveProfile}>
+                {loading ? (
+                  <ActivityIndicator size="small" color="#333" />
+                ) : (
+                    <SubmitButtonText>Salvar</SubmitButtonText>
+                  )}
+              </SubmitButton>
+            </FormContainer>
+          </Content>
+        </Container>
+      </LinearGradient>
+    );
+  }
 }
 
 Profile.navigationOptions = {

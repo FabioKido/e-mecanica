@@ -3,7 +3,8 @@ import {
   ActivityIndicator,
   Alert,
   Keyboard,
-  Picker
+  Picker,
+  Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TextInputMask } from 'react-native-masked-text';
@@ -36,6 +37,7 @@ import {
 
 import api from '../../../../services/api';
 import CheckBox from "../../../../components/CheckBox";
+import LoadGif from '../../../../assets/loading.gif';
 
 export default function CustonModal({ product, setIsVisible, reloadProducts }) {
 
@@ -194,7 +196,7 @@ export default function CustonModal({ product, setIsVisible, reloadProducts }) {
         colors={['#2b475c', '#000']}
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
       >
-        <ActivityIndicator size="small" color="#fff" />
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
       </LinearGradient>
     );
   } else {
@@ -487,6 +489,21 @@ export default function CustonModal({ product, setIsVisible, reloadProducts }) {
                 <MaterialIcons name="lock" size={20} color="#999" />
               </InputContainer>
 
+              <InputTitle>Observações</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Algo do produto a ser observado"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  ref={observationsInputRef}
+                  onChangeText={setObservations}
+                  value={observations}
+                  returnKeyType="send"
+                  onSubmitEditing={() => Keyboard.dismiss()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
+
               <SwitchContainer>
                 <ChoiceText>Produto para Reposição?</ChoiceText>
                 <CheckBox
@@ -496,21 +513,6 @@ export default function CustonModal({ product, setIsVisible, reloadProducts }) {
                   onChange={() => setRepos(!repos)}
                 />
               </SwitchContainer>
-
-              <InputTitle>Observações</InputTitle>
-              <InputContainer>
-                <Input
-                  placeholder="Algo a ser observado sobre o produto"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  ref={observationsInputRef}
-                  onChangeText={setObservations}
-                  value={observations}
-                  returnKeyType="send"
-                  onSubmitEditing={handleUpdateProduct}
-                />
-                <MaterialIcons name="lock" size={20} color="#999" />
-              </InputContainer>
 
               <DeleteButtonBox>
                 <DeleteButton onPress={handleDeleteProduct}>

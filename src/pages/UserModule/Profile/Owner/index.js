@@ -3,7 +3,8 @@ import {
   ActivityIndicator,
   Alert,
   Keyboard,
-  Picker
+  Picker,
+  Image
 } from 'react-native';
 import { TextInputMask } from 'react-native-masked-text';
 
@@ -18,6 +19,7 @@ import { useSelector } from 'react-redux';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
 import api from '../../../../services/api';
+import LoadGif from '../../../../assets/loading.gif';
 
 import {
   Container,
@@ -50,20 +52,11 @@ export default function Owner() {
 
   const [date, setDate] = useState();
   const [loading, setLoading] = useState(false);
-
-  const onDateChange = date => {
-    setDate(date);
-
-    const momentObj = moment(date, 'DD-MM-YYYY');
-
-    setBirthday(momentObj);
-  };
+  const [first_loading, setFirstLoading] = useState(true);
 
   useEffect(() => {
     async function getInfos() {
       try {
-        setLoading(true);
-
         const response = await api.get(`/user/owner/${profile.id}`);
         const {
           id,
@@ -88,12 +81,20 @@ export default function Owner() {
       } catch (err) {
         console.log(err);
       } finally {
-        setLoading(false);
+        setFirstLoading(false);
       }
     }
 
     getInfos();
   }, []);
+
+  const onDateChange = date => {
+    setDate(date);
+
+    const momentObj = moment(date, 'DD-MM-YYYY');
+
+    setBirthday(momentObj);
+  };
 
   const handleSaveOwner = useCallback(async () => {
     Keyboard.dismiss();
@@ -132,140 +133,151 @@ export default function Owner() {
     orgao_expeditor
   ]);
 
-  return (
-    <LinearGradient
-      colors={['#2b475c', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>Perfil</Title>
-            <Description>
-              Atualize suas informaçoes pessoais editando os campos abaixo, logo depois, clique em Salvar.
+  if (first_loading) {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
+      </LinearGradient>
+    );
+  } else {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>Perfil</Title>
+              <Description>
+                Atualize suas informaçoes pessoais editando os campos abaixo, logo depois, clique em Salvar.
           </Description>
 
-            <InputTitle>Nome</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite seu nome"
-                autoCapitalize="words"
-                autoCorrect={false}
-                onChangeText={setName}
-                value={name}
-                returnKeyType="next"
-                onSubmitEditing={() => Keyboard.dismiss()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Nome</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Digite seu nome"
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  onChangeText={setName}
+                  value={name}
+                  returnKeyType="next"
+                  onSubmitEditing={() => Keyboard.dismiss()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Sexo</InputTitle>
-            <InputContainer>
-              <Picker
-                selectedValue={sex}
-                style={{
-                  flex: 1,
-                  color: '#f8a920',
-                  backgroundColor: 'transparent',
-                  fontSize: 17
-                }}
-                onValueChange={(itemValue, itemIndex) => setSex(itemValue)}
-              >
-                <Picker.Item label='Selecione o Sexo' value={sex} />
-                <Picker.Item label='Masculino' value='M' />
-                <Picker.Item label='Feminino' value='F' />
-              </Picker>
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Sexo</InputTitle>
+              <InputContainer>
+                <Picker
+                  selectedValue={sex}
+                  style={{
+                    flex: 1,
+                    color: '#f8a920',
+                    backgroundColor: 'transparent',
+                    fontSize: 17
+                  }}
+                  onValueChange={(itemValue, itemIndex) => setSex(itemValue)}
+                >
+                  <Picker.Item label='Selecione o Sexo' value={sex} />
+                  <Picker.Item label='Masculino' value='M' />
+                  <Picker.Item label='Feminino' value='F' />
+                </Picker>
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Aniversário</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Clique no calendário para editar"
-                editable={false}
-                value={date}
-              />
-              <DatePicker
-                date={date}
-                is24Hour={true}
-                format="DD-MM-YYYY"
-                minDate="01-01-2001"
-                maxDate="31-12-2030"
-                hideText={true}
-                iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
-                style={{
-                  width: 21
-                }}
-                onDateChange={onDateChange}
-              />
-            </InputContainer>
+              <InputTitle>Aniversário</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Clique no calendário para editar"
+                  editable={false}
+                  value={date}
+                />
+                <DatePicker
+                  date={date}
+                  is24Hour={true}
+                  format="DD-MM-YYYY"
+                  minDate="01-01-2001"
+                  maxDate="31-12-2030"
+                  hideText={true}
+                  iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
+                  style={{
+                    width: 21
+                  }}
+                  onDateChange={onDateChange}
+                />
+              </InputContainer>
 
-            <InputTitle>CPF</InputTitle>
-            <InputContainer>
-              <TextInputMask
-                placeholder="Número do seu CPF"
-                autoCapitalize="none"
-                autoCorrect={false}
-                maxLength={14}
-                type={'cpf'}
-                ref={cpfInputRef}
-                onChangeText={text => setCPF(text)}
-                value={cpf}
-                style={{
-                  height: 48,
-                  fontSize: 17,
-                  color: '#FFF',
-                  flex: 1
-                }}
-                placeholderTextColor='#5f6368'
-                returnKeyType="next"
-                onSubmitEditing={() => rgInputRef.current.focus()}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>CPF</InputTitle>
+              <InputContainer>
+                <TextInputMask
+                  placeholder="Número do seu CPF"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  maxLength={14}
+                  type={'cpf'}
+                  ref={cpfInputRef}
+                  onChangeText={text => setCPF(text)}
+                  value={cpf}
+                  style={{
+                    height: 48,
+                    fontSize: 17,
+                    color: '#FFF',
+                    flex: 1
+                  }}
+                  placeholderTextColor='#5f6368'
+                  returnKeyType="next"
+                  onSubmitEditing={() => rgInputRef.current.focus()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>RG</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite o seu RG"
-                autoCapitalize="characters"
-                autoCorrect={false}
-                maxLength={14}
-                ref={rgInputRef}
-                onChangeText={setRG}
-                value={rg}
-                returnKeyType="next"
-                onSubmitEditing={() => orgaoExpeditorInputRef.current.focus()}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>RG</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Digite o seu RG"
+                  autoCapitalize="characters"
+                  autoCorrect={false}
+                  maxLength={14}
+                  ref={rgInputRef}
+                  onChangeText={setRG}
+                  value={rg}
+                  returnKeyType="next"
+                  onSubmitEditing={() => orgaoExpeditorInputRef.current.focus()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Orgão Expeditor</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Orgão de expedição SSP/Outros"
-                autoCapitalize="none"
-                autoCorrect={false}
-                maxLength={30}
-                ref={orgaoExpeditorInputRef}
-                onChangeText={setOrgaoExpeditor}
-                value={orgao_expeditor}
-                returnKeyType="send"
-                onSubmitEditing={handleSaveOwner}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Orgão Expeditor</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Orgão de expedição SSP/Outros"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  maxLength={30}
+                  ref={orgaoExpeditorInputRef}
+                  onChangeText={setOrgaoExpeditor}
+                  value={orgao_expeditor}
+                  returnKeyType="send"
+                  onSubmitEditing={handleSaveOwner}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <SubmitButton onPress={handleSaveOwner}>
-              {loading ? (
-                <ActivityIndicator size="small" color="#333" />
-              ) : (
-                  <SubmitButtonText>Salvar</SubmitButtonText>
-                )}
-            </SubmitButton>
-          </FormContainer>
-        </Content>
-      </Container>
-    </LinearGradient>
-  );
+              <SubmitButton onPress={handleSaveOwner}>
+                {loading ? (
+                  <ActivityIndicator size="small" color="#333" />
+                ) : (
+                    <SubmitButtonText>Salvar</SubmitButtonText>
+                  )}
+              </SubmitButton>
+            </FormContainer>
+          </Content>
+        </Container>
+      </LinearGradient>
+    );
+  }
 }

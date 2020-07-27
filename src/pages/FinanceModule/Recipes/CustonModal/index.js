@@ -3,7 +3,8 @@ import {
   ActivityIndicator,
   Alert,
   Keyboard,
-  Picker
+  Picker,
+  Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -36,6 +37,8 @@ import {
 import api from '../../../../services/api';
 import NavigationService from '../../../../services/navigation';
 
+import LoadGif from '../../../../assets/loading.gif';
+
 export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
 
   const descriptionInputRef = useRef();
@@ -51,6 +54,7 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
 
   const [date, setDate] = useState(() => date_recipe ? moment(date_recipe).format('DD-MM-YYYY') : '');
   const [loading, setLoading] = useState(false);
+  const [first_loading, setFirstLoading] = useState(true);
 
   useEffect(() => {
 
@@ -63,6 +67,8 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
         setCategories(categories);
       } catch (err) {
         console.log(err);
+      } finally {
+        setFirstLoading(false);
       }
     }
 
@@ -137,131 +143,142 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
     observations
   ]);
 
-  return (
-    <LinearGradient
-      colors={['#2b5b2e', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>{recipe.description}</Title>
-            <Description>
-              Edite ou exclua essa receita como quiser. Porem, ao atualizar o valor total, as taxas da(s) parcela(s) continuarão valendo.
+  if (first_loading) {
+    return (
+      <LinearGradient
+        colors={['#2b5b2e', '#000']}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
+      </LinearGradient>
+    );
+  } else {
+    return (
+      <LinearGradient
+        colors={['#2b5b2e', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>{recipe.description}</Title>
+              <Description>
+                Edite ou exclua essa receita como quiser. Porem, ao atualizar o valor total, as taxas da(s) parcela(s) continuarão valendo.
             </Description>
 
-            <InputTitle>Categoria</InputTitle>
-            <InputPicker>
-              <Picker
-                selectedValue={id_category}
-                style={{
-                  flex: 1,
-                  color: '#f8a920',
-                  backgroundColor: 'transparent',
-                  fontSize: 17
-                }}
-                onValueChange={(itemValue, itemIndex) => setIdCategory(itemValue)}
+              <InputTitle>Categoria</InputTitle>
+              <InputPicker>
+                <Picker
+                  selectedValue={id_category}
+                  style={{
+                    flex: 1,
+                    color: '#f8a920',
+                    backgroundColor: 'transparent',
+                    fontSize: 17
+                  }}
+                  onValueChange={(itemValue, itemIndex) => setIdCategory(itemValue)}
+                >
+                  <Picker.Item label="Selecione a Categoria" value="" />
+                  {categories && categories.map(category => <Picker.Item key={category.id} label={category.description} value={category.id} />)}
+                </Picker>
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputPicker>
+
+              <InputTitle>Valor Total</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Valor total da receita"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="numeric"
+                  maxLength={60}
+                  onChangeText={setTotalValue}
+                  value={total_value}
+                  returnKeyType="next"
+                  onSubmitEditing={() => descriptionInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
+
+              <InputTitle>Descrição</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Breve descrição"
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  ref={descriptionInputRef}
+                  onChangeText={setDescription}
+                  value={description}
+                  returnKeyType="next"
+                  onSubmitEditing={() => observationsInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
+
+              <InputTitle>Data</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Clique no calendário para editar"
+                  editable={false}
+                  value={date}
+                />
+                <DatePicker
+                  date={date}
+                  is24Hour={true}
+                  format="DD-MM-YYYY"
+                  minDate="01-01-2001"
+                  maxDate="31-12-2030"
+                  hideText={true}
+                  iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
+                  style={{
+                    width: 21
+                  }}
+                  onDateChange={onDateChange}
+                />
+              </InputContainer>
+
+              <InputTitle>Observações</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Algo a ser observado"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  ref={observationsInputRef}
+                  onChangeText={setObservations}
+                  value={observations}
+                  returnKeyType="send"
+                  onSubmitEditing={handleUpdateRecipe}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
+
+              <ChoiceButton
+                onPress={handleNavigateToDetailPage}
               >
-                <Picker.Item label="Selecione a Categoria" value="" />
-                {categories && categories.map(category => <Picker.Item key={category.id} label={category.description} value={category.id} />)}
-              </Picker>
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputPicker>
+                <ChoiceText>Ir para Parcelas?</ChoiceText>
+              </ChoiceButton>
 
-            <InputTitle>Valor Total</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Valor total da receita"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="numeric"
-                maxLength={60}
-                onChangeText={setTotalValue}
-                value={total_value}
-                returnKeyType="next"
-                onSubmitEditing={() => descriptionInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <DeleteButtonBox>
+                <DeleteButton onPress={handleDeleteRecipe}>
+                  <DeleteButtonText>Excluir</DeleteButtonText>
+                </DeleteButton>
+                <SubmitButton style={{ width: 125 }} onPress={handleUpdateRecipe}>
+                  {loading ? (
+                    <ActivityIndicator size="small" color="#333" />
+                  ) : (
+                      <SubmitButtonText>Salvar</SubmitButtonText>
+                    )}
+                </SubmitButton>
+              </DeleteButtonBox>
+              <CancelarButton onPress={() => setIsVisible(false)}>
+                <CancelarButtonText>Voltar</CancelarButtonText>
+              </CancelarButton>
 
-            <InputTitle>Descrição</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Breve descrição"
-                autoCapitalize="words"
-                autoCorrect={false}
-                ref={descriptionInputRef}
-                onChangeText={setDescription}
-                value={description}
-                returnKeyType="next"
-                onSubmitEditing={() => observationsInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+            </FormContainer>
 
-            <InputTitle>Data</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Clique no calendário para editar"
-                editable={false}
-                value={date}
-              />
-              <DatePicker
-                date={date}
-                is24Hour={true}
-                format="DD-MM-YYYY"
-                minDate="01-01-2001"
-                maxDate="31-12-2030"
-                hideText={true}
-                iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
-                style={{
-                  width: 21
-                }}
-                onDateChange={onDateChange}
-              />
-            </InputContainer>
-
-            <InputTitle>Observações</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Algo a ser observado"
-                autoCapitalize="none"
-                autoCorrect={false}
-                ref={observationsInputRef}
-                onChangeText={setObservations}
-                value={observations}
-                returnKeyType="send"
-                onSubmitEditing={handleUpdateRecipe}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
-
-            <ChoiceButton
-              onPress={handleNavigateToDetailPage}
-            >
-              <ChoiceText>Ir para Parcelas?</ChoiceText>
-            </ChoiceButton>
-
-            <DeleteButtonBox>
-              <DeleteButton onPress={handleDeleteRecipe}>
-                <DeleteButtonText>Excluir</DeleteButtonText>
-              </DeleteButton>
-              <SubmitButton style={{ width: 125 }} onPress={handleUpdateRecipe}>
-                {loading ? (
-                  <ActivityIndicator size="small" color="#333" />
-                ) : (
-                    <SubmitButtonText>Salvar</SubmitButtonText>
-                  )}
-              </SubmitButton>
-            </DeleteButtonBox>
-            <CancelarButton onPress={() => setIsVisible(false)}>
-              <CancelarButtonText>Voltar</CancelarButtonText>
-            </CancelarButton>
-
-          </FormContainer>
-
-        </Content>
-      </Container>
-    </LinearGradient>
-  );
+          </Content>
+        </Container>
+      </LinearGradient>
+    );
+  }
 }

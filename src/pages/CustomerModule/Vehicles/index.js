@@ -405,7 +405,7 @@ export default function Vehicles() {
                   <InputContainer>
                     <Input
                       placeholder="Qual a cor do veículo?"
-                      autoCapitalize="none"
+                      autoCapitalize="words"
                       autoCorrect={false}
                       onChangeText={setColor}
                       maxLength={60}

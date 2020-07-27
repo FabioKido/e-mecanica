@@ -1,8 +1,9 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Keyboard
+  Keyboard,
+  Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -31,6 +32,8 @@ import {
 import api from '../../../../services/api';
 import NavigationService from '../../../../services/navigation';
 
+import LoadGif from '../../../../assets/loading.gif';
+
 export default function CustonModal({ group, setIsVisible, reloadGroups }) {
 
   const descriptionInputRef = useRef();
@@ -39,6 +42,11 @@ export default function CustonModal({ group, setIsVisible, reloadGroups }) {
   const [description, setDescription] = useState(group.description);
 
   const [loading, setLoading] = useState(false);
+  const [first_loading, setFirstLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => setFirstLoading(false), 300);
+  });
 
   const handleNavigateToPermissions = () => {
     setIsVisible(false);
@@ -100,80 +108,91 @@ export default function CustonModal({ group, setIsVisible, reloadGroups }) {
     description
   ]);
 
-  return (
-    <LinearGradient
-      colors={['#2b475c', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>{group.name}</Title>
-            <Description>
-              Edite ou exclua esse grupo como quiser.
+  if (first_loading) {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
+      </LinearGradient>
+    );
+  } else {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>{group.name}</Title>
+              <Description>
+                Edite ou exclua esse grupo como quiser.
             </Description>
 
-            <InputTitle>Nome</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite um Nome, ex: Mecânicos..."
-                autoCapitalize="words"
-                autoCorrect={false}
-                onChangeText={setName}
-                value={name}
-                returnKeyType="next"
-                onSubmitEditing={() => descriptionInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Nome</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Digite um Nome, ex: Mecânicos..."
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  onChangeText={setName}
+                  value={name}
+                  returnKeyType="next"
+                  onSubmitEditing={() => descriptionInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Descrição</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite uma descrição"
-                autoCapitalize="none"
-                autoCorrect={false}
-                ref={descriptionInputRef}
-                onChangeText={setDescription}
-                value={description}
-                returnKeyType="next"
-                onSubmitEditing={() => Keyboard.dismiss()}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Descrição</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Digite uma descrição"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  ref={descriptionInputRef}
+                  onChangeText={setDescription}
+                  value={description}
+                  returnKeyType="next"
+                  onSubmitEditing={() => Keyboard.dismiss()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <ChoiceButton
-              onPress={handleNavigateToPermissions}
-            >
-              <ChoiceText>Ir para Permissões</ChoiceText>
-            </ChoiceButton>
+              <ChoiceButton
+                onPress={handleNavigateToPermissions}
+              >
+                <ChoiceText>Ir para Permissões</ChoiceText>
+              </ChoiceButton>
 
-            <ChoiceButton
-              onPress={handleNavigateToUsers}
-            >
-              <ChoiceText>Ir para Colaboradores</ChoiceText>
-            </ChoiceButton>
+              <ChoiceButton
+                onPress={handleNavigateToUsers}
+              >
+                <ChoiceText>Ir para Colaboradores</ChoiceText>
+              </ChoiceButton>
 
-            <DeleteButtonBox>
-              <DeleteButton onPress={handleDeleteGroup}>
-                <DeleteButtonText>Excluir</DeleteButtonText>
-              </DeleteButton>
-              <SubmitButton style={{ width: 125 }} onPress={handleUpdateGroup}>
-                {loading ? (
-                  <ActivityIndicator size="small" color="#333" />
-                ) : (
-                    <SubmitButtonText>Salvar</SubmitButtonText>
-                  )}
-              </SubmitButton>
-            </DeleteButtonBox>
-            <CancelarButton onPress={() => setIsVisible(false)}>
-              <CancelarButtonText>Voltar</CancelarButtonText>
-            </CancelarButton>
+              <DeleteButtonBox>
+                <DeleteButton onPress={handleDeleteGroup}>
+                  <DeleteButtonText>Excluir</DeleteButtonText>
+                </DeleteButton>
+                <SubmitButton style={{ width: 125 }} onPress={handleUpdateGroup}>
+                  {loading ? (
+                    <ActivityIndicator size="small" color="#333" />
+                  ) : (
+                      <SubmitButtonText>Salvar</SubmitButtonText>
+                    )}
+                </SubmitButton>
+              </DeleteButtonBox>
+              <CancelarButton onPress={() => setIsVisible(false)}>
+                <CancelarButtonText>Voltar</CancelarButtonText>
+              </CancelarButton>
 
-          </FormContainer>
+            </FormContainer>
 
-        </Content>
-      </Container>
-    </LinearGradient>
-  );
+          </Content>
+        </Container>
+      </LinearGradient>
+    );
+  }
 }

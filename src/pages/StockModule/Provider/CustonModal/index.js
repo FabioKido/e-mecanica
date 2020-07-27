@@ -1,9 +1,10 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import {
   ActivityIndicator,
   Alert,
   Keyboard,
-  Picker
+  Picker,
+  Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TextInputMask } from 'react-native-masked-text';
@@ -34,7 +35,9 @@ import {
 
 import api from '../../../../services/api';
 import { getProviderInfo } from '../../../../services/infos';
+
 import CheckBox from "../../../../components/CheckBox";
+import LoadGif from '../../../../assets/loading.gif';
 
 export default function CustonModal({ provider, setIsVisible, reloadProviders }) {
 
@@ -73,6 +76,7 @@ export default function CustonModal({ provider, setIsVisible, reloadProviders })
   const [value_click, setValueClick] = useState(true);
 
   const [loading, setLoading] = useState(false);
+  const [first_loading, setFirstLoading] = useState(true);
 
   const states = [
     { uf: 'AC', name: 'Acre - AC' },
@@ -103,6 +107,10 @@ export default function CustonModal({ provider, setIsVisible, reloadProviders })
     { uf: 'SE', name: 'Sergipe - SE' },
     { uf: 'TO', name: 'Tocantins - TO' }
   ];
+
+  useEffect(() => {
+    setTimeout(() => setFirstLoading(false), 300);
+  });
 
   async function getInfos() {
     if (value_click) {
@@ -206,306 +214,318 @@ export default function CustonModal({ provider, setIsVisible, reloadProviders })
     uf
   ]);
 
-  return (
-    <LinearGradient
-      colors={['#2b475c', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>{provider.name}</Title>
-            <Description>
-              Edite ou exclua esse fornecedor como quiser.
+  // TODO Resolver o loading das Informações Adicionais.
+  if (first_loading) {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
+      </LinearGradient>
+    );
+  } else {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>{provider.name}</Title>
+              <Description>
+                Edite ou exclua esse fornecedor como quiser.
             </Description>
 
-            <SwitchContainer>
-              <ChoiceText>Fornece Produtos?</ChoiceText>
+              <SwitchContainer>
+                <ChoiceText>Fornece Produtos?</ChoiceText>
 
-              <CheckBox
-                iconColor="#f8a920"
-                checkColor="#f8a920"
-                value={product_provider}
-                onChange={() => setProductProvider(!product_provider)}
-              />
-            </SwitchContainer>
+                <CheckBox
+                  iconColor="#f8a920"
+                  checkColor="#f8a920"
+                  value={product_provider}
+                  onChange={() => setProductProvider(!product_provider)}
+                />
+              </SwitchContainer>
 
-            <InputTitle>Nome</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Novo nome"
-                autoCapitalize="words"
-                autoCorrect={false}
-                onChangeText={setName}
-                value={name}
-                returnKeyType="next"
-                onSubmitEditing={() => cnpjInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Nome</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Novo nome"
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  onChangeText={setName}
+                  value={name}
+                  returnKeyType="next"
+                  onSubmitEditing={() => cnpjInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>CNPJ</InputTitle>
-            <InputContainer>
-              <TextInputMask
-                placeholder="Número do CNPJ"
-                autoCapitalize="none"
-                autoCorrect={false}
-                maxLength={18}
-                type={'cnpj'}
-                ref={cnpjInputRef}
-                onChangeText={text => setCNPJ(text)}
-                value={cnpj}
-                style={{
-                  height: 48,
-                  fontSize: 17,
-                  color: '#FFF',
-                  flex: 1
+              <InputTitle>CNPJ</InputTitle>
+              <InputContainer>
+                <TextInputMask
+                  placeholder="Número do CNPJ"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  maxLength={18}
+                  type={'cnpj'}
+                  ref={cnpjInputRef}
+                  onChangeText={text => setCNPJ(text)}
+                  value={cnpj}
+                  style={{
+                    height: 48,
+                    fontSize: 17,
+                    color: '#FFF',
+                    flex: 1
+                  }}
+                  placeholderTextColor='#5f6368'
+                  returnKeyType="next"
+                  onSubmitEditing={() => ieInputRef.current.focus()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
+
+              <InputTitle>IE</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Sua Inscrição Estadual"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="numeric"
+                  maxLength={9}
+                  ref={ieInputRef}
+                  onChangeText={setIE}
+                  value={ie}
+                  returnKeyType="next"
+                  onSubmitEditing={() => observationsInputRef.current.focus()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
+
+              <InputTitle>Observações</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Algo importante sobre o fornecedor"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  ref={observationsInputRef}
+                  onChangeText={setObservations}
+                  value={observations}
+                  returnKeyType="next"
+                  onSubmitEditing={() => Keyboard.current.focus()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
+
+              <ChoiceButton
+                onPress={() => {
+                  setMoreInfo(ant => !ant)
+                  getInfos()
                 }}
-                placeholderTextColor='#5f6368'
-                returnKeyType="next"
-                onSubmitEditing={() => ieInputRef.current.focus()}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              >
+                <ChoiceText>Informações Adicionais?</ChoiceText>
+              </ChoiceButton>
 
-            <InputTitle>IE</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Sua Inscrição Estadual"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="numeric"
-                maxLength={9}
-                ref={ieInputRef}
-                onChangeText={setIE}
-                value={ie}
-                returnKeyType="next"
-                onSubmitEditing={() => observationsInputRef.current.focus()}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              {more_info && (
+                <>
+                  <TitleSection>Contato</TitleSection>
 
-            <InputTitle>Observações</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Algo importante sobre o fornecedor"
-                autoCapitalize="none"
-                autoCorrect={false}
-                ref={observationsInputRef}
-                onChangeText={setObservations}
-                value={observations}
-                returnKeyType="next"
-                onSubmitEditing={() => Keyboard.current.focus()}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+                  <InputTitle>Celular</InputTitle>
+                  <InputContainer>
+                    <TextInputMask
+                      placeholder="Digite o número do celular"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      keyboardType="phone-pad"
+                      maxLength={15}
+                      type={'cel-phone'}
+                      options={{
+                        maskType: 'BRL',
+                        withDDD: true,
+                        dddMask: '(99) '
+                      }}
+                      style={{
+                        height: 48,
+                        fontSize: 17,
+                        color: '#FFF',
+                        flex: 1
+                      }}
+                      placeholderTextColor='#5f6368'
+                      onChangeText={text => setCelphone(text)}
+                      value={celphone}
+                      returnKeyType="next"
+                      onSubmitEditing={() => phoneInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                  </InputContainer>
 
-            <ChoiceButton
-              onPress={() => {
-                setMoreInfo(ant => !ant)
-                getInfos()
-              }}
-            >
-              <ChoiceText>Informações Adicionais?</ChoiceText>
-            </ChoiceButton>
+                  <InputTitle>Telefone</InputTitle>
+                  <InputContainer>
+                    <TextInputMask
+                      placeholder="Digite o número do telefone"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      keyboardType="phone-pad"
+                      maxLength={15}
+                      type={'cel-phone'}
+                      options={{
+                        maskType: 'BRL',
+                        withDDD: true,
+                        dddMask: '(99) '
+                      }}
+                      style={{
+                        height: 48,
+                        fontSize: 17,
+                        color: '#FFF',
+                        flex: 1
+                      }}
+                      placeholderTextColor='#5f6368'
+                      ref={phoneInputRef}
+                      onChangeText={text => setPhone(text)}
+                      value={phone}
+                      returnKeyType="next"
+                      onSubmitEditing={() => eMailInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
 
-            {more_info && (
-              <>
-                <TitleSection>Contato</TitleSection>
+                  <InputTitle>E-mail</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Seu endereço de e-mail"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      keyboardType="email-address"
+                      ref={eMailInputRef}
+                      onChangeText={setEmail}
+                      value={email}
+                      returnKeyType={'next'}
+                      onSubmitEditing={() => logradouroInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="mail-outline" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>Celular</InputTitle>
-                <InputContainer>
-                  <TextInputMask
-                    placeholder="Digite o número do celular"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    keyboardType="phone-pad"
-                    maxLength={15}
-                    type={'cel-phone'}
-                    options={{
-                      maskType: 'BRL',
-                      withDDD: true,
-                      dddMask: '(99) '
-                    }}
-                    style={{
-                      height: 48,
-                      fontSize: 17,
-                      color: '#FFF',
-                      flex: 1
-                    }}
-                    placeholderTextColor='#5f6368'
-                    onChangeText={text => setCelphone(text)}
-                    value={celphone}
-                    returnKeyType="next"
-                    onSubmitEditing={() => phoneInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="person-pin" size={20} color="#999" />
-                </InputContainer>
+                  <TitleSection>Endereço</TitleSection>
 
-                <InputTitle>Telefone</InputTitle>
-                <InputContainer>
-                  <TextInputMask
-                    placeholder="Digite o número do telefone"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    keyboardType="phone-pad"
-                    maxLength={15}
-                    type={'cel-phone'}
-                    options={{
-                      maskType: 'BRL',
-                      withDDD: true,
-                      dddMask: '(99) '
-                    }}
-                    style={{
-                      height: 48,
-                      fontSize: 17,
-                      color: '#FFF',
-                      flex: 1
-                    }}
-                    placeholderTextColor='#5f6368'
-                    ref={phoneInputRef}
-                    onChangeText={text => setPhone(text)}
-                    value={phone}
-                    returnKeyType="next"
-                    onSubmitEditing={() => eMailInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="lock" size={20} color="#999" />
-                </InputContainer>
+                  <InputTitle>Logradouro</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Digite uma rua/av/outros"
+                      autoCapitalize="words"
+                      autoCorrect={false}
+                      ref={logradouroInputRef}
+                      onChangeText={setStreet}
+                      value={street}
+                      returnKeyType="next"
+                      onSubmitEditing={() => numberInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>E-mail</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Seu endereço de e-mail"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    keyboardType="email-address"
-                    ref={eMailInputRef}
-                    onChangeText={setEmail}
-                    value={email}
-                    returnKeyType={'next'}
-                    onSubmitEditing={() => logradouroInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="mail-outline" size={20} color="#999" />
-                </InputContainer>
+                  <InputTitle>Número</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Digite o nº do local"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      keyboardType="numeric"
+                      ref={numberInputRef}
+                      onChangeText={setNumber}
+                      value={number === null ? '' : String(number)}
+                      returnKeyType="next"
+                      onSubmitEditing={() => neighborhoodInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                  </InputContainer>
 
-                <TitleSection>Endereço</TitleSection>
+                  <InputTitle>Bairro</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Digite o nome do bairro"
+                      autoCapitalize="words"
+                      autoCorrect={false}
+                      ref={neighborhoodInputRef}
+                      onChangeText={setNeighborhood}
+                      value={neighborhood}
+                      returnKeyType="next"
+                      onSubmitEditing={() => complementInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>Logradouro</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Digite uma rua/av/outros"
-                    autoCapitalize="words"
-                    autoCorrect={false}
-                    ref={logradouroInputRef}
-                    onChangeText={setStreet}
-                    value={street}
-                    returnKeyType="next"
-                    onSubmitEditing={() => numberInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="person-pin" size={20} color="#999" />
-                </InputContainer>
+                  <InputTitle>Complemento</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Complemente se necessário"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      ref={complementInputRef}
+                      onChangeText={setComplement}
+                      value={complement}
+                      returnKeyType="next"
+                      onSubmitEditing={() => cityInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>Número</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Digite o nº do local"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    keyboardType="numeric"
-                    ref={numberInputRef}
-                    onChangeText={setNumber}
-                    value={number === null ? '' : String(number)}
-                    returnKeyType="next"
-                    onSubmitEditing={() => neighborhoodInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="person-pin" size={20} color="#999" />
-                </InputContainer>
+                  <InputTitle>Cidade</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Sua cidade atual"
+                      autoCapitalize="words"
+                      autoCorrect={false}
+                      ref={cityInputRef}
+                      onChangeText={setCity}
+                      value={city}
+                      returnKeyType="next"
+                      onSubmitEditing={() => ufInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>Bairro</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Digite o nome do bairro"
-                    autoCapitalize="words"
-                    autoCorrect={false}
-                    ref={neighborhoodInputRef}
-                    onChangeText={setNeighborhood}
-                    value={neighborhood}
-                    returnKeyType="next"
-                    onSubmitEditing={() => complementInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="lock" size={20} color="#999" />
-                </InputContainer>
+                  <InputTitle>UF</InputTitle>
+                  <InputContainer>
+                    <Picker
+                      selectedValue={uf}
+                      style={{
+                        flex: 1,
+                        color: '#f8a920',
+                        backgroundColor: 'transparent',
+                        fontSize: 17
+                      }}
+                      onValueChange={(itemValue, itemIndex) => setUf(itemValue)}
+                    >
+                      <Picker.Item label='Selecione a UF' value={uf} />
+                      {states && states.map(state => <Picker.Item key={state.uf} label={state.name} value={state.uf} />)}
+                    </Picker>
+                    <MaterialIcons name="mail-outline" size={20} color="#999" />
+                  </InputContainer>
+                </>
+              )}
 
-                <InputTitle>Complemento</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Complemente se necessário"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    ref={complementInputRef}
-                    onChangeText={setComplement}
-                    value={complement}
-                    returnKeyType="next"
-                    onSubmitEditing={() => cityInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="person-pin" size={20} color="#999" />
-                </InputContainer>
+              <DeleteButtonBox>
+                <DeleteButton onPress={handleDeleteProvider}>
+                  <DeleteButtonText>Excluir</DeleteButtonText>
+                </DeleteButton>
+                <SubmitButton style={{ width: 125 }} onPress={handleUpdateProvider}>
+                  {loading ? (
+                    <ActivityIndicator size="small" color="#333" />
+                  ) : (
+                      <SubmitButtonText>Salvar</SubmitButtonText>
+                    )}
+                </SubmitButton>
+              </DeleteButtonBox>
+              <CancelarButton onPress={() => setIsVisible(false)}>
+                <CancelarButtonText>Voltar</CancelarButtonText>
+              </CancelarButton>
 
-                <InputTitle>Cidade</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Sua cidade atual"
-                    autoCapitalize="words"
-                    autoCorrect={false}
-                    ref={cityInputRef}
-                    onChangeText={setCity}
-                    value={city}
-                    returnKeyType="next"
-                    onSubmitEditing={() => ufInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="person-pin" size={20} color="#999" />
-                </InputContainer>
+            </FormContainer>
 
-                <InputTitle>UF</InputTitle>
-                <InputContainer>
-                  <Picker
-                    selectedValue={uf}
-                    style={{
-                      flex: 1,
-                      color: '#f8a920',
-                      backgroundColor: 'transparent',
-                      fontSize: 17
-                    }}
-                    onValueChange={(itemValue, itemIndex) => setUf(itemValue)}
-                  >
-                    <Picker.Item label='Selecione a UF' value={uf} />
-                    {states && states.map(state => <Picker.Item key={state.uf} label={state.name} value={state.uf} />)}
-                  </Picker>
-                  <MaterialIcons name="mail-outline" size={20} color="#999" />
-                </InputContainer>
-              </>
-            )}
-
-            <DeleteButtonBox>
-              <DeleteButton onPress={handleDeleteProvider}>
-                <DeleteButtonText>Excluir</DeleteButtonText>
-              </DeleteButton>
-              <SubmitButton style={{ width: 125 }} onPress={handleUpdateProvider}>
-                {loading ? (
-                  <ActivityIndicator size="small" color="#333" />
-                ) : (
-                    <SubmitButtonText>Salvar</SubmitButtonText>
-                  )}
-              </SubmitButton>
-            </DeleteButtonBox>
-            <CancelarButton onPress={() => setIsVisible(false)}>
-              <CancelarButtonText>Voltar</CancelarButtonText>
-            </CancelarButton>
-
-          </FormContainer>
-
-        </Content>
-      </Container>
-    </LinearGradient>
-  );
+          </Content>
+        </Container>
+      </LinearGradient>
+    );
+  }
 }

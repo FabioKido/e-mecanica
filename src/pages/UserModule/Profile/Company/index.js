@@ -2,7 +2,8 @@ import React, { useRef, useCallback, useState, useEffect } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Keyboard
+  Keyboard,
+  Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TextInputMask } from 'react-native-masked-text';
@@ -13,6 +14,7 @@ import { useSelector } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import api from '../../../../services/api';
+import LoadGif from '../../../../assets/loading.gif';
 
 import {
   Container,
@@ -44,12 +46,11 @@ export default function Company() {
   const [type, setType] = useState('');
 
   const [loading, setLoading] = useState(false);
+  const [first_loading, setFirstLoading] = useState(true);
 
   useEffect(() => {
     async function getInfos() {
       try {
-        setLoading(true);
-
         const response = await api.get(`/user/company/${profile.id}`);
         const {
           id,
@@ -69,7 +70,7 @@ export default function Company() {
       } catch (err) {
         console.log(err);
       } finally {
-        setLoading(false);
+        setFirstLoading(false);
       }
     }
 
@@ -113,114 +114,125 @@ export default function Company() {
     type
   ]);
 
-  return (
-    <LinearGradient
-      colors={['#2b475c', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>Perfil</Title>
-            <Description>
-              Atualize suas informaçoes pessoais editando os campos abaixo, logo depois, clique em Salvar.
+  if (first_loading) {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
+      </LinearGradient>
+    );
+  } else {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>Perfil</Title>
+              <Description>
+                Atualize suas informaçoes pessoais editando os campos abaixo, logo depois, clique em Salvar.
           </Description>
 
-            <InputTitle>Nome</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite o nome da empresa"
-                autoCapitalize="words"
-                autoCorrect={false}
-                onChangeText={setName}
-                value={name}
-                returnKeyType="next"
-                onSubmitEditing={() => nomeFantasiaInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Nome</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Digite o nome da empresa"
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  onChangeText={setName}
+                  value={name}
+                  returnKeyType="next"
+                  onSubmitEditing={() => nomeFantasiaInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Nome Fantasia</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite o nome fantasia da empresa"
-                autoCapitalize="none"
-                autoCorrect={false}
-                ref={nomeFantasiaInputRef}
-                onChangeText={setNomeFantasia}
-                value={nome_fantasia}
-                returnKeyType="next"
-                onSubmitEditing={() => cnpjInputRef.current.focus()}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Nome Fantasia</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Digite o nome fantasia da empresa"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  ref={nomeFantasiaInputRef}
+                  onChangeText={setNomeFantasia}
+                  value={nome_fantasia}
+                  returnKeyType="next"
+                  onSubmitEditing={() => cnpjInputRef.current.focus()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>CNPJ</InputTitle>
-            <InputContainer>
-              <TextInputMask
-                placeholder="Número do seu CNPJ"
-                autoCapitalize="none"
-                autoCorrect={false}
-                maxLength={18}
-                type={'cnpj'}
-                ref={cnpjInputRef}
-                onChangeText={text => setCNPJ(text)}
-                value={cnpj}
-                style={{
-                  height: 48,
-                  fontSize: 17,
-                  color: '#FFF',
-                  flex: 1
-                }}
-                placeholderTextColor='#5f6368'
-                returnKeyType="next"
-                onSubmitEditing={() => ieInputRef.current.focus()}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>CNPJ</InputTitle>
+              <InputContainer>
+                <TextInputMask
+                  placeholder="Número do seu CNPJ"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  maxLength={18}
+                  type={'cnpj'}
+                  ref={cnpjInputRef}
+                  onChangeText={text => setCNPJ(text)}
+                  value={cnpj}
+                  style={{
+                    height: 48,
+                    fontSize: 17,
+                    color: '#FFF',
+                    flex: 1
+                  }}
+                  placeholderTextColor='#5f6368'
+                  returnKeyType="next"
+                  onSubmitEditing={() => ieInputRef.current.focus()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>IE</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite a sua Inscrição Estadual"
-                autoCapitalize="none"
-                keyboardType="numeric"
-                autoCorrect={false}
-                maxLength={9}
-                ref={ieInputRef}
-                onChangeText={setIE}
-                value={ie}
-                returnKeyType="next"
-                onSubmitEditing={() => typeInputRef.current.focus()}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>IE</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Digite a sua Inscrição Estadual"
+                  autoCapitalize="none"
+                  keyboardType="numeric"
+                  autoCorrect={false}
+                  maxLength={9}
+                  ref={ieInputRef}
+                  onChangeText={setIE}
+                  value={ie}
+                  returnKeyType="next"
+                  onSubmitEditing={() => typeInputRef.current.focus()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Tipo de Empresa</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Insira o tipo: MPE/Outros"
-                autoCapitalize="none"
-                autoCorrect={false}
-                ref={typeInputRef}
-                onChangeText={setType}
-                value={type}
-                returnKeyType="send"
-                onSubmitEditing={handleSaveCompany}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Tipo de Empresa</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Insira o tipo: MPE/Outros"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  ref={typeInputRef}
+                  onChangeText={setType}
+                  value={type}
+                  returnKeyType="send"
+                  onSubmitEditing={handleSaveCompany}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <SubmitButton onPress={handleSaveCompany}>
-              {loading ? (
-                <ActivityIndicator size="small" color="#333" />
-              ) : (
-                  <SubmitButtonText>Salvar</SubmitButtonText>
-                )}
-            </SubmitButton>
-          </FormContainer>
-        </Content>
-      </Container>
-    </LinearGradient>
-  );
+              <SubmitButton onPress={handleSaveCompany}>
+                {loading ? (
+                  <ActivityIndicator size="small" color="#333" />
+                ) : (
+                    <SubmitButtonText>Salvar</SubmitButtonText>
+                  )}
+              </SubmitButton>
+            </FormContainer>
+          </Content>
+        </Container>
+      </LinearGradient>
+    );
+  }
 }

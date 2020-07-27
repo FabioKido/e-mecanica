@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   ActivityIndicator,
   Alert,
   Keyboard,
-  Picker
+  Picker,
+  Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -22,6 +23,8 @@ import {
   Description,
   InputTitle,
   Input,
+  ChoiceButton,
+  ChoiceText,
   SubmitButton,
   SubmitButtonText,
   CancelarButton,
@@ -33,6 +36,8 @@ import {
 
 import api from '../../../../services/api';
 import NavigationService from '../../../../services/navigation';
+
+import LoadGif from '../../../../assets/loading.gif';
 
 export default function CustonModal({ preventive, setIsVisible, reloadPreventives }) {
 
@@ -148,7 +153,7 @@ export default function CustonModal({ preventive, setIsVisible, reloadPreventive
         colors={['#2b475c', '#000']}
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
       >
-        <ActivityIndicator size="small" color="#fff" />
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
       </LinearGradient>
     );
   } else {

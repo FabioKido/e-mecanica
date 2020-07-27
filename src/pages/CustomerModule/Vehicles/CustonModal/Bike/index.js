@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Keyboard
+  Keyboard,
+  Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -34,7 +35,9 @@ import {
 
 import api from '../../../../../services/api';
 import { getBikeInfo } from '../../../../../services/infos';
+
 import CheckBox from "../../../../../components/CheckBox";
+import LoadGif from '../../../../../assets/loading.gif';
 
 import { loadDashboardRequest } from '../../../../../store/modules/customer/actions';
 
@@ -61,6 +64,11 @@ export default function Bike({ vehicle, setIsVisible, reloadVehicles }) {
   const [value_click, setValueClick] = useState(true);
 
   const [loading, setLoading] = useState(false);
+  const [first_loading, setFirstLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => setFirstLoading(false), 300);
+  });
 
   async function getInfos() {
     if (value_click) {
@@ -145,156 +153,167 @@ export default function Bike({ vehicle, setIsVisible, reloadVehicles }) {
     hand_brake
   ]);
 
-  return (
-    <LinearGradient
-      colors={['#2b475c', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>Veículo - {vehicle.id}</Title>
-            <Description>
-              Edite ou exclua esse veículo como quiser.
+  if (first_loading) {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
+      </LinearGradient>
+    );
+  } else {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>Veículo - {vehicle.id}</Title>
+              <Description>
+                Edite ou exclua esse veículo como quiser.
             </Description>
 
-            <InputTitle>Fabricante</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Fabricante do veículo"
-                autoCapitalize="words"
-                autoCorrect={false}
-                maxLength={60}
-                onChangeText={setFabricator}
-                value={fabricator}
-                returnKeyType="next"
-                onSubmitEditing={() => modelInputRef.current.focus()}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
-
-            <InputTitle>Modelo</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Modelo do veículo"
-                autoCapitalize="words"
-                autoCorrect={false}
-                maxLength={60}
-                ref={modelInputRef}
-                onChangeText={setModel}
-                value={model}
-                returnKeyType="next"
-                onSubmitEditing={() => yearFabInputRef.current.focus()}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
-
-            <InputTitle>Ano de Fabricação</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Ano de fabriccação"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="numeric"
-                maxLength={4}
-                ref={yearFabInputRef}
-                onChangeText={setYearFab}
-                value={year_fab === null ? '' : String(year_fab)}
-                returnKeyType="next"
-                onSubmitEditing={() => yearModelInputRef.current.focus()}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
-
-            <InputTitle>Ano do Modelo</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Ano do modelo"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="numeric"
-                maxLength={4}
-                ref={yearModelInputRef}
-                onChangeText={setYearModel}
-                value={year_model === null ? '' : String(year_model)}
-                returnKeyType="next"
-                onSubmitEditing={() => colorInputRef.current.focus()}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
-
-            <InputTitle>Cor</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Cor do veículo"
-                autoCapitalize="none"
-                autoCorrect={false}
-                maxLength={60}
-                ref={colorInputRef}
-                onChangeText={setColor}
-                value={color}
-                returnKeyType="next"
-                onSubmitEditing={() => observationsInputRef.current.focus()}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
-
-            <InputTitle>Observações</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Algo importante sobre o veículo"
-                autoCapitalize="none"
-                autoCorrect={false}
-                ref={observationsInputRef}
-                onChangeText={setObservations}
-                value={observations}
-                returnKeyType="next"
-                onSubmitEditing={() => Keyboard.dismiss()}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
-
-            <ChoiceButton
-              onPress={() => {
-                setMoreInfo(ant => !ant)
-                getInfos()
-              }}
-            >
-              <ChoiceText>Informações Adicionais?</ChoiceText>
-            </ChoiceButton>
-
-            {more_info &&
-              <SwitchContainer>
-                <SwitchText>Freio de Mão</SwitchText>
-                <CheckBox
-                  iconColor="#fff"
-                  checkColor="#fff"
-                  value={hand_brake}
-                  onChange={() => setHandBrake(!hand_brake)}
+              <InputTitle>Fabricante</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Fabricante do veículo"
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  maxLength={60}
+                  onChangeText={setFabricator}
+                  value={fabricator}
+                  returnKeyType="next"
+                  onSubmitEditing={() => modelInputRef.current.focus()}
                 />
-              </SwitchContainer>
-            }
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <DeleteButtonBox>
-              <DeleteButton onPress={handleDeleteVehicle}>
-                <DeleteButtonText>Excluir</DeleteButtonText>
-              </DeleteButton>
-              <SubmitButton style={{ width: 125 }} onPress={handleUpdateVehicle}>
-                {loading ? (
-                  <ActivityIndicator size="small" color="#333" />
-                ) : (
-                    <SubmitButtonText>Salvar</SubmitButtonText>
-                  )}
-              </SubmitButton>
-            </DeleteButtonBox>
-            <CancelarButton onPress={() => setIsVisible(false)}>
-              <CancelarButtonText>Voltar</CancelarButtonText>
-            </CancelarButton>
+              <InputTitle>Modelo</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Modelo do veículo"
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  maxLength={60}
+                  ref={modelInputRef}
+                  onChangeText={setModel}
+                  value={model}
+                  returnKeyType="next"
+                  onSubmitEditing={() => yearFabInputRef.current.focus()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-          </FormContainer>
+              <InputTitle>Ano de Fabricação</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Ano de fabriccação"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="numeric"
+                  maxLength={4}
+                  ref={yearFabInputRef}
+                  onChangeText={setYearFab}
+                  value={year_fab === null ? '' : String(year_fab)}
+                  returnKeyType="next"
+                  onSubmitEditing={() => yearModelInputRef.current.focus()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-        </Content>
-      </Container>
-    </LinearGradient>
-  );
+              <InputTitle>Ano do Modelo</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Ano do modelo"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="numeric"
+                  maxLength={4}
+                  ref={yearModelInputRef}
+                  onChangeText={setYearModel}
+                  value={year_model === null ? '' : String(year_model)}
+                  returnKeyType="next"
+                  onSubmitEditing={() => colorInputRef.current.focus()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
+
+              <InputTitle>Cor</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Cor do veículo"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  maxLength={60}
+                  ref={colorInputRef}
+                  onChangeText={setColor}
+                  value={color}
+                  returnKeyType="next"
+                  onSubmitEditing={() => observationsInputRef.current.focus()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
+
+              <InputTitle>Observações</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Algo importante sobre o veículo"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  ref={observationsInputRef}
+                  onChangeText={setObservations}
+                  value={observations}
+                  returnKeyType="next"
+                  onSubmitEditing={() => Keyboard.dismiss()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
+
+              <ChoiceButton
+                onPress={() => {
+                  setMoreInfo(ant => !ant)
+                  getInfos()
+                }}
+              >
+                <ChoiceText>Informações Adicionais?</ChoiceText>
+              </ChoiceButton>
+
+              {more_info &&
+                <SwitchContainer>
+                  <SwitchText>Freio de Mão</SwitchText>
+                  <CheckBox
+                    iconColor="#fff"
+                    checkColor="#fff"
+                    value={hand_brake}
+                    onChange={() => setHandBrake(!hand_brake)}
+                  />
+                </SwitchContainer>
+              }
+
+              <DeleteButtonBox>
+                <DeleteButton onPress={handleDeleteVehicle}>
+                  <DeleteButtonText>Excluir</DeleteButtonText>
+                </DeleteButton>
+                <SubmitButton style={{ width: 125 }} onPress={handleUpdateVehicle}>
+                  {loading ? (
+                    <ActivityIndicator size="small" color="#333" />
+                  ) : (
+                      <SubmitButtonText>Salvar</SubmitButtonText>
+                    )}
+                </SubmitButton>
+              </DeleteButtonBox>
+              <CancelarButton onPress={() => setIsVisible(false)}>
+                <CancelarButtonText>Voltar</CancelarButtonText>
+              </CancelarButton>
+
+            </FormContainer>
+
+          </Content>
+        </Container>
+      </LinearGradient>
+    );
+  }
 }

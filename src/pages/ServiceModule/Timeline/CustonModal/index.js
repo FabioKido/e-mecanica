@@ -1,8 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Keyboard
+  Keyboard,
+  Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -32,12 +33,19 @@ import api from '../../../../services/api';
 
 import CheckBox from '../../../../components/CheckBox';
 
+import LoadGif from '../../../../assets/loading.gif';
+
 export default function CustonModal({ timeline_detail, setIsVisible, reloadTimelineDetails }) {
 
   const [title, setTitle] = useState(timeline_detail.title);
   const [complete, setComplete] = useState(timeline_detail.comlete);
 
   const [loading, setLoading] = useState(false);
+  const [first_loading, setFirstLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => setFirstLoading(false), 300);
+  });
 
   const handleDeleteTimelineDetail = async () => {
     try {
@@ -84,65 +92,76 @@ export default function CustonModal({ timeline_detail, setIsVisible, reloadTimel
     complete
   ]);
 
-  return (
-    <LinearGradient
-      colors={['#2b475c', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>{timeline_detail.title}</Title>
-            <Description>
-              Edite ou exclua esse item como quiser.
+  if (first_loading) {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
+      </LinearGradient>
+    );
+  } else {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>{timeline_detail.title}</Title>
+              <Description>
+                Edite ou exclua esse item como quiser.
             </Description>
 
-            <InputTitle>Título</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Novo título do item"
-                autoCapitalize="words"
-                autoCorrect={false}
-                maxLength={100}
-                onChangeText={setTitle}
-                value={title}
-                returnKeyType="next"
-                onSubmitEditing={() => Keyboard.dismiss()}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Título</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Novo título do item"
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  maxLength={100}
+                  onChangeText={setTitle}
+                  value={title}
+                  returnKeyType="next"
+                  onSubmitEditing={() => Keyboard.dismiss()}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <SwitchContainer>
-              <ChoiceText>Objetivo Completo?</ChoiceText>
+              <SwitchContainer>
+                <ChoiceText>Objetivo Completo?</ChoiceText>
 
-              <CheckBox
-                iconColor="#f8a920"
-                checkColor="#f8a920"
-                value={complete}
-                onChange={() => setComplete(!complete)}
-              />
-            </SwitchContainer>
+                <CheckBox
+                  iconColor="#f8a920"
+                  checkColor="#f8a920"
+                  value={complete}
+                  onChange={() => setComplete(!complete)}
+                />
+              </SwitchContainer>
 
-            <DeleteButtonBox>
-              <DeleteButton onPress={handleDeleteTimelineDetail}>
-                <DeleteButtonText>Excluir</DeleteButtonText>
-              </DeleteButton>
-              <SubmitButton style={{ width: 125 }} onPress={handleUpdateTimelineDetail}>
-                {loading ? (
-                  <ActivityIndicator size="small" color="#333" />
-                ) : (
-                    <SubmitButtonText>Salvar</SubmitButtonText>
-                  )}
-              </SubmitButton>
-            </DeleteButtonBox>
-            <CancelarButton onPress={() => setIsVisible(false)}>
-              <CancelarButtonText>Voltar</CancelarButtonText>
-            </CancelarButton>
+              <DeleteButtonBox>
+                <DeleteButton onPress={handleDeleteTimelineDetail}>
+                  <DeleteButtonText>Excluir</DeleteButtonText>
+                </DeleteButton>
+                <SubmitButton style={{ width: 125 }} onPress={handleUpdateTimelineDetail}>
+                  {loading ? (
+                    <ActivityIndicator size="small" color="#333" />
+                  ) : (
+                      <SubmitButtonText>Salvar</SubmitButtonText>
+                    )}
+                </SubmitButton>
+              </DeleteButtonBox>
+              <CancelarButton onPress={() => setIsVisible(false)}>
+                <CancelarButtonText>Voltar</CancelarButtonText>
+              </CancelarButton>
 
-          </FormContainer>
+            </FormContainer>
 
-        </Content>
-      </Container>
-    </LinearGradient>
-  );
+          </Content>
+        </Container>
+      </LinearGradient>
+    );
+  }
 }

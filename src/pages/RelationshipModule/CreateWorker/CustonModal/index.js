@@ -4,7 +4,8 @@ import {
   Alert,
   Keyboard,
   Switch,
-  Picker
+  Picker,
+  Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TextInputMask } from 'react-native-masked-text';
@@ -41,6 +42,7 @@ import {
 
 import api from '../../../../services/api';
 import CheckBox from "../../../../components/CheckBox";
+import LoadGif from '../../../../assets/loading.gif';
 
 export default function CustonModal({ worker, setIsVisible, reloadWorkers }) {
 
@@ -91,6 +93,11 @@ export default function CustonModal({ worker, setIsVisible, reloadWorkers }) {
   const [changePassword, setChangePassword] = useState(false);
   const [value_click, setValueClick] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [first_loading, setFirstLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => setFirstLoading(false), 300);
+  });
 
   async function getInfo(id) {
     if (value_click) {
@@ -270,499 +277,510 @@ export default function CustonModal({ worker, setIsVisible, reloadWorkers }) {
   ]);
 
   // TODO Resolver o número da CTPS direito.
-  return (
-    <LinearGradient
-      colors={['#2b475c', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>{username}</Title>
-            <Description>
-              Edite ou exclua esse colaborador como quiser.
+  if (first_loading) {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
+      </LinearGradient>
+    );
+  } else {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>{username}</Title>
+              <Description>
+                Edite ou exclua esse colaborador como quiser.
             </Description>
 
-            <SwitchContainer>
-              <ChoiceText>Ativar Usuário?</ChoiceText>
+              <SwitchContainer>
+                <ChoiceText>Ativar Usuário?</ChoiceText>
 
-              <CheckBox
-                iconColor="#f8a920"
-                checkColor="#f8a920"
-                value={enable}
-                onChange={() => setEnable(!enable)}
-              />
-            </SwitchContainer>
+                <CheckBox
+                  iconColor="#f8a920"
+                  checkColor="#f8a920"
+                  value={enable}
+                  onChange={() => setEnable(!enable)}
+                />
+              </SwitchContainer>
 
-            <InputTitle>Usuário</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite um nome"
-                autoCapitalize="words"
-                autoCorrect={false}
-                onChangeText={setUsername}
-                value={username}
-                returnKeyType="next"
-                onSubmitEditing={() => eMailInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Usuário</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Digite um nome"
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  onChangeText={setUsername}
+                  value={username}
+                  returnKeyType="next"
+                  onSubmitEditing={() => eMailInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>E-mail</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Seu endereço de e-mail"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="url"
-                ref={eMailInputRef}
-                onChangeText={setEmail}
-                value={email}
-                returnKeyType={changePassword ? 'next' : 'send'}
-                onSubmitEditing={() =>
-                  changePassword
-                    ? passwordInputRef.current.focus()
-                    : handleSaveWorkerProfile()
-                }
-              />
-              <MaterialIcons name="mail-outline" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>E-mail</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Seu endereço de e-mail"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="url"
+                  ref={eMailInputRef}
+                  onChangeText={setEmail}
+                  value={email}
+                  returnKeyType={changePassword ? 'next' : 'send'}
+                  onSubmitEditing={() =>
+                    changePassword
+                      ? passwordInputRef.current.focus()
+                      : handleSaveWorkerProfile()
+                  }
+                />
+                <MaterialIcons name="mail-outline" size={20} color="#999" />
+              </InputContainer>
 
-            <SwitchContainer>
-              <SwitchText>Alterar senha?</SwitchText>
-              <Switch
-                thumbColor="#f8a920"
-                trackColor={{ true: '#f8a920', false: '#2b475c' }}
-                value={changePassword}
-                onValueChange={setChangePassword}
-              />
-            </SwitchContainer>
+              <SwitchContainer>
+                <SwitchText>Alterar senha?</SwitchText>
+                <Switch
+                  thumbColor="#f8a920"
+                  trackColor={{ true: '#f8a920', false: '#2b475c' }}
+                  value={changePassword}
+                  onValueChange={setChangePassword}
+                />
+              </SwitchContainer>
 
-            {changePassword && (
-              <>
-                <InputTitle>Nova Senha</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Sua nova senha"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    secureTextEntry
-                    ref={passwordInputRef}
-                    onChangeText={setPassword}
-                    value={password}
-                    returnKeyType="next"
-                    onSubmitEditing={() =>
-                      confirmPasswordInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="lock" size={20} color="#999" />
-                </InputContainer>
+              {changePassword && (
+                <>
+                  <InputTitle>Nova Senha</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Sua nova senha"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      secureTextEntry
+                      ref={passwordInputRef}
+                      onChangeText={setPassword}
+                      value={password}
+                      returnKeyType="next"
+                      onSubmitEditing={() =>
+                        confirmPasswordInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>Confirmar Senha</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Confirme a nova senha"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    secureTextEntry
-                    ref={confirmPasswordInputRef}
-                    onChangeText={setPasswordConfirmation}
-                    value={password_confirmation}
-                    returnKeyType="send"
-                    onSubmitEditing={handleSaveWorkerProfile}
-                  />
-                  <MaterialIcons name="lock" size={20} color="#999" />
-                </InputContainer>
-              </>
-            )}
+                  <InputTitle>Confirmar Senha</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Confirme a nova senha"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      secureTextEntry
+                      ref={confirmPasswordInputRef}
+                      onChangeText={setPasswordConfirmation}
+                      value={password_confirmation}
+                      returnKeyType="send"
+                      onSubmitEditing={handleSaveWorkerProfile}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
+                </>
+              )}
 
-            <ChoiceButton
-              onPress={() => {
-                setMoreInfo(ant => !ant)
-                getInfo(worker.id)
-              }}
-            >
-              <ChoiceText>Configurações Adicionais?</ChoiceText>
-            </ChoiceButton>
+              <ChoiceButton
+                onPress={() => {
+                  setMoreInfo(ant => !ant)
+                  getInfo(worker.id)
+                }}
+              >
+                <ChoiceText>Configurações Adicionais?</ChoiceText>
+              </ChoiceButton>
 
-            {more_info && (
-              <>
-                <TitleSection>Pessoal</TitleSection>
+              {more_info && (
+                <>
+                  <TitleSection>Pessoal</TitleSection>
 
-                <InputTitle>Nome</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Digite um nome"
-                    autoCapitalize="words"
-                    autoCorrect={false}
-                    onChangeText={setName}
-                    value={name}
-                    returnKeyType="next"
-                    onSubmitEditing={() => Keyboard.dismiss()}
-                  />
-                  <MaterialIcons name="person-pin" size={20} color="#999" />
-                </InputContainer>
+                  <InputTitle>Nome</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Digite um nome"
+                      autoCapitalize="words"
+                      autoCorrect={false}
+                      onChangeText={setName}
+                      value={name}
+                      returnKeyType="next"
+                      onSubmitEditing={() => Keyboard.dismiss()}
+                    />
+                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>Sexo</InputTitle>
-                <InputContainer>
-                  <Picker
-                    selectedValue={sex}
-                    style={{
-                      flex: 1,
-                      color: '#f8a920',
-                      backgroundColor: 'transparent',
-                      fontSize: 17
-                    }}
-                    onValueChange={(itemValue, itemIndex) => setSex(itemValue)}
-                  >
-                    <Picker.Item label='Selecione o Sexo' value={sex} />
-                    <Picker.Item label='Masculino' value='M' />
-                    <Picker.Item label='Feminino' value='F' />
-                  </Picker>
-                  <MaterialIcons name="lock" size={20} color="#999" />
-                </InputContainer>
+                  <InputTitle>Sexo</InputTitle>
+                  <InputContainer>
+                    <Picker
+                      selectedValue={sex}
+                      style={{
+                        flex: 1,
+                        color: '#f8a920',
+                        backgroundColor: 'transparent',
+                        fontSize: 17
+                      }}
+                      onValueChange={(itemValue, itemIndex) => setSex(itemValue)}
+                    >
+                      <Picker.Item label='Selecione o Sexo' value={sex} />
+                      <Picker.Item label='Masculino' value='M' />
+                      <Picker.Item label='Feminino' value='F' />
+                    </Picker>
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>Aniversário</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Clique no calendário para editar"
-                    editable={false}
-                    value={birthday ? moment(birthday).format('DD-MM-YYYY') : ''}
-                  />
-                  <DatePicker
-                    is24Hour={true}
-                    format="DD-MM-YYYY"
-                    minDate="01-01-2001"
-                    maxDate="31-12-2030"
-                    hideText={true}
-                    iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
-                    style={{
-                      width: 21
-                    }}
-                    onDateChange={d => onDateChange(d, 'birthday')}
-                  />
-                </InputContainer>
+                  <InputTitle>Aniversário</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Clique no calendário para editar"
+                      editable={false}
+                      value={birthday ? moment(birthday).format('DD-MM-YYYY') : ''}
+                    />
+                    <DatePicker
+                      is24Hour={true}
+                      format="DD-MM-YYYY"
+                      minDate="01-01-2001"
+                      maxDate="31-12-2030"
+                      hideText={true}
+                      iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
+                      style={{
+                        width: 21
+                      }}
+                      onDateChange={d => onDateChange(d, 'birthday')}
+                    />
+                  </InputContainer>
 
-                <InputTitle>CPF</InputTitle>
-                <InputContainer>
-                  <TextInputMask
-                    placeholder="Número do CPF"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    maxLength={14}
-                    type={'cpf'}
-                    onChangeText={text => setCPF(text)}
-                    value={cpf}
-                    style={{
-                      height: 48,
-                      fontSize: 17,
-                      color: '#FFF',
-                      flex: 1
-                    }}
-                    placeholderTextColor='#5f6368'
-                    returnKeyType="next"
-                    onSubmitEditing={() => rgInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="lock" size={20} color="#999" />
-                </InputContainer>
+                  <InputTitle>CPF</InputTitle>
+                  <InputContainer>
+                    <TextInputMask
+                      placeholder="Número do CPF"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      maxLength={14}
+                      type={'cpf'}
+                      onChangeText={text => setCPF(text)}
+                      value={cpf}
+                      style={{
+                        height: 48,
+                        fontSize: 17,
+                        color: '#FFF',
+                        flex: 1
+                      }}
+                      placeholderTextColor='#5f6368'
+                      returnKeyType="next"
+                      onSubmitEditing={() => rgInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>RG</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Digite o RG"
-                    autoCapitalize="characters"
-                    autoCorrect={false}
-                    maxLength={14}
-                    ref={rgInputRef}
-                    onChangeText={setRG}
-                    value={rg}
-                    returnKeyType="next"
-                    onSubmitEditing={() => orgaoExpeditorInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="lock" size={20} color="#999" />
-                </InputContainer>
+                  <InputTitle>RG</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Digite o RG"
+                      autoCapitalize="characters"
+                      autoCorrect={false}
+                      maxLength={14}
+                      ref={rgInputRef}
+                      onChangeText={setRG}
+                      value={rg}
+                      returnKeyType="next"
+                      onSubmitEditing={() => orgaoExpeditorInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>Orgão Expeditor</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Orgão de expedição SSP/Outros"
-                    autoCapitalize="words"
-                    autoCorrect={false}
-                    maxLength={30}
-                    ref={orgaoExpeditorInputRef}
-                    onChangeText={setOrgaoExpeditor}
-                    value={orgao_expeditor}
-                    returnKeyType="next"
-                    onSubmitEditing={() => observationsInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="lock" size={20} color="#999" />
-                </InputContainer>
+                  <InputTitle>Orgão Expeditor</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Orgão de expedição SSP/Outros"
+                      autoCapitalize="words"
+                      autoCorrect={false}
+                      maxLength={30}
+                      ref={orgaoExpeditorInputRef}
+                      onChangeText={setOrgaoExpeditor}
+                      value={orgao_expeditor}
+                      returnKeyType="next"
+                      onSubmitEditing={() => observationsInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>Observações</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Algo importante sobre o colaborador"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    ref={observationsInputRef}
-                    onChangeText={setObservations}
-                    value={observations}
-                    returnKeyType="next"
-                    onSubmitEditing={() => ctpsInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="lock" size={20} color="#999" />
-                </InputContainer>
+                  <InputTitle>Observações</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Algo importante sobre o colaborador"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      ref={observationsInputRef}
+                      onChangeText={setObservations}
+                      value={observations}
+                      returnKeyType="next"
+                      onSubmitEditing={() => ctpsInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
 
-                <TitleSection>Trabalhista</TitleSection>
+                  <TitleSection>Trabalhista</TitleSection>
 
-                <InputTitle>CTPS</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Número da carteira de trabalho "
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    maxLength={13}
-                    keyboardType="numeric"
-                    ref={ctpsInputRef}
-                    onChangeText={setCTPS}
-                    value={ctps}
-                    returnKeyType="next"
-                    onSubmitEditing={() => salaryHourInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="person-pin" size={20} color="#999" />
-                </InputContainer>
+                  <InputTitle>CTPS</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Número da carteira de trabalho "
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      maxLength={13}
+                      keyboardType="numeric"
+                      ref={ctpsInputRef}
+                      onChangeText={setCTPS}
+                      value={ctps}
+                      returnKeyType="next"
+                      onSubmitEditing={() => salaryHourInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>Salário/Hora</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Valor da hora de trabalho"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    keyboardType="numeric"
-                    ref={salaryHourInputRef}
-                    onChangeText={setSalaryHour}
-                    value={salary_hour}
-                    returnKeyType="next"
-                    onSubmitEditing={() => salaryInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="person-pin" size={20} color="#999" />
-                </InputContainer>
+                  <InputTitle>Salário/Hora</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Valor da hora de trabalho"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      keyboardType="numeric"
+                      ref={salaryHourInputRef}
+                      onChangeText={setSalaryHour}
+                      value={salary_hour}
+                      returnKeyType="next"
+                      onSubmitEditing={() => salaryInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>Salário</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Salário do colaborador"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    keyboardType="numeric"
-                    ref={salaryInputRef}
-                    onChangeText={setSalary}
-                    value={salary}
-                    returnKeyType="next"
-                    onSubmitEditing={() => commissionInputRef.current.focus()}
-                  />
-                  <MaterialIcons name="lock" size={20} color="#999" />
-                </InputContainer>
+                  <InputTitle>Salário</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Salário do colaborador"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      keyboardType="numeric"
+                      ref={salaryInputRef}
+                      onChangeText={setSalary}
+                      value={salary}
+                      returnKeyType="next"
+                      onSubmitEditing={() => commissionInputRef.current.focus()}
+                    />
+                    <MaterialIcons name="lock" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>Comissão</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Comissão do colaborador, se houver"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    keyboardType="numeric"
-                    ref={commissionInputRef}
-                    onChangeText={setCommission}
-                    value={commission}
-                    returnKeyType="next"
-                    onSubmitEditing={() => Keyboard.dismiss()}
-                  />
-                  <MaterialIcons name="person-pin" size={20} color="#999" />
-                </InputContainer>
+                  <InputTitle>Comissão</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Comissão do colaborador, se houver"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      keyboardType="numeric"
+                      ref={commissionInputRef}
+                      onChangeText={setCommission}
+                      value={commission}
+                      returnKeyType="next"
+                      onSubmitEditing={() => Keyboard.dismiss()}
+                    />
+                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                  </InputContainer>
 
-                <InputTitle>Adimissão</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Clique no calendário para editar"
-                    editable={false}
-                    value={admission ? moment(admission).format('DD-MM-YYYY') : ''}
-                  />
-                  <DatePicker
-                    is24Hour={true}
-                    format="DD-MM-YYYY"
-                    minDate="01-01-2001"
-                    maxDate="31-12-2030"
-                    hideText={true}
-                    iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
-                    style={{
-                      width: 21
-                    }}
-                    onDateChange={d => onDateChange(d, 'admission')}
-                  />
-                </InputContainer>
+                  <InputTitle>Adimissão</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Clique no calendário para editar"
+                      editable={false}
+                      value={admission ? moment(admission).format('DD-MM-YYYY') : ''}
+                    />
+                    <DatePicker
+                      is24Hour={true}
+                      format="DD-MM-YYYY"
+                      minDate="01-01-2001"
+                      maxDate="31-12-2030"
+                      hideText={true}
+                      iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
+                      style={{
+                        width: 21
+                      }}
+                      onDateChange={d => onDateChange(d, 'admission')}
+                    />
+                  </InputContainer>
 
-                <InputTitle>Exame de Adimissão</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Clique no calendário para editar"
-                    editable={false}
-                    value={admission_exam ? moment(admission_exam).format('DD-MM-YYYY') : ''}
-                  />
-                  <DatePicker
-                    is24Hour={true}
-                    format="DD-MM-YYYY"
-                    minDate="01-01-2001"
-                    maxDate="31-12-2030"
-                    hideText={true}
-                    iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
-                    style={{
-                      width: 21
-                    }}
-                    onDateChange={d => onDateChange(d, 'admission_exam')}
-                  />
-                </InputContainer>
+                  <InputTitle>Exame de Adimissão</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Clique no calendário para editar"
+                      editable={false}
+                      value={admission_exam ? moment(admission_exam).format('DD-MM-YYYY') : ''}
+                    />
+                    <DatePicker
+                      is24Hour={true}
+                      format="DD-MM-YYYY"
+                      minDate="01-01-2001"
+                      maxDate="31-12-2030"
+                      hideText={true}
+                      iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
+                      style={{
+                        width: 21
+                      }}
+                      onDateChange={d => onDateChange(d, 'admission_exam')}
+                    />
+                  </InputContainer>
 
-                <InputTitle>Proxímo Exame</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Clique no calendário para editar"
-                    editable={false}
-                    value={next_exam ? moment(next_exam).format('DD-MM-YYYY') : ''}
-                  />
-                  <DatePicker
-                    is24Hour={true}
-                    format="DD-MM-YYYY"
-                    minDate="01-01-2001"
-                    maxDate="31-12-2030"
-                    hideText={true}
-                    iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
-                    style={{
-                      width: 21
-                    }}
-                    onDateChange={d => onDateChange(d, 'next_exam')}
-                  />
-                </InputContainer>
+                  <InputTitle>Proxímo Exame</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Clique no calendário para editar"
+                      editable={false}
+                      value={next_exam ? moment(next_exam).format('DD-MM-YYYY') : ''}
+                    />
+                    <DatePicker
+                      is24Hour={true}
+                      format="DD-MM-YYYY"
+                      minDate="01-01-2001"
+                      maxDate="31-12-2030"
+                      hideText={true}
+                      iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
+                      style={{
+                        width: 21
+                      }}
+                      onDateChange={d => onDateChange(d, 'next_exam')}
+                    />
+                  </InputContainer>
 
-                <InputTitle>Ultima Férias</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Clique no calendário para editar"
-                    editable={false}
-                    value={last_vacation ? moment(last_vacation).format('DD-MM-YYYY') : ''}
-                  />
-                  <DatePicker
-                    is24Hour={true}
-                    format="DD-MM-YYYY"
-                    minDate="01-01-2001"
-                    maxDate="31-12-2030"
-                    hideText={true}
-                    iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
-                    style={{
-                      width: 21
-                    }}
-                    onDateChange={d => onDateChange(d, 'last_vacation')}
-                  />
-                </InputContainer>
+                  <InputTitle>Ultima Férias</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Clique no calendário para editar"
+                      editable={false}
+                      value={last_vacation ? moment(last_vacation).format('DD-MM-YYYY') : ''}
+                    />
+                    <DatePicker
+                      is24Hour={true}
+                      format="DD-MM-YYYY"
+                      minDate="01-01-2001"
+                      maxDate="31-12-2030"
+                      hideText={true}
+                      iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
+                      style={{
+                        width: 21
+                      }}
+                      onDateChange={d => onDateChange(d, 'last_vacation')}
+                    />
+                  </InputContainer>
 
-                <InputTitle>Proxíma Férias</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Clique no calendário para editar"
-                    editable={false}
-                    value={nest_vacation ? moment(nest_vacation).format('DD-MM-YYYY') : ''}
-                  />
-                  <DatePicker
-                    is24Hour={true}
-                    format="DD-MM-YYYY"
-                    minDate="01-01-2001"
-                    maxDate="31-12-2030"
-                    hideText={true}
-                    iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
-                    style={{
-                      width: 21
-                    }}
-                    onDateChange={d => onDateChange(d, 'nest_vacation')}
-                  />
-                </InputContainer>
+                  <InputTitle>Proxíma Férias</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Clique no calendário para editar"
+                      editable={false}
+                      value={nest_vacation ? moment(nest_vacation).format('DD-MM-YYYY') : ''}
+                    />
+                    <DatePicker
+                      is24Hour={true}
+                      format="DD-MM-YYYY"
+                      minDate="01-01-2001"
+                      maxDate="31-12-2030"
+                      hideText={true}
+                      iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
+                      style={{
+                        width: 21
+                      }}
+                      onDateChange={d => onDateChange(d, 'nest_vacation')}
+                    />
+                  </InputContainer>
 
-                <InputTitle>Rescisão</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Clique no calendário para editar"
-                    editable={false}
-                    value={rescission ? moment(rescission).format('DD-MM-YYYY') : ''}
-                  />
-                  <DatePicker
-                    is24Hour={true}
-                    format="DD-MM-YYYY"
-                    minDate="01-01-2001"
-                    maxDate="31-12-2030"
-                    hideText={true}
-                    iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
-                    style={{
-                      width: 21
-                    }}
-                    onDateChange={d => onDateChange(d, 'rescission')}
-                  />
-                </InputContainer>
+                  <InputTitle>Rescisão</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Clique no calendário para editar"
+                      editable={false}
+                      value={rescission ? moment(rescission).format('DD-MM-YYYY') : ''}
+                    />
+                    <DatePicker
+                      is24Hour={true}
+                      format="DD-MM-YYYY"
+                      minDate="01-01-2001"
+                      maxDate="31-12-2030"
+                      hideText={true}
+                      iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
+                      style={{
+                        width: 21
+                      }}
+                      onDateChange={d => onDateChange(d, 'rescission')}
+                    />
+                  </InputContainer>
 
-                <InputTitle>Exame de Rescisão</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Clique no calendário para editar"
-                    editable={false}
-                    value={rescission_exam ? moment(rescission_exam).format('DD-MM-YYYY') : ''}
-                  />
-                  <DatePicker
-                    is24Hour={true}
-                    format="DD-MM-YYYY"
-                    minDate="01-01-2001"
-                    maxDate="31-12-2030"
-                    hideText={true}
-                    iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
-                    style={{
-                      width: 21
-                    }}
-                    onDateChange={d => onDateChange(d, 'rescission_exam')}
-                  />
-                </InputContainer>
+                  <InputTitle>Exame de Rescisão</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Clique no calendário para editar"
+                      editable={false}
+                      value={rescission_exam ? moment(rescission_exam).format('DD-MM-YYYY') : ''}
+                    />
+                    <DatePicker
+                      is24Hour={true}
+                      format="DD-MM-YYYY"
+                      minDate="01-01-2001"
+                      maxDate="31-12-2030"
+                      hideText={true}
+                      iconComponent={<FontAwesome5 name="calendar-alt" size={18} color="#999" />}
+                      style={{
+                        width: 21
+                      }}
+                      onDateChange={d => onDateChange(d, 'rescission_exam')}
+                    />
+                  </InputContainer>
 
-                <InputTitle>Razão da Rescisão</InputTitle>
-                <InputContainer>
-                  <Input
-                    placeholder="Qual foi a razão/motivo?"
-                    autoCapitalize="words"
-                    autoCorrect={false}
-                    ref={rescissionReasonInputRef}
-                    onChangeText={setRescissionReason}
-                    value={rescission_reason}
-                    returnKeyType="send"
-                    onSubmitEditing={handleSaveWorkerProfile}
-                  />
-                  <MaterialIcons name="person-pin" size={20} color="#999" />
-                </InputContainer>
-              </>
-            )}
+                  <InputTitle>Razão da Rescisão</InputTitle>
+                  <InputContainer>
+                    <Input
+                      placeholder="Qual foi a razão/motivo?"
+                      autoCapitalize="words"
+                      autoCorrect={false}
+                      ref={rescissionReasonInputRef}
+                      onChangeText={setRescissionReason}
+                      value={rescission_reason}
+                      returnKeyType="send"
+                      onSubmitEditing={handleSaveWorkerProfile}
+                    />
+                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                  </InputContainer>
+                </>
+              )}
 
-            <DeleteButtonBox>
-              <DeleteButton onPress={handleDeleteWorker}>
-                <DeleteButtonText>Excluir</DeleteButtonText>
-              </DeleteButton>
-              <SubmitButton style={{ width: 125 }} onPress={handleSaveWorkerProfile}>
-                {loading ? (
-                  <ActivityIndicator size="small" color="#333" />
-                ) : (
-                    <SubmitButtonText>Salvar</SubmitButtonText>
-                  )}
-              </SubmitButton>
-            </DeleteButtonBox>
-            <CancelarButton onPress={() => setIsVisible(false)}>
-              <CancelarButtonText>Voltar</CancelarButtonText>
-            </CancelarButton>
+              <DeleteButtonBox>
+                <DeleteButton onPress={handleDeleteWorker}>
+                  <DeleteButtonText>Excluir</DeleteButtonText>
+                </DeleteButton>
+                <SubmitButton style={{ width: 125 }} onPress={handleSaveWorkerProfile}>
+                  {loading ? (
+                    <ActivityIndicator size="small" color="#333" />
+                  ) : (
+                      <SubmitButtonText>Salvar</SubmitButtonText>
+                    )}
+                </SubmitButton>
+              </DeleteButtonBox>
+              <CancelarButton onPress={() => setIsVisible(false)}>
+                <CancelarButtonText>Voltar</CancelarButtonText>
+              </CancelarButton>
 
-          </FormContainer>
+            </FormContainer>
 
-        </Content>
-      </Container>
-    </LinearGradient>
-  );
+          </Content>
+        </Container>
+      </LinearGradient>
+    );
+  }
 }

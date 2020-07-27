@@ -326,7 +326,7 @@ export default function CreateWorker() {
 }
 
 CreateWorker.navigationOptions = {
-  tabBarLabel: 'Categorias',
+  tabBarLabel: 'Colaboradores',
   tabBarIcon: ({ tintColor }) => (
     <FontAwesome5 name="user-cog" size={18} color={tintColor} />
   ),

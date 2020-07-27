@@ -181,9 +181,9 @@ const FinanceBottomRoutes = createBottomTabNavigator(
     Transfers,
     Recipes,
     Expenses,
-    Category,
     Accounts,
-    PaymentMethods
+    PaymentMethods,
+    Category
   },
   {
     tabBarOptions: {

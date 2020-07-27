@@ -1,8 +1,9 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Keyboard
+  Keyboard,
+  Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -27,6 +28,7 @@ import {
 } from './styles';
 
 import api from '../../../../services/api';
+import LoadGif from '../../../../assets/loading.gif';
 
 export default function CustonModal({ category, setIsVisible, reloadCategories }) {
 
@@ -36,6 +38,11 @@ export default function CustonModal({ category, setIsVisible, reloadCategories }
   const [indicator, setIndicator] = useState(category.indicator);
 
   const [loading, setLoading] = useState(false);
+  const [first_loading, setFirstLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => setFirstLoading(false), 300);
+  });
 
   const handleDeleteCategory = async () => {
     try {
@@ -82,68 +89,79 @@ export default function CustonModal({ category, setIsVisible, reloadCategories }
     indicator
   ]);
 
-  return (
-    <LinearGradient
-      colors={['#2b475c', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>{category.description}</Title>
-            <Description>
-              Edite ou exclua essa categoria como quiser.
+  if (first_loading) {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
+      </LinearGradient>
+    );
+  } else {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>{category.description}</Title>
+              <Description>
+                Edite ou exclua essa categoria como quiser.
             </Description>
 
-            <InputTitle>Descrição</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Digite a nova descrição"
-                autoCapitalize="words"
-                autoCorrect={false}
-                onChangeText={setDescription}
-                value={description}
-                returnKeyType="next"
-                onSubmitEditing={() => indicatorInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Descrição</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Digite a nova descrição"
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  onChangeText={setDescription}
+                  value={description}
+                  returnKeyType="next"
+                  onSubmitEditing={() => indicatorInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Indicador</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Novo indicador, ex: impostos/etc"
-                autoCapitalize="words"
-                autoCorrect={false}
-                ref={indicatorInputRef}
-                onChangeText={setIndicator}
-                value={indicator}
-                returnKeyType="send"
-                onSubmitEditing={handleUpdateCategory}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Indicador</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Novo indicador, ex: impostos/etc"
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  ref={indicatorInputRef}
+                  onChangeText={setIndicator}
+                  value={indicator}
+                  returnKeyType="send"
+                  onSubmitEditing={handleUpdateCategory}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <DeleteButtonBox>
-              <DeleteButton onPress={handleDeleteCategory}>
-                <DeleteButtonText>Excluir</DeleteButtonText>
-              </DeleteButton>
-              <SubmitButton style={{ width: 125 }} onPress={handleUpdateCategory}>
-                {loading ? (
-                  <ActivityIndicator size="small" color="#333" />
-                ) : (
-                    <SubmitButtonText>Salvar</SubmitButtonText>
-                  )}
-              </SubmitButton>
-            </DeleteButtonBox>
-            <CancelarButton onPress={() => setIsVisible(false)}>
-              <CancelarButtonText>Voltar</CancelarButtonText>
-            </CancelarButton>
+              <DeleteButtonBox>
+                <DeleteButton onPress={handleDeleteCategory}>
+                  <DeleteButtonText>Excluir</DeleteButtonText>
+                </DeleteButton>
+                <SubmitButton style={{ width: 125 }} onPress={handleUpdateCategory}>
+                  {loading ? (
+                    <ActivityIndicator size="small" color="#333" />
+                  ) : (
+                      <SubmitButtonText>Salvar</SubmitButtonText>
+                    )}
+                </SubmitButton>
+              </DeleteButtonBox>
+              <CancelarButton onPress={() => setIsVisible(false)}>
+                <CancelarButtonText>Voltar</CancelarButtonText>
+              </CancelarButton>
 
-          </FormContainer>
+            </FormContainer>
 
-        </Content>
-      </Container>
-    </LinearGradient>
-  );
+          </Content>
+        </Container>
+      </LinearGradient>
+    );
+  }
 }

@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Keyboard
+  Keyboard,
+  Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -28,10 +29,11 @@ import {
 } from './styles';
 
 import api from '../../../../services/api';
+import NavigationService from '../../../../services/navigation';
 
 import CheckBox from '../../../../components/CheckBox';
 
-import NavigationService from '../../../../services/navigation';
+import LoadGif from '../../../../assets/loading.gif';
 
 export default function CustonModal({ order_service_detail, setIsVisible, reloadOrderServiceDetails }) {
 
@@ -51,6 +53,7 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
   const [approved, setApproved] = useState(order_service_detail.approved);
 
   const [loading, setLoading] = useState(false);
+  const [first_loading, setFirstLoading] = useState(true);
 
   useEffect(() => {
     async function loadService() {
@@ -64,6 +67,8 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
         }
       } catch (err) {
         console.log(err);
+      } finally {
+        setFirstLoading(false);
       }
     }
 
@@ -142,157 +147,168 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
   ]);
 
   // TODO Talvez vai poder excluir no futuro também.
-  return (
-    <LinearGradient
-      colors={['#2b475c', '#000']}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        <Content keyboardShouldPersistTaps="handled">
-          <FormContainer>
-            <Title>Serviço - {order_service_detail.id}</Title>
-            <Description>
-              Edite esse serviço como quiser.
+  if (first_loading) {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
+      </LinearGradient>
+    );
+  } else {
+    return (
+      <LinearGradient
+        colors={['#2b475c', '#000']}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Content keyboardShouldPersistTaps="handled">
+            <FormContainer>
+              <Title>Serviço - {order_service_detail.id}</Title>
+              <Description>
+                Edite esse serviço como quiser.
             </Description>
 
-            <InputTitle>Serviço</InputTitle>
-            <InputContainer>
-              <Input
-                editable={false}
-                style={{ color: '#f8a920' }}
-                value={service || 'Não foi especificado'}
-              />
-              <MaterialIcons name="lock" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Serviço</InputTitle>
+              <InputContainer>
+                <Input
+                  editable={false}
+                  style={{ color: '#f8a920' }}
+                  value={service || 'Não foi especificado'}
+                />
+                <MaterialIcons name="lock" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Tipo</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Novo Tipo do Serviço"
-                autoCapitalize="none"
-                autoCorrect={false}
-                maxLength={60}
-                onChangeText={setType}
-                value={type}
-                returnKeyType="next"
-                onSubmitEditing={() => priceInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Tipo</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Novo Tipo do Serviço"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  maxLength={60}
+                  onChangeText={setType}
+                  value={type}
+                  returnKeyType="next"
+                  onSubmitEditing={() => priceInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Preço do Serviço</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Novo Preço do Serviço"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="numeric"
-                ref={priceInputRef}
-                onChangeText={setPrice}
-                value={String(price)}
-                returnKeyType="next"
-                onSubmitEditing={() => discountInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Preço do Serviço</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Novo Preço do Serviço"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="numeric"
+                  ref={priceInputRef}
+                  onChangeText={setPrice}
+                  value={String(price)}
+                  returnKeyType="next"
+                  onSubmitEditing={() => discountInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Preço dos Produtos</InputTitle>
-            <InputContainer>
-              <Input
-                value={products_value ? String(products_value) : 'Não possui produtos'}
-                editable={false}
-                style={{ color: '#f8a920' }}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Preço dos Produtos</InputTitle>
+              <InputContainer>
+                <Input
+                  value={products_value ? String(products_value) : 'Não possui produtos'}
+                  editable={false}
+                  style={{ color: '#f8a920' }}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Desconto do Serviço</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Desconto do Serviço, se houver"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="numeric"
-                ref={discountInputRef}
-                onChangeText={setDiscount}
-                value={String(discount)}
-                returnKeyType="next"
-                onSubmitEditing={() => commissionInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Desconto do Serviço</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Desconto do Serviço, se houver"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="numeric"
+                  ref={discountInputRef}
+                  onChangeText={setDiscount}
+                  value={String(discount)}
+                  returnKeyType="next"
+                  onSubmitEditing={() => commissionInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Comissão do serviço</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Comissão do colaborador, se houver"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="numeric"
-                ref={commissionInputRef}
-                onChangeText={setCommission}
-                value={String(commission)}
-                returnKeyType="next"
-                onSubmitEditing={() => premiumInputRef.current.focus()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Comissão do serviço</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Comissão do colaborador, se houver"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="numeric"
+                  ref={commissionInputRef}
+                  onChangeText={setCommission}
+                  value={String(commission)}
+                  returnKeyType="next"
+                  onSubmitEditing={() => premiumInputRef.current.focus()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <InputTitle>Prêmio do serviço</InputTitle>
-            <InputContainer>
-              <Input
-                placeholder="Prêmio para o colaborador, se houver"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="numeric"
-                ref={premiumInputRef}
-                onChangeText={setPremium}
-                value={String(premium)}
-                returnKeyType="next"
-                onSubmitEditing={() => Keyboard.dismiss()}
-              />
-              <MaterialIcons name="person-pin" size={20} color="#999" />
-            </InputContainer>
+              <InputTitle>Prêmio do serviço</InputTitle>
+              <InputContainer>
+                <Input
+                  placeholder="Prêmio para o colaborador, se houver"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="numeric"
+                  ref={premiumInputRef}
+                  onChangeText={setPremium}
+                  value={String(premium)}
+                  returnKeyType="next"
+                  onSubmitEditing={() => Keyboard.dismiss()}
+                />
+                <MaterialIcons name="person-pin" size={20} color="#999" />
+              </InputContainer>
 
-            <SwitchContainer>
-              <ChoiceText>Serviço Aprovado?</ChoiceText>
+              <SwitchContainer>
+                <ChoiceText>Serviço Aprovado?</ChoiceText>
 
-              <CheckBox
-                iconColor="#f8a920"
-                checkColor="#f8a920"
-                value={approved}
-                onChange={() => setApproved(!approved)}
-              />
-            </SwitchContainer>
+                <CheckBox
+                  iconColor="#f8a920"
+                  checkColor="#f8a920"
+                  value={approved}
+                  onChange={() => setApproved(!approved)}
+                />
+              </SwitchContainer>
 
-            <ChoiceButton
-              onPress={handleNavigateToDetailPage}
-            >
-              <SwitchText>Ir para Produtos</SwitchText>
-            </ChoiceButton>
+              <ChoiceButton
+                onPress={handleNavigateToDetailPage}
+              >
+                <SwitchText>Ir para Produtos</SwitchText>
+              </ChoiceButton>
 
-            <ChoiceButton
-              onPress={handleNavigateToPaymentPage}
-            >
-              <SwitchText>Ir para Pagamento</SwitchText>
-            </ChoiceButton>
+              <ChoiceButton
+                onPress={handleNavigateToPaymentPage}
+              >
+                <SwitchText>Ir para Pagamento</SwitchText>
+              </ChoiceButton>
 
-            <SubmitButton onPress={handleUpdateOrderServiceDetail}>
-              {loading ? (
-                <ActivityIndicator size="small" color="#333" />
-              ) : (
-                  <SubmitButtonText>Salvar</SubmitButtonText>
-                )}
-            </SubmitButton>
+              <SubmitButton onPress={handleUpdateOrderServiceDetail}>
+                {loading ? (
+                  <ActivityIndicator size="small" color="#333" />
+                ) : (
+                    <SubmitButtonText>Salvar</SubmitButtonText>
+                  )}
+              </SubmitButton>
 
-            <CancelarButton onPress={() => setIsVisible(false)}>
-              <CancelarButtonText>Voltar</CancelarButtonText>
-            </CancelarButton>
+              <CancelarButton onPress={() => setIsVisible(false)}>
+                <CancelarButtonText>Voltar</CancelarButtonText>
+              </CancelarButton>
 
-          </FormContainer>
+            </FormContainer>
 
-        </Content>
-      </Container>
-    </LinearGradient>
-  );
+          </Content>
+        </Container>
+      </LinearGradient>
+    );
+  }
 }
