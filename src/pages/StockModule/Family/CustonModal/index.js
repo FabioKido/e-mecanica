@@ -123,7 +123,7 @@ export default function CustonModal({ family, setIsVisible, reloadFamilies }) {
                   returnKeyType="next"
                   onSubmitEditing={() => descriptionInputRef.current.focus()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Descrição</InputTitle>
@@ -138,7 +138,7 @@ export default function CustonModal({ family, setIsVisible, reloadFamilies }) {
                   returnKeyType="send"
                   onSubmitEditing={handleUpdatefamily}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <DeleteButtonBox>

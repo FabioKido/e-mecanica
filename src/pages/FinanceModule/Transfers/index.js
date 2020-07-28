@@ -305,7 +305,7 @@ export default function Accounts() {
                       <Picker.Item label="Selecione a Categoria" value="" />
                       {categories && categories.map(category => <Picker.Item key={category.id} label={category.description} value={category.id} />)}
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   <InputTitle>Conta de Origem</InputTitle>
@@ -323,7 +323,7 @@ export default function Accounts() {
                       <Picker.Item label="Selecione a Conta de Origem" value="" />
                       {accounts && accounts.map(account => <Picker.Item key={account.id} label={account.title} value={account.id} />)}
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   <InputTitle>Valor Total</InputTitle>
@@ -339,7 +339,7 @@ export default function Accounts() {
                       returnKeyType="next"
                       onSubmitEditing={() => Keyboard.dismiss()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Conta de Destino</InputTitle>
@@ -357,7 +357,7 @@ export default function Accounts() {
                       <Picker.Item label="Selecione a Conta de Destino" value="" />
                       {accounts && accounts.map(account => <Picker.Item key={account.id} label={account.title} value={account.id} />)}
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   <InputTitle>Data</InputTitle>
@@ -393,7 +393,7 @@ export default function Accounts() {
                       returnKeyType="next"
                       onSubmitEditing={() => observationsInputRef.current.focus()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Observações</InputTitle>
@@ -408,7 +408,7 @@ export default function Accounts() {
                       returnKeyType="send"
                       onSubmitEditing={handleSaveTransfer}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                 </>

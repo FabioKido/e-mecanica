@@ -148,7 +148,7 @@ export default function Company() {
                   returnKeyType="next"
                   onSubmitEditing={() => nomeFantasiaInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Nome Fantasia</InputTitle>
@@ -163,7 +163,7 @@ export default function Company() {
                   returnKeyType="next"
                   onSubmitEditing={() => cnpjInputRef.current.focus()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>CNPJ</InputTitle>
@@ -187,7 +187,7 @@ export default function Company() {
                   returnKeyType="next"
                   onSubmitEditing={() => ieInputRef.current.focus()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>IE</InputTitle>
@@ -204,7 +204,7 @@ export default function Company() {
                   returnKeyType="next"
                   onSubmitEditing={() => typeInputRef.current.focus()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Tipo de Empresa</InputTitle>
@@ -219,7 +219,7 @@ export default function Company() {
                   returnKeyType="send"
                   onSubmitEditing={handleSaveCompany}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <SubmitButton onPress={handleSaveCompany}>

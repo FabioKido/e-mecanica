@@ -127,7 +127,7 @@ export default function CustonModal({ payment_method, setIsVisible, reloadPaymen
                   returnKeyType="next"
                   onSubmitEditing={() => operatorInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Operadora</InputTitle>
@@ -143,7 +143,7 @@ export default function CustonModal({ payment_method, setIsVisible, reloadPaymen
                   returnKeyType="next"
                   onSubmitEditing={() => taxaInputRef.current.focus()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Taxa</InputTitle>
@@ -159,7 +159,7 @@ export default function CustonModal({ payment_method, setIsVisible, reloadPaymen
                   returnKeyType="send"
                   onSubmitEditing={handleUpdatePaymentMethod}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <DeleteButtonBox>

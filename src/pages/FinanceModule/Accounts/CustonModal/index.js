@@ -130,7 +130,7 @@ export default function CustonModal({ account, setIsVisible, reloadAccounts }) {
                   returnKeyType="next"
                   onSubmitEditing={() => descriptionInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Descrição</InputTitle>
@@ -145,7 +145,7 @@ export default function CustonModal({ account, setIsVisible, reloadAccounts }) {
                   returnKeyType="next"
                   onSubmitEditing={() => typeInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Tipo de Conta</InputTitle>
@@ -161,10 +161,10 @@ export default function CustonModal({ account, setIsVisible, reloadAccounts }) {
                   returnKeyType="next"
                   onSubmitEditing={() => initialValueInputRef.current.focus()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
-              <InputTitle>Valor Inícial</InputTitle>
+              <InputTitle>Valor Atual</InputTitle>
               <InputContainer>
                 <Input
                   placeholder='Novo valor'
@@ -177,7 +177,7 @@ export default function CustonModal({ account, setIsVisible, reloadAccounts }) {
                   returnKeyType="send"
                   onSubmitEditing={handleUpdateAccount}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <DeleteButtonBox>

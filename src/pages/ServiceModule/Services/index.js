@@ -198,7 +198,7 @@ export default function Services() {
                     returnKeyType="send"
                     onSubmitEditing={handleSaveService}
                   />
-                  <MaterialIcons name="lock" size={20} color="#999" />
+                  <MaterialIcons name="edit" size={18} color="#999" />
                 </InputContainer>
               </>
             }

@@ -244,7 +244,7 @@ export default function Accounts() {
                       returnKeyType="next"
                       onSubmitEditing={() => descriptionInputRef.current.focus()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Descrição</InputTitle>
@@ -259,7 +259,7 @@ export default function Accounts() {
                       returnKeyType="next"
                       onSubmitEditing={() => typeInputRef.current.focus()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Tipo de Conta</InputTitle>
@@ -275,7 +275,7 @@ export default function Accounts() {
                       returnKeyType="next"
                       onSubmitEditing={() => initialValueInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Valor Inícial</InputTitle>
@@ -291,7 +291,7 @@ export default function Accounts() {
                       returnKeyType="send"
                       onSubmitEditing={handleSaveAccount}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
                 </>
               }

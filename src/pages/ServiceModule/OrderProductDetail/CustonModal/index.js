@@ -173,7 +173,7 @@ export default function CustonModal({ order_product_detail, setIsVisible, reload
                   style={{ color: '#f8a920' }}
                   value={product.name || 'Produto não especificado'}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="info" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Data de Aquisição</InputTitle>
@@ -183,7 +183,7 @@ export default function CustonModal({ order_product_detail, setIsVisible, reload
                   style={{ color: '#f8a920' }}
                   value={date}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="info" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Preço Unitário</InputTitle>
@@ -193,7 +193,7 @@ export default function CustonModal({ order_product_detail, setIsVisible, reload
                   style={{ color: '#f8a920' }}
                   value={String(unit_cost)}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="info" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Preço de Venda</InputTitle>
@@ -208,7 +208,7 @@ export default function CustonModal({ order_product_detail, setIsVisible, reload
                   returnKeyType="next"
                   onSubmitEditing={() => discountInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Desconto</InputTitle>
@@ -224,7 +224,7 @@ export default function CustonModal({ order_product_detail, setIsVisible, reload
                   returnKeyType="next"
                   onSubmitEditing={() => qtdInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Quantidade</InputTitle>
@@ -240,7 +240,7 @@ export default function CustonModal({ order_product_detail, setIsVisible, reload
                   returnKeyType="next"
                   onSubmitEditing={() => Keyboard.dismiss()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Preço Total</InputTitle>
@@ -250,7 +250,7 @@ export default function CustonModal({ order_product_detail, setIsVisible, reload
                   style={{ color: '#f8a920' }}
                   value={qtd && qtd > 0 ? String(total_price) : '0.0'}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="info" size={20} color="#999" />
               </InputContainer>
 
               <DeleteButtonBox>

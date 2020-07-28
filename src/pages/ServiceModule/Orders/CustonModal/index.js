@@ -204,7 +204,7 @@ export default function CustonModal({ order, setIsVisible, reloadOrders }) {
                   style={{ color: '#f8a920' }}
                   value={vehicle.model || 'Não foi especificado'}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="info" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Proprietário</InputTitle>
@@ -214,7 +214,7 @@ export default function CustonModal({ order, setIsVisible, reloadOrders }) {
                   style={{ color: '#f8a920' }}
                   value={customer || 'Não foi especificado'}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="info" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Kilometragem</InputTitle>
@@ -230,7 +230,7 @@ export default function CustonModal({ order, setIsVisible, reloadOrders }) {
                   returnKeyType="next"
                   onSubmitEditing={() => tanqueInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Tanque</InputTitle>
@@ -247,7 +247,7 @@ export default function CustonModal({ order, setIsVisible, reloadOrders }) {
                   returnKeyType="next"
                   onSubmitEditing={() => internalControlInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Controle Interno</InputTitle>
@@ -262,7 +262,7 @@ export default function CustonModal({ order, setIsVisible, reloadOrders }) {
                   returnKeyType="next"
                   onSubmitEditing={() => observationsInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Previsão de Saída</InputTitle>
@@ -299,7 +299,7 @@ export default function CustonModal({ order, setIsVisible, reloadOrders }) {
                   returnKeyType="send"
                   onSubmitEditing={handleUpdateOrder}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <ChoiceButton

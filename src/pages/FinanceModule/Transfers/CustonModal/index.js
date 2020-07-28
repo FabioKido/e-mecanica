@@ -155,9 +155,9 @@ export default function CustonModal({ transfer, setIsVisible, reloadTransfers, }
                 <Input
                   editable={false}
                   style={{ color: '#f8a920' }}
-                  value={category}
+                  value={category || 'Sem categoria'}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="info" size={20} color="#999" />
               </InputPicker>
 
               <InputTitle>Conta de Origem</InputTitle>
@@ -167,17 +167,7 @@ export default function CustonModal({ transfer, setIsVisible, reloadTransfers, }
                   style={{ color: '#592f2a' }}
                   value={account_origin}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
-              </InputContainer>
-
-              <InputTitle>Valor Total</InputTitle>
-              <InputContainer>
-                <Input
-                  editable={false}
-                  style={{ color: '#f8a920' }}
-                  value={String(transfer.total_value)}
-                />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="info" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Conta de destino</InputTitle>
@@ -187,7 +177,17 @@ export default function CustonModal({ transfer, setIsVisible, reloadTransfers, }
                   style={{ color: '#2b5b2e' }}
                   value={account_destiny}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="info" size={20} color="#999" />
+              </InputContainer>
+
+              <InputTitle>Valor Total</InputTitle>
+              <InputContainer>
+                <Input
+                  editable={false}
+                  style={{ color: '#f8a920' }}
+                  value={String(transfer.total_value)}
+                />
+                <MaterialIcons name="block" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Transferência</InputTitle>
@@ -211,7 +211,7 @@ export default function CustonModal({ transfer, setIsVisible, reloadTransfers, }
                   returnKeyType="next"
                   onSubmitEditing={() => observationsInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Observações</InputTitle>
@@ -226,7 +226,7 @@ export default function CustonModal({ transfer, setIsVisible, reloadTransfers, }
                   returnKeyType="send"
                   onSubmitEditing={handleUpdateTransfer}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <DeleteButtonBox>

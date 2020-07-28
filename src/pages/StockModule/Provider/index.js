@@ -245,7 +245,7 @@ export default function Providers() {
                       returnKeyType="next"
                       onSubmitEditing={() => cnpjInputRef.current.focus()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>CNPJ</InputTitle>
@@ -269,7 +269,7 @@ export default function Providers() {
                       returnKeyType="next"
                       onSubmitEditing={() => ieInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>IE</InputTitle>
@@ -286,7 +286,7 @@ export default function Providers() {
                       returnKeyType="next"
                       onSubmitEditing={() => observationsInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Observações</InputTitle>
@@ -301,7 +301,7 @@ export default function Providers() {
                       returnKeyType="next"
                       onSubmitEditing={() => Keyboard.dismiss()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <SwitchContainer>

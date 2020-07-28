@@ -177,7 +177,7 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
                   style={{ color: '#f8a920' }}
                   value={service || 'Não foi especificado'}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="info" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Tipo</InputTitle>
@@ -192,7 +192,7 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
                   returnKeyType="next"
                   onSubmitEditing={() => priceInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Preço do Serviço</InputTitle>
@@ -208,7 +208,7 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
                   returnKeyType="next"
                   onSubmitEditing={() => discountInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Preço dos Produtos</InputTitle>
@@ -218,7 +218,7 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
                   editable={false}
                   style={{ color: '#f8a920' }}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="info" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Desconto do Serviço</InputTitle>
@@ -234,7 +234,7 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
                   returnKeyType="next"
                   onSubmitEditing={() => commissionInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Comissão do serviço</InputTitle>
@@ -250,7 +250,7 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
                   returnKeyType="next"
                   onSubmitEditing={() => premiumInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Prêmio do serviço</InputTitle>
@@ -266,7 +266,7 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
                   returnKeyType="next"
                   onSubmitEditing={() => Keyboard.dismiss()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <SwitchContainer>

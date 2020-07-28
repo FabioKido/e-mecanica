@@ -303,7 +303,7 @@ export default function Preventives() {
                       <Picker.Item label="Selecione o Proprietário do Veículo" value="" />
                       {customers && customers.map(customer => <Picker.Item key={customer.id} label={customer.name} value={customer.id} />)}
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   <InputTitle>Veículo</InputTitle>
@@ -321,7 +321,7 @@ export default function Preventives() {
                       <Picker.Item label="Selecione o Veículo" value="" />
                       {vehicles && vehicles.map(vehicle => <Picker.Item key={vehicle.id} label={vehicle.model} value={vehicle.id} />)}
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   <InputTitle>Serviço</InputTitle>
@@ -339,7 +339,7 @@ export default function Preventives() {
                       <Picker.Item label="Selecione o Serviço da Preventiva" value="" />
                       {services && services.map(service => <Picker.Item key={service.id} label={service.name} value={service.id} />)}
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   <InputTitle>Data</InputTitle>
@@ -380,7 +380,7 @@ export default function Preventives() {
                       <Picker.Item label="Em andamento" value="Em andamento" />
                       <Picker.Item label="Concluído" value="Concluído" />
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
                 </>
               }

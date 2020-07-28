@@ -333,7 +333,7 @@ export default function OrderServiceDetail({ navigation }) {
                       <Picker.Item label="Selecione o Serviço" value="" />
                       {order_service_details && order_service_details.map(serv => <Picker.Item key={serv.id} label={`Serviço - ${serv.id}`} value={serv.id} />)}
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   <InputTitle>Produto</InputTitle>
@@ -351,7 +351,7 @@ export default function OrderServiceDetail({ navigation }) {
                       <Picker.Item label="Selecione o Produto" value="" />
                       {products && products.map(product => <Picker.Item key={product.id} label={product.name} value={product.id} />)}
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   {product &&
@@ -371,7 +371,7 @@ export default function OrderServiceDetail({ navigation }) {
                           <Picker.Item label="Selecione a Aquisição" value="" />
                           {acquisition_products && acquisition_products.map(product_acq => <Picker.Item key={product_acq.id} label={`Quantidade - ${String(product_acq.qtd)}`} value={product_acq.id} />)}
                         </Picker>
-                        <MaterialIcons name="lock" size={20} color="#999" />
+                        <MaterialIcons name="unfold-more" size={20} color="#999" />
                       </InputPicker>
                     </>
                   }
@@ -385,7 +385,7 @@ export default function OrderServiceDetail({ navigation }) {
                           style={{ color: '#f8a920' }}
                           value={date}
                         />
-                        <MaterialIcons name="lock" size={20} color="#999" />
+                        <MaterialIcons name="info" size={20} color="#999" />
                       </InputContainer>
 
                       <InputTitle>Preço Unitário</InputTitle>
@@ -395,7 +395,7 @@ export default function OrderServiceDetail({ navigation }) {
                           style={{ color: '#f8a920' }}
                           value={String(unity_cost)}
                         />
-                        <MaterialIcons name="lock" size={20} color="#999" />
+                        <MaterialIcons name="info" size={20} color="#999" />
                       </InputContainer>
 
                       <InputTitle>Preço de Venda - Atual: R$ {product.price_sale}</InputTitle>
@@ -410,7 +410,7 @@ export default function OrderServiceDetail({ navigation }) {
                           returnKeyType="next"
                           onSubmitEditing={() => discountInputRef.current.focus()}
                         />
-                        <MaterialIcons name="person-pin" size={20} color="#999" />
+                        <MaterialIcons name="edit" size={18} color="#999" />
                       </InputContainer>
 
                       <InputTitle>Desconto</InputTitle>
@@ -426,7 +426,7 @@ export default function OrderServiceDetail({ navigation }) {
                           returnKeyType="next"
                           onSubmitEditing={() => qtdInputRef.current.focus()}
                         />
-                        <MaterialIcons name="person-pin" size={20} color="#999" />
+                        <MaterialIcons name="edit" size={18} color="#999" />
                       </InputContainer>
 
                       <InputTitle>Quantidade</InputTitle>
@@ -442,7 +442,7 @@ export default function OrderServiceDetail({ navigation }) {
                           returnKeyType="next"
                           onSubmitEditing={() => Keyboard.dismiss()}
                         />
-                        <MaterialIcons name="person-pin" size={20} color="#999" />
+                        <MaterialIcons name="edit" size={18} color="#999" />
                       </InputContainer>
 
                       <InputTitle>Preço Total</InputTitle>
@@ -452,7 +452,7 @@ export default function OrderServiceDetail({ navigation }) {
                           style={{ color: '#f8a920' }}
                           value={qtd && qtd > 0 ? String(total_price) : '0.0'}
                         />
-                        <MaterialIcons name="lock" size={20} color="#999" />
+                        <MaterialIcons name="info" size={20} color="#999" />
                       </InputContainer>
                     </>
                   }

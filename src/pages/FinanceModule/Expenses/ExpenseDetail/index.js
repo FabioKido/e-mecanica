@@ -149,7 +149,7 @@ export default function ({ options, total_value, handleSaveExpense, loading }) {
             style={{ color: '#f8a920' }}
             value={String(parcel)}
           />
-          <FontAwesome5 name="file-invoice-dollar" size={20} color="#999" />
+          <MaterialIcons name="info" size={20} color="#999" />
         </InputContainer>
 
         <InputTitle>Vencimento</InputTitle>
@@ -186,7 +186,7 @@ export default function ({ options, total_value, handleSaveExpense, loading }) {
             value={document_numbers[`document_number${row}`] || ''}
             returnKeyType="next"
           />
-          <MaterialIcons name="person-pin" size={20} color="#999" />
+          <MaterialIcons name="edit" size={18} color="#999" />
         </InputContainer>
 
         <InputTitle>Taxa de Ajuste</InputTitle>
@@ -201,7 +201,7 @@ export default function ({ options, total_value, handleSaveExpense, loading }) {
             value={taxa_ajustes[`taxa_ajuste${row}`] || ''}
             returnKeyType="next"
           />
-          <MaterialIcons name="person-pin" size={20} color="#999" />
+          <MaterialIcons name="edit" size={18} color="#999" />
         </InputContainer>
 
         <InputTitle>Observações</InputTitle>
@@ -215,7 +215,7 @@ export default function ({ options, total_value, handleSaveExpense, loading }) {
             value={observations[`observations${row}`] || ''}
             returnKeyType="next"
           />
-          <MaterialIcons name="person-pin" size={20} color="#999" />
+          <MaterialIcons name="edit" size={18} color="#999" />
         </InputContainer>
 
         <SwitchContainer>
@@ -271,7 +271,7 @@ export default function ({ options, total_value, handleSaveExpense, loading }) {
             <Picker.Item label="3" value={3} />
             <Picker.Item label="4" value={4} />
           </Picker>
-          <MaterialIcons name="lock" size={20} color="#999" />
+          <MaterialIcons name="unfold-more" size={20} color="#999" />
         </InputPicker>
 
         <InputTitle>Método de Pagamento</InputTitle>
@@ -289,7 +289,7 @@ export default function ({ options, total_value, handleSaveExpense, loading }) {
             <Picker.Item label="Selecione o Método de Pagamento" value="" />
             {methods && methods.map(method => <Picker.Item key={method.id} label={method.method} value={method.id} />)}
           </Picker>
-          <MaterialIcons name="lock" size={20} color="#999" />
+          <MaterialIcons name="unfold-more" size={20} color="#999" />
         </InputPicker>
 
         <InputTitle>Conta de Destino</InputTitle>
@@ -307,7 +307,7 @@ export default function ({ options, total_value, handleSaveExpense, loading }) {
             <Picker.Item label="Selecione a Conta de Destino" value="" />
             {accounts && accounts.map(account => <Picker.Item key={account.id} label={account.title} value={account.id} />)}
           </Picker>
-          <MaterialIcons name="lock" size={20} color="#999" />
+          <MaterialIcons name="unfold-more" size={20} color="#999" />
         </InputPicker>
 
         {listItems}
@@ -341,7 +341,7 @@ export default function ({ options, total_value, handleSaveExpense, loading }) {
             <Picker.Item label="Selecione o Método de Pagamento" value="" />
             {methods && methods.map(method => <Picker.Item key={method.id} label={method.method} value={method.id} />)}
           </Picker>
-          <MaterialIcons name="lock" size={20} color="#999" />
+          <MaterialIcons name="unfold-more" size={20} color="#999" />
         </InputPicker>
 
         <InputTitle>Conta de Destino</InputTitle>
@@ -359,7 +359,7 @@ export default function ({ options, total_value, handleSaveExpense, loading }) {
             <Picker.Item label="Selecione a Conta de Destino" value="" />
             {accounts && accounts.map(account => <Picker.Item key={account.id} label={account.title} value={account.id} />)}
           </Picker>
-          <MaterialIcons name="lock" size={20} color="#999" />
+          <MaterialIcons name="unfold-more" size={20} color="#999" />
         </InputPicker>
 
         <InputTitle>Valor á Vista </InputTitle>
@@ -370,7 +370,7 @@ export default function ({ options, total_value, handleSaveExpense, loading }) {
             style={{ color: '#f8a920' }}
             value={String(parcel)}
           />
-          <FontAwesome5 name="file-invoice-dollar" size={20} color="#999" />
+          <MaterialIcons name="info" size={20} color="#999" />
         </InputContainer>
 
         <InputTitle>Vencimento</InputTitle>
@@ -407,7 +407,7 @@ export default function ({ options, total_value, handleSaveExpense, loading }) {
             value={document_number}
             returnKeyType="next"
           />
-          <MaterialIcons name="person-pin" size={20} color="#999" />
+          <MaterialIcons name="edit" size={18} color="#999" />
         </InputContainer>
 
         <InputTitle>Taxa de Ajuste</InputTitle>
@@ -422,7 +422,7 @@ export default function ({ options, total_value, handleSaveExpense, loading }) {
             value={taxa_ajuste}
             returnKeyType="next"
           />
-          <MaterialIcons name="person-pin" size={20} color="#999" />
+          <MaterialIcons name="edit" size={18} color="#999" />
         </InputContainer>
 
         <InputTitle>Observações</InputTitle>
@@ -436,11 +436,11 @@ export default function ({ options, total_value, handleSaveExpense, loading }) {
             value={observation}
             returnKeyType="next"
           />
-          <MaterialIcons name="person-pin" size={20} color="#999" />
+          <MaterialIcons name="edit" size={18} color="#999" />
         </InputContainer>
 
         <SwitchContainer>
-          <ChoiceText>Parcela Quitada?</ChoiceText>
+          <ChoiceText>Valor Quitado?</ChoiceText>
 
           <CheckBox
             iconColor="#f8a920"

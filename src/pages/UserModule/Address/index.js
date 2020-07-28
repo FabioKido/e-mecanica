@@ -176,7 +176,7 @@ export default function Profile() {
                   returnKeyType="next"
                   onSubmitEditing={() => numberInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Número</InputTitle>
@@ -192,7 +192,7 @@ export default function Profile() {
                   returnKeyType="next"
                   onSubmitEditing={() => neighborhoodInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Bairro</InputTitle>
@@ -207,7 +207,7 @@ export default function Profile() {
                   returnKeyType="next"
                   onSubmitEditing={() => complementInputRef.current.focus()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Complemento</InputTitle>
@@ -222,7 +222,7 @@ export default function Profile() {
                   returnKeyType="next"
                   onSubmitEditing={() => cityInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Cidade</InputTitle>
@@ -237,7 +237,7 @@ export default function Profile() {
                   returnKeyType="next"
                   onSubmitEditing={() => Keyboard.dismiss()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="map" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>UF</InputTitle>
@@ -255,7 +255,7 @@ export default function Profile() {
                   <Picker.Item label='Selecione a UF' value={uf} />
                   {states && states.map(state => <Picker.Item key={state.uf} label={state.name} value={state.uf} />)}
                 </Picker>
-                <MaterialIcons name="mail-outline" size={20} color="#999" />
+                <MaterialIcons name="unfold-more" size={20} color="#999" />
               </InputContainer>
 
               <SubmitButton onPress={handleSaveProfile}>

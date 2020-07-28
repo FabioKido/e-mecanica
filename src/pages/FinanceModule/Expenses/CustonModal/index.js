@@ -183,7 +183,7 @@ export default function CustonModal({ expense, setIsVisible, reloadExpenses }) {
                   <Picker.Item label="Selecione a Categoria" value="" />
                   {categories && categories.map(category => <Picker.Item key={category.id} label={category.description} value={category.id} />)}
                 </Picker>
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="unfold-more" size={20} color="#999" />
               </InputPicker>
 
               <InputTitle>Valor Total</InputTitle>
@@ -199,7 +199,7 @@ export default function CustonModal({ expense, setIsVisible, reloadExpenses }) {
                   returnKeyType="next"
                   onSubmitEditing={() => descriptionInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Descrição</InputTitle>
@@ -214,7 +214,7 @@ export default function CustonModal({ expense, setIsVisible, reloadExpenses }) {
                   returnKeyType="next"
                   onSubmitEditing={() => observationsInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Data</InputTitle>
@@ -255,7 +255,7 @@ export default function CustonModal({ expense, setIsVisible, reloadExpenses }) {
                   <Picker.Item label="Despesa Variável" value="Despesa Variável" />
                   <Picker.Item label="Despesa Fixa" value="Despesa Fixa" />
                 </Picker>
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="unfold-more" size={20} color="#999" />
               </InputPicker>
 
               <InputTitle>Observações</InputTitle>
@@ -270,7 +270,7 @@ export default function CustonModal({ expense, setIsVisible, reloadExpenses }) {
                   returnKeyType="send"
                   onSubmitEditing={handleUpdateExpense}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <ChoiceButton

@@ -255,10 +255,10 @@ export default function GroupPermission({ navigation }) {
                       }}
                       onValueChange={(itemValue, itemIndex) => setIdPermission(itemValue)}
                     >
-                      <Picker.Item label="Selecione o Proprietário do Veículo" value="" />
+                      <Picker.Item label="Selecione o tipo de permissão" value="" />
                       {permissions && permissions.map(permission => <Picker.Item key={permission.id} label={permission.name} value={permission.id} />)}
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   {permission &&
@@ -270,6 +270,7 @@ export default function GroupPermission({ navigation }) {
                           style={{ color: '#fff' }}
                           value={permission.action}
                         />
+                        <MaterialIcons name="info" size={20} color="#999" />
                       </InputContainer>
                     </>
                   }

@@ -247,7 +247,7 @@ export default function CustonModal({ acquisition, setIsVisible, reloadAcquisiti
                   <Picker.Item label="Selecione o Fornecedor do Produto" value="" />
                   {providers && providers.map(provider => <Picker.Item key={provider.id} label={provider.name} value={provider.id} />)}
                 </Picker>
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="unfold-more" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Data da Aquisição</InputTitle>
@@ -285,7 +285,7 @@ export default function CustonModal({ acquisition, setIsVisible, reloadAcquisiti
                   returnKeyType="next"
                   onSubmitEditing={() => nefNumberInputRef.current.focus()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Número da NFe</InputTitle>
@@ -302,7 +302,7 @@ export default function CustonModal({ acquisition, setIsVisible, reloadAcquisiti
                   returnKeyType="next"
                   onSubmitEditing={() => totalQtdInputRef.current.focus()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Quantidade Total</InputTitle>
@@ -318,7 +318,7 @@ export default function CustonModal({ acquisition, setIsVisible, reloadAcquisiti
                   returnKeyType="next"
                   onSubmitEditing={() => Keyboard.dismiss()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Quantidade Atual</InputTitle>
@@ -328,7 +328,7 @@ export default function CustonModal({ acquisition, setIsVisible, reloadAcquisiti
                   style={{ color: '#f8a920' }}
                   value={String(qtd)}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="info" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Preço Unitário</InputTitle>
@@ -343,7 +343,7 @@ export default function CustonModal({ acquisition, setIsVisible, reloadAcquisiti
                   returnKeyType="next"
                   onSubmitEditing={() => discountInputRef.current.focus()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Desconto da Aquisição</InputTitle>
@@ -359,7 +359,7 @@ export default function CustonModal({ acquisition, setIsVisible, reloadAcquisiti
                   returnKeyType="next"
                   onSubmitEditing={() => Keyboard.dismiss()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <ChoiceButton
@@ -384,7 +384,7 @@ export default function CustonModal({ acquisition, setIsVisible, reloadAcquisiti
                       style={{ color: '#f8a920' }}
                       value={product.name || 'Produto não especificado'}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="info" size={20} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Unidade</InputTitle>
@@ -394,7 +394,7 @@ export default function CustonModal({ acquisition, setIsVisible, reloadAcquisiti
                       style={{ color: '#f8a920' }}
                       value={product.unidade || 'Produto não especificado'}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="info" size={20} color="#999" />
                   </InputContainer>
 
                   <TitleSection>Valor Atualizado</TitleSection>
@@ -406,7 +406,7 @@ export default function CustonModal({ acquisition, setIsVisible, reloadAcquisiti
                       style={{ color: '#f8a920' }}
                       value={String(total_value)}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="info" size={20} color="#999" />
                   </InputContainer>
 
                 </>

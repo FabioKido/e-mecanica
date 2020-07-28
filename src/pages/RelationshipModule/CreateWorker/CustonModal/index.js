@@ -418,7 +418,7 @@ export default function CustonModal({ worker, setIsVisible, reloadWorkers }) {
                       returnKeyType="next"
                       onSubmitEditing={() => Keyboard.dismiss()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Sexo</InputTitle>
@@ -437,7 +437,7 @@ export default function CustonModal({ worker, setIsVisible, reloadWorkers }) {
                       <Picker.Item label='Masculino' value='M' />
                       <Picker.Item label='Feminino' value='F' />
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Aniversário</InputTitle>
@@ -481,7 +481,7 @@ export default function CustonModal({ worker, setIsVisible, reloadWorkers }) {
                       returnKeyType="next"
                       onSubmitEditing={() => rgInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>RG</InputTitle>
@@ -497,7 +497,7 @@ export default function CustonModal({ worker, setIsVisible, reloadWorkers }) {
                       returnKeyType="next"
                       onSubmitEditing={() => orgaoExpeditorInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Orgão Expeditor</InputTitle>
@@ -513,7 +513,7 @@ export default function CustonModal({ worker, setIsVisible, reloadWorkers }) {
                       returnKeyType="next"
                       onSubmitEditing={() => observationsInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Observações</InputTitle>
@@ -528,7 +528,7 @@ export default function CustonModal({ worker, setIsVisible, reloadWorkers }) {
                       returnKeyType="next"
                       onSubmitEditing={() => ctpsInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <TitleSection>Trabalhista</TitleSection>
@@ -547,7 +547,7 @@ export default function CustonModal({ worker, setIsVisible, reloadWorkers }) {
                       returnKeyType="next"
                       onSubmitEditing={() => salaryHourInputRef.current.focus()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Salário/Hora</InputTitle>
@@ -563,7 +563,7 @@ export default function CustonModal({ worker, setIsVisible, reloadWorkers }) {
                       returnKeyType="next"
                       onSubmitEditing={() => salaryInputRef.current.focus()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Salário</InputTitle>
@@ -579,7 +579,7 @@ export default function CustonModal({ worker, setIsVisible, reloadWorkers }) {
                       returnKeyType="next"
                       onSubmitEditing={() => commissionInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Comissão</InputTitle>
@@ -595,7 +595,7 @@ export default function CustonModal({ worker, setIsVisible, reloadWorkers }) {
                       returnKeyType="next"
                       onSubmitEditing={() => Keyboard.dismiss()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Adimissão</InputTitle>
@@ -757,7 +757,7 @@ export default function CustonModal({ worker, setIsVisible, reloadWorkers }) {
                       returnKeyType="send"
                       onSubmitEditing={handleSaveWorkerProfile}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
                 </>
               )}

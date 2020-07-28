@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { FontAwesome5 } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import {
   Container,
@@ -84,7 +84,7 @@ export default function CustonModal({ group_permission, setIsVisible, reloadGrou
                   style={{ color: '#f8a920' }}
                   value={group_permission.name}
                 />
-                <FontAwesome5 name="file-invoice-dollar" size={20} color="#999" />
+                <MaterialIcons name="block" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Ação</InputTitle>
@@ -94,6 +94,7 @@ export default function CustonModal({ group_permission, setIsVisible, reloadGrou
                   style={{ color: '#fff' }}
                   value={group_permission.action}
                 />
+                <MaterialIcons name="info" size={20} color="#999" />
               </InputContainer>
 
               <DeleteButton onPress={handleDeleteGroupPermission}>

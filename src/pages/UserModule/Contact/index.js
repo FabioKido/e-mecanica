@@ -151,7 +151,7 @@ export default function Profile() {
                   returnKeyType="next"
                   onSubmitEditing={() => phoneInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="smartphone" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Telefone</InputTitle>
@@ -181,7 +181,7 @@ export default function Profile() {
                   returnKeyType="next"
                   onSubmitEditing={() => eMailInputRef.current.focus()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="local-phone" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>E-mail</InputTitle>

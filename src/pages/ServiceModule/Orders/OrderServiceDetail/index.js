@@ -118,7 +118,7 @@ export default function ({ order_service, loading, handleSaveOrder }) {
             <Picker.Item label="Selecione o Serviço" value="" />
             {all_services && all_services.map(service => <Picker.Item key={service.id} label={service.name} value={service.id} />)}
           </Picker>
-          <MaterialIcons name="lock" size={20} color="#999" />
+          <MaterialIcons name="unfold-more" size={20} color="#999" />
         </InputPicker>
 
         <InputTitle>Tipo</InputTitle>
@@ -132,7 +132,7 @@ export default function ({ order_service, loading, handleSaveOrder }) {
             value={types[`type${row}`] || ''}
             returnKeyType="next"
           />
-          <MaterialIcons name="person-pin" size={20} color="#999" />
+          <MaterialIcons name="edit" size={18} color="#999" />
         </InputContainer>
 
         <InputTitle>Preço do Serviço</InputTitle>
@@ -146,7 +146,7 @@ export default function ({ order_service, loading, handleSaveOrder }) {
             value={prices[`price${row}`] || ''}
             returnKeyType="next"
           />
-          <MaterialIcons name="person-pin" size={20} color="#999" />
+          <MaterialIcons name="edit" size={18} color="#999" />
         </InputContainer>
 
         <InputTitle>Desconto do Serviço</InputTitle>
@@ -160,7 +160,7 @@ export default function ({ order_service, loading, handleSaveOrder }) {
             value={discounts[`discount${row}`] || ''}
             returnKeyType="next"
           />
-          <MaterialIcons name="person-pin" size={20} color="#999" />
+          <MaterialIcons name="edit" size={18} color="#999" />
         </InputContainer>
 
         <InputTitle>Comissão do serviço</InputTitle>
@@ -174,7 +174,7 @@ export default function ({ order_service, loading, handleSaveOrder }) {
             value={commissions[`commission${row}`] || ''}
             returnKeyType="next"
           />
-          <MaterialIcons name="person-pin" size={20} color="#999" />
+          <MaterialIcons name="edit" size={18} color="#999" />
         </InputContainer>
 
         <InputTitle>Prêmio do serviço</InputTitle>
@@ -188,7 +188,7 @@ export default function ({ order_service, loading, handleSaveOrder }) {
             value={premiums[`premium${row}`] || ''}
             returnKeyType="next"
           />
-          <MaterialIcons name="person-pin" size={20} color="#999" />
+          <MaterialIcons name="edit" size={18} color="#999" />
         </InputContainer>
 
         <SwitchContainer>

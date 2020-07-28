@@ -167,7 +167,7 @@ export default function Owner() {
                   returnKeyType="next"
                   onSubmitEditing={() => Keyboard.dismiss()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Sexo</InputTitle>
@@ -186,7 +186,7 @@ export default function Owner() {
                   <Picker.Item label='Masculino' value='M' />
                   <Picker.Item label='Feminino' value='F' />
                 </Picker>
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="unfold-more" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Aniversário</InputTitle>
@@ -232,7 +232,7 @@ export default function Owner() {
                   returnKeyType="next"
                   onSubmitEditing={() => rgInputRef.current.focus()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>RG</InputTitle>
@@ -248,7 +248,7 @@ export default function Owner() {
                   returnKeyType="next"
                   onSubmitEditing={() => orgaoExpeditorInputRef.current.focus()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Orgão Expeditor</InputTitle>
@@ -264,7 +264,7 @@ export default function Owner() {
                   returnKeyType="send"
                   onSubmitEditing={handleSaveOwner}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <SubmitButton onPress={handleSaveOwner}>

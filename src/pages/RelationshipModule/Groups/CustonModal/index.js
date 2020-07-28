@@ -142,7 +142,7 @@ export default function CustonModal({ group, setIsVisible, reloadGroups }) {
                   returnKeyType="next"
                   onSubmitEditing={() => descriptionInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Descrição</InputTitle>
@@ -157,7 +157,7 @@ export default function CustonModal({ group, setIsVisible, reloadGroups }) {
                   returnKeyType="next"
                   onSubmitEditing={() => Keyboard.dismiss()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <ChoiceButton

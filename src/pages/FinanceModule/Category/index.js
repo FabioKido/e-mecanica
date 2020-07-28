@@ -218,7 +218,7 @@ export default function Category() {
                       returnKeyType="next"
                       onSubmitEditing={() => indicatorInputRef.current.focus()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Indicador</InputTitle>
@@ -233,7 +233,7 @@ export default function Category() {
                       returnKeyType="send"
                       onSubmitEditing={handleSaveCategory}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
                 </>
               }

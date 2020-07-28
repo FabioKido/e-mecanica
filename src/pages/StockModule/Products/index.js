@@ -337,7 +337,7 @@ export default function Products() {
                       <Picker.Item label="Selecione a Família do Produto" value="" />
                       {families && families.map(family => <Picker.Item key={family.id} label={family.name} value={family.id} />)}
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   <InputTitle>Origem do Produto</InputTitle>
@@ -356,7 +356,7 @@ export default function Products() {
                       <Picker.Item label="Origem Nacional" value="Origem Nacional" />
                       <Picker.Item label="Origem Estrangeira" value="Origem Estrangeira" />
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   <InputTitle>Código da NFe</InputTitle>
@@ -372,7 +372,7 @@ export default function Products() {
                       returnKeyType="next"
                       onSubmitEditing={() => nameInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Nome</InputTitle>
@@ -387,7 +387,7 @@ export default function Products() {
                       returnKeyType="next"
                       onSubmitEditing={() => locationInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Validade do Produto</InputTitle>
@@ -424,7 +424,7 @@ export default function Products() {
                       returnKeyType="next"
                       onSubmitEditing={() => ncmInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Código NCM</InputTitle>
@@ -452,7 +452,7 @@ export default function Products() {
                       returnKeyType="next"
                       onSubmitEditing={() => unidadeInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Unidade</InputTitle>
@@ -467,7 +467,7 @@ export default function Products() {
                       returnKeyType="next"
                       onSubmitEditing={() => unityCostInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Preço Unitário</InputTitle>
@@ -483,7 +483,7 @@ export default function Products() {
                       returnKeyType="next"
                       onSubmitEditing={() => minQtdInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Quantidade Mínima</InputTitle>
@@ -499,7 +499,7 @@ export default function Products() {
                       returnKeyType="next"
                       onSubmitEditing={() => priceSaleInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Preço de Venda</InputTitle>
@@ -515,7 +515,7 @@ export default function Products() {
                       returnKeyType="next"
                       onSubmitEditing={() => premiumInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Prêmio</InputTitle>
@@ -531,7 +531,7 @@ export default function Products() {
                       onSubmitEditing={() => CommissionInputRef.current.focus()}
                       returnKeyType="next"
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Comissão</InputTitle>
@@ -548,7 +548,7 @@ export default function Products() {
                       returnKeyType="next"
                       onSubmitEditing={() => profitInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Lucro Desejado</InputTitle>
@@ -564,7 +564,7 @@ export default function Products() {
                       returnKeyType="next"
                       onSubmitEditing={() => kmLimitInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Limite de KM</InputTitle>
@@ -580,7 +580,7 @@ export default function Products() {
                       returnKeyType="next"
                       onSubmitEditing={() => applicationsInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Aplicações</InputTitle>
@@ -595,7 +595,7 @@ export default function Products() {
                       returnKeyType="next"
                       onSubmitEditing={() => observationsInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Observações</InputTitle>
@@ -610,7 +610,7 @@ export default function Products() {
                       returnKeyType="next"
                       onSubmitEditing={() => Keyboard.dismiss()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <SwitchContainer>

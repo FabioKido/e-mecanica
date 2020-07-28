@@ -236,7 +236,7 @@ export default function Auto({ vehicle, setIsVisible, reloadVehicles }) {
                   returnKeyType="next"
                   onSubmitEditing={() => modelInputRef.current.focus()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Modelo</InputTitle>
@@ -252,7 +252,7 @@ export default function Auto({ vehicle, setIsVisible, reloadVehicles }) {
                   returnKeyType="next"
                   onSubmitEditing={() => yearFabInputRef.current.focus()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Ano de Fabricação</InputTitle>
@@ -269,7 +269,7 @@ export default function Auto({ vehicle, setIsVisible, reloadVehicles }) {
                   returnKeyType="next"
                   onSubmitEditing={() => yearModelInputRef.current.focus()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Ano do Modelo</InputTitle>
@@ -286,7 +286,7 @@ export default function Auto({ vehicle, setIsVisible, reloadVehicles }) {
                   returnKeyType="next"
                   onSubmitEditing={() => colorInputRef.current.focus()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Cor</InputTitle>
@@ -302,7 +302,7 @@ export default function Auto({ vehicle, setIsVisible, reloadVehicles }) {
                   returnKeyType="next"
                   onSubmitEditing={() => observationsInputRef.current.focus()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Observações</InputTitle>
@@ -317,7 +317,7 @@ export default function Auto({ vehicle, setIsVisible, reloadVehicles }) {
                   returnKeyType="next"
                   onSubmitEditing={() => Keyboard.dismiss()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <ChoiceButton
@@ -345,7 +345,7 @@ export default function Auto({ vehicle, setIsVisible, reloadVehicles }) {
                       returnKeyType="next"
                       onSubmitEditing={() => motorInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Motor</InputTitle>
@@ -361,7 +361,7 @@ export default function Auto({ vehicle, setIsVisible, reloadVehicles }) {
                       returnKeyType="next"
                       onSubmitEditing={() => fuelInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Combustivel</InputTitle>
@@ -377,7 +377,7 @@ export default function Auto({ vehicle, setIsVisible, reloadVehicles }) {
                       returnKeyType="next"
                       onSubmitEditing={() => carExchangeInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Câmbio</InputTitle>
@@ -393,7 +393,7 @@ export default function Auto({ vehicle, setIsVisible, reloadVehicles }) {
                       returnKeyType="next"
                       onSubmitEditing={() => directionInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Direção</InputTitle>
@@ -409,7 +409,7 @@ export default function Auto({ vehicle, setIsVisible, reloadVehicles }) {
                       returnKeyType="next"
                       onSubmitEditing={() => doorsInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Portas</InputTitle>
@@ -426,7 +426,7 @@ export default function Auto({ vehicle, setIsVisible, reloadVehicles }) {
                       returnKeyType="next"
                       onSubmitEditing={() => chassisInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <SwitchContainer>
@@ -452,7 +452,7 @@ export default function Auto({ vehicle, setIsVisible, reloadVehicles }) {
                       returnKeyType="next"
                       onSubmitEditing={() => renavamInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Renavam</InputTitle>
@@ -468,7 +468,7 @@ export default function Auto({ vehicle, setIsVisible, reloadVehicles }) {
                       returnKeyType="send"
                       onSubmitEditing={handleUpdateVehicle}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
                 </>
               }

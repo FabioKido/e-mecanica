@@ -298,7 +298,7 @@ export default function Schedules() {
                       <Picker.Item label="Selecione o Proprietário do Veículo" value="" />
                       {customers && customers.map(customer => <Picker.Item key={customer.id} label={customer.name} value={customer.id} />)}
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   <InputTitle>Veículo</InputTitle>
@@ -316,7 +316,7 @@ export default function Schedules() {
                       <Picker.Item label="Selecione o Veículo" value="" />
                       {vehicles && vehicles.map(vehicle => <Picker.Item key={vehicle.id} label={vehicle.model} value={vehicle.id} />)}
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   <InputTitle>Data</InputTitle>
@@ -352,7 +352,7 @@ export default function Schedules() {
                       returnKeyType="send"
                       onSubmitEditing={() => Keyboard.dismiss()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Status</InputTitle>
@@ -371,7 +371,7 @@ export default function Schedules() {
                       <Picker.Item label="Em andamento" value="Em andamento" />
                       <Picker.Item label="Concluído" value="Concluído" />
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
                 </>
               }

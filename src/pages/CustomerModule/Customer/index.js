@@ -273,7 +273,7 @@ export default function Customers() {
                       returnKeyType="next"
                       onSubmitEditing={() => Keyboard.dismiss()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Sexo</InputTitle>
@@ -292,7 +292,7 @@ export default function Customers() {
                       <Picker.Item label='Masculino' value='M' />
                       <Picker.Item label='Feminino' value='F' />
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Aniversário</InputTitle>
@@ -329,13 +329,15 @@ export default function Customers() {
                       returnKeyType="next"
                       onSubmitEditing={() => cpfInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <ChoiceButton
                     onPress={() => setChoiceCNPJ(ant => !ant)}
                   >
                     {choice_cnpj ? <ChoiceText>CPF?</ChoiceText> : <ChoiceText>CNPJ?</ChoiceText>}
+
+                    <MaterialIcons name="youtube-searched-for" size={20} color="#f8a920" />
                   </ChoiceButton>
 
                   {choice_cnpj ? (
@@ -361,7 +363,7 @@ export default function Customers() {
                           returnKeyType="next"
                           onSubmitEditing={() => ieInputRef.current.focus()}
                         />
-                        <MaterialIcons name="lock" size={20} color="#999" />
+                        <MaterialIcons name="edit" size={18} color="#999" />
                       </InputContainer>
 
                       <InputTitle>IE</InputTitle>
@@ -378,7 +380,7 @@ export default function Customers() {
                           returnKeyType="next"
                           onSubmitEditing={handleSaveCustomer}
                         />
-                        <MaterialIcons name="lock" size={20} color="#999" />
+                        <MaterialIcons name="edit" size={18} color="#999" />
                       </InputContainer>
                     </>
                   ) : (
@@ -404,7 +406,7 @@ export default function Customers() {
                             returnKeyType="next"
                             onSubmitEditing={() => rgInputRef.current.focus()}
                           />
-                          <MaterialIcons name="lock" size={20} color="#999" />
+                          <MaterialIcons name="edit" size={18} color="#999" />
                         </InputContainer>
 
                         <InputTitle>RG</InputTitle>
@@ -420,7 +422,7 @@ export default function Customers() {
                             returnKeyType="send"
                             onSubmitEditing={handleSaveCustomer}
                           />
-                          <MaterialIcons name="lock" size={20} color="#999" />
+                          <MaterialIcons name="edit" size={18} color="#999" />
                         </InputContainer>
                       </>
                     )}

@@ -202,6 +202,7 @@ export default function PaymentMethods() {
     );
   }
 
+  // TODO Resolver a 'taxa', se vai ser incluída em algum calculo no app.
   return (
     <>
       <LinearGradient
@@ -230,7 +231,7 @@ export default function PaymentMethods() {
                       returnKeyType="next"
                       onSubmitEditing={() => operatorInputRef.current.focus()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Operadora</InputTitle>
@@ -246,7 +247,7 @@ export default function PaymentMethods() {
                       returnKeyType="next"
                       onSubmitEditing={() => taxaInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Taxa</InputTitle>
@@ -262,7 +263,7 @@ export default function PaymentMethods() {
                       returnKeyType="send"
                       onSubmitEditing={handleSavePaymentMethod}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
                 </>
               }

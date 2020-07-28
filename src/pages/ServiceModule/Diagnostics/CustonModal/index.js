@@ -182,7 +182,7 @@ export default function CustonModal({ diagnostic, setIsVisible, reloadDiagnostic
                   style={{ color: '#f8a920' }}
                   value={vehicle.model || 'Não foi especificado'}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="info" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Proprietário</InputTitle>
@@ -192,7 +192,7 @@ export default function CustonModal({ diagnostic, setIsVisible, reloadDiagnostic
                   style={{ color: '#f8a920' }}
                   value={customer || 'Não foi especificado'}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="info" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Valor</InputTitle>
@@ -207,7 +207,7 @@ export default function CustonModal({ diagnostic, setIsVisible, reloadDiagnostic
                   returnKeyType="next"
                   onSubmitEditing={() => observationsInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Observações</InputTitle>
@@ -222,7 +222,7 @@ export default function CustonModal({ diagnostic, setIsVisible, reloadDiagnostic
                   returnKeyType="next"
                   onSubmitEditing={handleUpdateDiagnostic}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <ChoiceButton

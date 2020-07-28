@@ -172,7 +172,7 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
                   <Picker.Item label="Selecione o Método de Pagamento" value="" />
                   {methods && methods.map(method => <Picker.Item key={method.id} label={method.method} value={method.id} />)}
                 </Picker>
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="unfold-more" size={20} color="#999" />
               </InputPicker>
 
               <InputTitle>Conta de Destino</InputTitle>
@@ -190,7 +190,7 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
                   <Picker.Item label="Selecione a Conta de Destino" value="" />
                   {accounts && accounts.map(account => <Picker.Item key={account.id} label={account.title} value={account.id} />)}
                 </Picker>
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="unfold-more" size={20} color="#999" />
               </InputPicker>
 
               <InputTitle>Valor</InputTitle>
@@ -201,7 +201,7 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
                   style={{ color: '#f8a920' }}
                   value={String(value)}
                 />
-                <FontAwesome5 name="file-invoice-dollar" size={20} color="#999" />
+                <MaterialIcons name="info" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Vencimento</InputTitle>
@@ -239,7 +239,7 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
                   returnKeyType="next"
                   onSubmitEditing={() => taxaAjusteInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Taxa de Ajuste</InputTitle>
@@ -256,7 +256,7 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
                   returnKeyType="next"
                   onSubmitEditing={() => observationInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Observações</InputTitle>
@@ -272,7 +272,7 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
                   returnKeyType="next"
                   onSubmitEditing={() => Keyboard.dismiss()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <SwitchContainer>

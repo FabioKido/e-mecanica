@@ -311,7 +311,7 @@ export default function Orders() {
                       <Picker.Item label="Selecione o Proprietário do Veículo" value="" />
                       {customers && customers.map(customer => <Picker.Item key={customer.id} label={customer.name} value={customer.id} />)}
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   <InputTitle>Veículo</InputTitle>
@@ -329,7 +329,7 @@ export default function Orders() {
                       <Picker.Item label="Selecione o Veículo" value="" />
                       {vehicles && vehicles.map(vehicle => <Picker.Item key={vehicle.id} label={vehicle.model} value={vehicle.id} />)}
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   <InputTitle>Kilometragem</InputTitle>
@@ -345,7 +345,7 @@ export default function Orders() {
                       returnKeyType="next"
                       onSubmitEditing={() => tanqueInputRef.current.focus()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Tanque</InputTitle>
@@ -362,7 +362,7 @@ export default function Orders() {
                       returnKeyType="next"
                       onSubmitEditing={() => internalControlInputRef.current.focus()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Controle Interno</InputTitle>
@@ -377,7 +377,7 @@ export default function Orders() {
                       returnKeyType="next"
                       onSubmitEditing={() => observationsInputRef.current.focus()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Previsão de Saída</InputTitle>
@@ -414,7 +414,7 @@ export default function Orders() {
                       returnKeyType="next"
                       onSubmitEditing={() => Keyboard.dismiss()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   {order_service === 0 &&

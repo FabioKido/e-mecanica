@@ -215,7 +215,7 @@ export default function Family() {
                       returnKeyType="next"
                       onSubmitEditing={() => descriptionInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Descrição</InputTitle>
@@ -230,7 +230,7 @@ export default function Family() {
                       returnKeyType="send"
                       onSubmitEditing={handleSaveFamily}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
                 </>
               }

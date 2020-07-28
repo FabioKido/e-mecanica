@@ -320,7 +320,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                   returnKeyType="next"
                   onSubmitEditing={() => Keyboard.dismiss()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Sexo</InputTitle>
@@ -339,7 +339,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                   <Picker.Item label='Masculino' value='M' />
                   <Picker.Item label='Feminino' value='F' />
                 </Picker>
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="unfold-more" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Aniversário</InputTitle>
@@ -376,13 +376,15 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                   returnKeyType="next"
                   onSubmitEditing={() => cpfInputRef.current.focus()}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <ChoiceButton
                 onPress={() => setChoiceCNPJ(ant => !ant)}
               >
                 {choice_cnpj ? <ChoiceText>CPF?</ChoiceText> : <ChoiceText>CNPJ?</ChoiceText>}
+
+                <MaterialIcons name="youtube-searched-for" size={20} color="#f8a920" />
               </ChoiceButton>
 
               {choice_cnpj ? (
@@ -408,7 +410,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                       returnKeyType="next"
                       onSubmitEditing={() => ieInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>IE</InputTitle>
@@ -425,7 +427,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                       returnKeyType="next"
                       onSubmitEditing={handleUpdateCustomer}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
                 </>
               ) : (
@@ -451,7 +453,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                         returnKeyType="next"
                         onSubmitEditing={() => rgInputRef.current.focus()}
                       />
-                      <MaterialIcons name="lock" size={20} color="#999" />
+                      <MaterialIcons name="edit" size={18} color="#999" />
                     </InputContainer>
 
                     <InputTitle>RG</InputTitle>
@@ -467,7 +469,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                         returnKeyType="send"
                         onSubmitEditing={handleUpdateCustomer}
                       />
-                      <MaterialIcons name="lock" size={20} color="#999" />
+                      <MaterialIcons name="edit" size={18} color="#999" />
                     </InputContainer>
                   </>
                 )}
@@ -524,7 +526,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                       returnKeyType="next"
                       onSubmitEditing={() => phoneInputRef.current.focus()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="smartphone" size={20} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Telefone</InputTitle>
@@ -554,7 +556,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                       returnKeyType="next"
                       onSubmitEditing={() => eMailInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="local-phone" size={20} color="#999" />
                   </InputContainer>
 
                   <InputTitle>E-mail</InputTitle>
@@ -587,7 +589,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                       returnKeyType="next"
                       onSubmitEditing={() => numberInputRef.current.focus()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Número</InputTitle>
@@ -603,7 +605,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                       returnKeyType="next"
                       onSubmitEditing={() => neighborhoodInputRef.current.focus()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Bairro</InputTitle>
@@ -618,7 +620,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                       returnKeyType="next"
                       onSubmitEditing={() => complementInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Complemento</InputTitle>
@@ -633,7 +635,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                       returnKeyType="next"
                       onSubmitEditing={() => cityInputRef.current.focus()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Cidade</InputTitle>
@@ -648,7 +650,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                       returnKeyType="next"
                       onSubmitEditing={() => ufInputRef.current.focus()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="map" size={20} color="#999" />
                   </InputContainer>
 
                   <InputTitle>UF</InputTitle>
@@ -666,7 +668,7 @@ export default function CustonModal({ customer, setIsVisible, reloadCustomers })
                       <Picker.Item label='Selecione a UF' value={uf} />
                       {states && states.map(state => <Picker.Item key={state.uf} label={state.name} value={state.uf} />)}
                     </Picker>
-                    <MaterialIcons name="mail-outline" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputContainer>
                 </>
               )}

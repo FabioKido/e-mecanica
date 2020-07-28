@@ -291,7 +291,7 @@ export default function Diagnostics() {
                       <Picker.Item label="Selecione o Proprietário do Veículo" value="" />
                       {customers && customers.map(customer => <Picker.Item key={customer.id} label={customer.name} value={customer.id} />)}
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   {vehicles &&
@@ -311,7 +311,7 @@ export default function Diagnostics() {
                           <Picker.Item label="Selecione o Veículo" value="" />
                           {vehicles && vehicles.map(vehicle => <Picker.Item key={vehicle.id} label={vehicle.model} value={vehicle.id} />)}
                         </Picker>
-                        <MaterialIcons name="lock" size={20} color="#999" />
+                        <MaterialIcons name="unfold-more" size={20} color="#999" />
                       </InputPicker>
                     </>
                   }
@@ -328,7 +328,7 @@ export default function Diagnostics() {
                       returnKeyType="next"
                       onSubmitEditing={() => observationsInputRef.current.focus()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Observações</InputTitle>
@@ -343,7 +343,7 @@ export default function Diagnostics() {
                       returnKeyType="next"
                       onSubmitEditing={() => Keyboard.dismiss()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <SwitchContainer>

@@ -177,7 +177,7 @@ export default function CustonModal({ preventive, setIsVisible, reloadPreventive
                   style={{ color: '#f8a920' }}
                   value={vehicle.model || 'Não foi especificado'}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="info" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Proprietário</InputTitle>
@@ -187,7 +187,7 @@ export default function CustonModal({ preventive, setIsVisible, reloadPreventive
                   style={{ color: '#f8a920' }}
                   value={customer || 'Não foi especificado'}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="info" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Serviço</InputTitle>
@@ -197,7 +197,7 @@ export default function CustonModal({ preventive, setIsVisible, reloadPreventive
                   style={{ color: '#f8a920' }}
                   value={service.name || 'Não foi especificado'}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="info" size={20} color="#999" />
               </InputContainer>
 
               <InputTitle>Data</InputTitle>
@@ -238,7 +238,7 @@ export default function CustonModal({ preventive, setIsVisible, reloadPreventive
                   <Picker.Item label="Em andamento" value="Em andamento" />
                   <Picker.Item label="Concluído" value="Concluído" />
                 </Picker>
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="unfold-more" size={20} color="#999" />
               </InputPicker>
 
               <ChoiceButton

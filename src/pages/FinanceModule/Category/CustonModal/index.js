@@ -123,7 +123,7 @@ export default function CustonModal({ category, setIsVisible, reloadCategories }
                   returnKeyType="next"
                   onSubmitEditing={() => indicatorInputRef.current.focus()}
                 />
-                <MaterialIcons name="person-pin" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Indicador</InputTitle>
@@ -138,7 +138,7 @@ export default function CustonModal({ category, setIsVisible, reloadCategories }
                   returnKeyType="send"
                   onSubmitEditing={handleUpdateCategory}
                 />
-                <MaterialIcons name="lock" size={20} color="#999" />
+                <MaterialIcons name="edit" size={18} color="#999" />
               </InputContainer>
 
               <DeleteButtonBox>

@@ -22,7 +22,7 @@ export default function CheckBox(props) {
         {
           props.value ? <Icon name="check"
             style={{
-              fontSize: 16,
+              fontSize: 14,
               color: props.iconColor ? props.iconColor : '#fff'
             }}
           /> : null
@@ -35,8 +35,8 @@ export default function CheckBox(props) {
 
 const styles = StyleSheet.create({
   CheckBox: {
-    width: 20,
-    height: 20,
+    width: 16,
+    height: 16,
     borderWidth: 1,
     justifyContent: "center",
     alignItems: "center"

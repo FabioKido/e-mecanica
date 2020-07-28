@@ -288,7 +288,7 @@ export default function Recipes() {
                       <Picker.Item label="Selecione a Categoria" value="" />
                       {categories && categories.map(category => <Picker.Item key={category.id} label={category.description} value={category.id} />)}
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   <InputTitle>Valor Total</InputTitle>
@@ -304,7 +304,7 @@ export default function Recipes() {
                       returnKeyType="next"
                       onSubmitEditing={() => descriptionInputRef.current.focus()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Descrição</InputTitle>
@@ -319,7 +319,7 @@ export default function Recipes() {
                       returnKeyType="next"
                       onSubmitEditing={() => observationsInputRef.current.focus()}
                     />
-                    <MaterialIcons name="person-pin" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Data</InputTitle>
@@ -356,7 +356,7 @@ export default function Recipes() {
                       returnKeyType="next"
                       onSubmitEditing={() => Keyboard.dismiss()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Opções</InputTitle>
@@ -375,7 +375,7 @@ export default function Recipes() {
                       <Picker.Item label="á Vista" value="á Vista" />
                       <Picker.Item label="Parcelada" value="Parcelada" />
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   {options !== '' &&

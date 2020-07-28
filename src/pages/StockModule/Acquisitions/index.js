@@ -331,7 +331,7 @@ export default function Acquisitions() {
                       style={{ color: '#f8a920' }}
                       value={String(total_value)}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="info" size={20} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Fornecedor</InputTitle>
@@ -349,7 +349,7 @@ export default function Acquisitions() {
                       <Picker.Item label="Selecione o Fornecedor do Produto" value="" />
                       {providers && providers.map(provider => <Picker.Item key={provider.id} label={provider.name} value={provider.id} />)}
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   <InputTitle>Produto</InputTitle>
@@ -367,7 +367,7 @@ export default function Acquisitions() {
                       <Picker.Item label="Selecione o Produto Adquirido" value="" />
                       {products && products.map(product => <Picker.Item key={product.id} label={product.name} value={product.id} />)}
                     </Picker>
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
                   </InputPicker>
 
                   {product &&
@@ -379,7 +379,7 @@ export default function Acquisitions() {
                           style={{ color: '#f8a920' }}
                           value={String(product.min_qtd)}
                         />
-                        <MaterialIcons name="lock" size={20} color="#999" />
+                        <MaterialIcons name="info" size={20} color="#999" />
                       </InputContainer>
                     </>
                   }
@@ -419,7 +419,7 @@ export default function Acquisitions() {
                       returnKeyType="next"
                       onSubmitEditing={() => nefNumberInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Número da NFe</InputTitle>
@@ -436,7 +436,7 @@ export default function Acquisitions() {
                       returnKeyType="next"
                       onSubmitEditing={() => totalQtdInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Quantidade Total</InputTitle>
@@ -452,7 +452,7 @@ export default function Acquisitions() {
                       returnKeyType="next"
                       onSubmitEditing={() => unityCostInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Preço Unitário</InputTitle>
@@ -468,7 +468,7 @@ export default function Acquisitions() {
                       returnKeyType="next"
                       onSubmitEditing={() => discountInputRef.current.focus()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <InputTitle>Desconto da Aquisição</InputTitle>
@@ -484,7 +484,7 @@ export default function Acquisitions() {
                       returnKeyType="next"
                       onSubmitEditing={() => Keyboard.dismiss()}
                     />
-                    <MaterialIcons name="lock" size={20} color="#999" />
+                    <MaterialIcons name="edit" size={18} color="#999" />
                   </InputContainer>
 
                   <SwitchContainer>
