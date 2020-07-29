@@ -57,7 +57,7 @@ export default function CustonModal({ group, setIsVisible, reloadGroups }) {
   const handleNavigateToUsers = () => {
     setIsVisible(false);
 
-    // setTimeout(() => NavigationService.navigate('UserGroup', group), 100);
+    setTimeout(() => NavigationService.navigate('UserGroup', group), 100);
   }
 
   const handleDeleteGroup = async () => {

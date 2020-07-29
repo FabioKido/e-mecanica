@@ -21,7 +21,7 @@ import {
 function CustomDrawer({ ...props }) {
 	const dispatch = useDispatch();
 
-	const { email } = useSelector(state => state.auth.user);
+	const { username } = useSelector(state => state.auth.user);
 
 	return (
 		<LinearGradient
@@ -32,7 +32,7 @@ function CustomDrawer({ ...props }) {
 				<Content>
 					<Logo />
 					<UserContent>
-						<UserName>{email}</UserName>
+						<UserName numberOfLines={1}>{username}</UserName>
 						<Logout
 							onPress={() => dispatch(signOutRequest())}
 						>

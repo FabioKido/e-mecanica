@@ -25,7 +25,7 @@ import {
 import api from '../../../../services/api';
 import LoadGif from '../../../../assets/loading.gif';
 
-export default function CustonModal({ group_permission, setIsVisible, reloadGroupPermissions, id_group }) {
+export default function CustonModal({ user_group, setIsVisible, reloadUserGroups, id_group }) {
 
   const [first_loading, setFirstLoading] = useState(true);
 
@@ -33,24 +33,24 @@ export default function CustonModal({ group_permission, setIsVisible, reloadGrou
     setTimeout(() => setFirstLoading(false), 300);
   });
 
-  const handleDeleteGroupPermission = async () => {
+  const handleDeleteUser = async () => {
     try {
-      await api.delete(`/user/permission/group/${group_permission.id}`, {
+      await api.delete(`/user/in/group/${user_group.id}`, {
         params: { id_group }
       });
 
-      Alert.alert('Excluído!', 'Permissão removida do grupo com sucesso.');
+      Alert.alert('Excluído!', 'Colaborador removido do grupo com sucesso.');
     } catch (err) {
       const message =
         err.response && err.response.data && err.response.data.error;
 
       Alert.alert(
         'Ooopsss',
-        message || 'Falha na remoção da permissão.'
+        message || 'Falha na remoção de colaborador.'
       );
     } finally {
       setIsVisible(false);
-      reloadGroupPermissions();
+      reloadUserGroups();
     }
   }
 
@@ -72,32 +72,22 @@ export default function CustonModal({ group_permission, setIsVisible, reloadGrou
         <Container>
           <Content keyboardShouldPersistTaps="handled">
             <FormContainer>
-              <Title>{group_permission.name}</Title>
+              <Title>{user_group.username}</Title>
               <Description>
-                Você pode remover essa permissão do grupo quando quiser.
+                Você pode remover esse colaborador do grupo quando quiser.
             </Description>
 
-              <InputTitle>Nome</InputTitle>
+              <InputTitle>Usuário</InputTitle>
               <InputContainer>
                 <Input
                   editable={false}
                   style={{ color: '#f8a920' }}
-                  value={group_permission.name}
+                  value={user_group.username}
                 />
                 <MaterialIcons name="block" size={20} color="#999" />
               </InputContainer>
 
-              <InputTitle>Ação</InputTitle>
-              <InputContainer>
-                <Input
-                  editable={false}
-                  style={{ color: '#fff' }}
-                  value={group_permission.action}
-                />
-                <MaterialIcons name="info" size={20} color="#999" />
-              </InputContainer>
-
-              <DeleteButton onPress={handleDeleteGroupPermission}>
+              <DeleteButton onPress={handleDeleteUser}>
                 <DeleteButtonText>Remover</DeleteButtonText>
               </DeleteButton>
 

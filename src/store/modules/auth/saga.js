@@ -24,7 +24,7 @@ export function* signInRequest({ payload }) {
     yield put(signInSuccess(token, user));
 
     NavigationService.navigate('AppRoutes');
-    
+
   } catch (err) {
     yield put(signInFailure());
 

@@ -153,7 +153,7 @@ export default function Profile() {
                 style={{ color: '#2b475c' }}
                 value={String(profile.id_access_plan)}
               />
-              <FontAwesome5 name="block" size={20} color="#999" />
+              <MaterialIcons name="block" size={20} color="#999" />
             </InputContainer>
 
             <SwitchContainer>

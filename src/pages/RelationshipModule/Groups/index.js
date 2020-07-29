@@ -181,6 +181,7 @@ export default function Groups() {
     );
   }
 
+  // FIXME Fazer um grupo(Seed) para os adms(Donos).
   return (
     <>
       <LinearGradient

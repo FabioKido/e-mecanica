@@ -19,7 +19,8 @@ export const Content = styled.View`
 export const UserContent = styled.View`
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding: 0 17px;
 `;
 
 export const UserName = styled.Text`
