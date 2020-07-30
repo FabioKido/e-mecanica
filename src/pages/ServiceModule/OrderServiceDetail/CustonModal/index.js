@@ -94,12 +94,6 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
     }
   }
 
-  const handleNavigateToPaymentPage = () => {
-    setIsVisible(false);
-
-    // setTimeout(() => NavigationService.navigate('Payments', order_service_detail, products_value), 100);
-  }
-
   const handleNavigateToDetailPage = () => {
     setIsVisible(false);
 
@@ -283,14 +277,6 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
                 onPress={handleNavigateToDetailPage}
               >
                 <SwitchText>Ir para Produtos</SwitchText>
-
-                <MaterialIcons name="open-in-new" size={20} color="#fff" />
-              </ChoiceButton>
-
-              <ChoiceButton
-                onPress={handleNavigateToPaymentPage}
-              >
-                <SwitchText>Ir para Pagamento</SwitchText>
 
                 <MaterialIcons name="open-in-new" size={20} color="#fff" />
               </ChoiceButton>

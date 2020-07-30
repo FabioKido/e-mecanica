@@ -44,6 +44,7 @@ import {
 
 import Placeholder from './Placeholder';
 import CustonModal from './CustonModal';
+import PaymentDetail from './PaymentDetail';
 
 import CheckBox from '../../../components/CheckBox';
 
@@ -300,34 +301,48 @@ export default function OrderServiceDetail({ navigation }) {
     order_service
   ]);
 
-  // const handleSavePayment = useCallback(async () => {
-  //   Keyboard.dismiss();
+  const handleSavePayment = useCallback(async (obj_parcels, parcels) => {
+    Keyboard.dismiss();
 
-  //   try {
-  //     setLoading(true);
+    try {
+      setLoading(true);
 
-  //     // await api.post(`/order/payment/${id_order}`, {
-  //     //   status,
-  //     //   parcels
-  //     // });
+      const response = await api.post(`/order/payment/${order.id}`, {
+        status,
+        parcels
+      });
 
-  //     Alert.alert('Sucesso!', 'Produto registrado com sucesso.');
+      await obj_parcels.map(obj_parcel =>
+        api.post(`/order/parcel/${response.data.data.id}`, {
+          value: obj_parcel.parcel,
+          vencimento: obj_parcel.vencimento,
+          document_number: obj_parcel.number,
+          taxa_ajuste: obj_parcel.taxa,
+          observations: obj_parcel.observation,
+          paid_out: obj_parcel.paid_out,
+          id_payment_method: obj_parcel.payment_method,
+          id_bank_account: obj_parcel.bank_account
+        })
+      );
 
-  //   } catch (err) {
-  //     const message =
-  //       err.response && err.response.data && err.response.data.error;
-  //     console.log(err)
-  //     Alert.alert(
-  //       'Ooopsss',
-  //       message || 'Falha no registro do produto, confira seus dados.'
-  //     );
-  //   } finally {
-  //     setLoading(false);
-  //     reloadOrderServiceDetails();
-  //   }
-  // }, [
+      Alert.alert('Sucesso!', 'Pagamento registrado com sucesso.');
 
-  // ]);
+    } catch (err) {
+      const message =
+        err.response && err.response.data && err.response.data.error;
+      console.log(err)
+      Alert.alert(
+        'Ooopsss',
+        message || 'Falha no registro do pagamento, confira seus dados.'
+      );
+    } finally {
+      setLoading(false);
+      reloadOrderServiceDetails();
+    }
+  }, [
+    status,
+    options
+  ]);
 
   function ViewButton() {
     if (add_order_product) {
@@ -403,6 +418,7 @@ export default function OrderServiceDetail({ navigation }) {
   }
 
   // TODO Resolver o provide id, que não funciona bem, talvez pelo delay do banco.
+  // TODO Ver se põe data também, talvez no futuro.
   // FIXME Buscar apenas os produtos que a quantidade for maior que zero e previnir qtd maior que o qtd do estoque.
   return (
     <>
@@ -646,9 +662,9 @@ export default function OrderServiceDetail({ navigation }) {
                         <MaterialIcons name="unfold-more" size={20} color="#999" />
                       </InputPicker>
 
-                      {/* {options !== '' &&
+                      {options !== '' &&
                         <PaymentDetail options={options} total_value={total_value} handleSavePayment={handleSavePayment} loading={loading} />
-                      } */}
+                      }
                     </>
                   }
                 </>

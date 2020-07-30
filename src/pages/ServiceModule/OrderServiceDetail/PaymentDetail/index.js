@@ -26,13 +26,13 @@ import api from '../../../../services/api';
 
 import CheckBox from "../../../../components/CheckBox";
 
-export default function ({ options, total_value, handleSaveRecipe, loading }) {
+export default function ({ options, total_value, handleSavePayment, loading }) {
 
   const [parcel, setParcel] = useState(0);
   const [parcels, setParcels] = useState(2);
 
-  const [payment_method, setPayment_method] = useState("");
-  const [account_destiny, setAccount_destiny] = useState("");
+  const [payment_method, setPaymentMethod] = useState("");
+  const [bank_account, setBankAccount] = useState("");
 
   const [methods, setMethods] = useState([]);
   const [accounts, setAccounts] = useState([]);
@@ -83,10 +83,6 @@ export default function ({ options, total_value, handleSaveRecipe, loading }) {
   useEffect(() => {
     setParcel(() => (options === 'á Vista' ? total_value : total_value / parcels));
 
-    // setDocument_numbers("");
-    // setTaxa_ajustes("");
-    // setObservations("");
-
   }, [options, total_value, parcels]);
 
   const onDateChange = (date, name) => {
@@ -131,7 +127,7 @@ export default function ({ options, total_value, handleSaveRecipe, loading }) {
       vencimento: vencimentos[`dates${row}`] || '',
       paid_out: paid_outs[`paid_outs${row}`] || false,
       payment_method,
-      account_destiny
+      bank_account
     }
 
     return (
@@ -240,10 +236,10 @@ export default function ({ options, total_value, handleSaveRecipe, loading }) {
       vencimento: vencimento || '',
       paid_out: paid_out,
       payment_method,
-      account_destiny
+      bank_account
     }];
 
-    handleSaveRecipe(row_parcel, 1);
+    handleSavePayment(row_parcel, 1);
 
   }
 
@@ -281,7 +277,7 @@ export default function ({ options, total_value, handleSaveRecipe, loading }) {
               backgroundColor: 'transparent',
               fontSize: 17
             }}
-            onValueChange={(itemValue, itemIndex) => setPayment_method(itemValue)}
+            onValueChange={(itemValue, itemIndex) => setPaymentMethod(itemValue)}
           >
             <Picker.Item label="Selecione o Método de Pagamento" value="" />
             {methods && methods.map(method => <Picker.Item key={method.id} label={method.method} value={method.id} />)}
@@ -292,14 +288,14 @@ export default function ({ options, total_value, handleSaveRecipe, loading }) {
         <InputTitle>Conta de Destino</InputTitle>
         <InputPicker>
           <Picker
-            selectedValue={account_destiny}
+            selectedValue={bank_account}
             style={{
               flex: 1,
               color: '#f8a920',
               backgroundColor: 'transparent',
               fontSize: 17
             }}
-            onValueChange={(itemValue, itemIndex) => setAccount_destiny(itemValue)}
+            onValueChange={(itemValue, itemIndex) => setBankAccount(itemValue)}
           >
             <Picker.Item label="Selecione a Conta de Destino" value="" />
             {accounts && accounts.map(account => <Picker.Item key={account.id} label={account.title} value={account.id} />)}
@@ -309,7 +305,7 @@ export default function ({ options, total_value, handleSaveRecipe, loading }) {
 
         {listItems}
 
-        <SubmitButton onPress={() => handleSaveRecipe(rows_parcels, parcels)}>
+        <SubmitButton onPress={() => handleSavePayment(rows_parcels, parcels)}>
           {loading ? (
             <ActivityIndicator size="small" color="#333" />
           ) : (
@@ -333,7 +329,7 @@ export default function ({ options, total_value, handleSaveRecipe, loading }) {
               backgroundColor: 'transparent',
               fontSize: 17
             }}
-            onValueChange={(itemValue, itemIndex) => setPayment_method(itemValue)}
+            onValueChange={(itemValue, itemIndex) => setPaymentMethod(itemValue)}
           >
             <Picker.Item label="Selecione o Método de Pagamento" value="" />
             {methods && methods.map(method => <Picker.Item key={method.id} label={method.method} value={method.id} />)}
@@ -344,14 +340,14 @@ export default function ({ options, total_value, handleSaveRecipe, loading }) {
         <InputTitle>Conta de Destino</InputTitle>
         <InputPicker>
           <Picker
-            selectedValue={account_destiny}
+            selectedValue={bank_account}
             style={{
               flex: 1,
               color: '#f8a920',
               backgroundColor: 'transparent',
               fontSize: 17
             }}
-            onValueChange={(itemValue, itemIndex) => setAccount_destiny(itemValue)}
+            onValueChange={(itemValue, itemIndex) => setBankAccount(itemValue)}
           >
             <Picker.Item label="Selecione a Conta de Destino" value="" />
             {accounts && accounts.map(account => <Picker.Item key={account.id} label={account.title} value={account.id} />)}
