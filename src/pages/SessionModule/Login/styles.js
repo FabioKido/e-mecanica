@@ -65,6 +65,7 @@ export const SubmitButton = styled.TouchableOpacity`
   align-items: center;
   border: 1px solid ${colors.lighter};
   border-radius: 50px;
+  margin-bottom: 7px;
 `;
 
 export const SubmitButtonText = styled.Text`
@@ -79,7 +80,6 @@ export const NewAccountButton = styled.TouchableOpacity`
   background-color: ${ colors.regular_yellow};
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
   border-radius: 50px;
 `;
 

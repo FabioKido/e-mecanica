@@ -21,12 +21,16 @@ import {
   Description,
   CancelarButton,
   CancelarButtonText,
+  SwitchContainer,
   InputContainer,
   InputPicker,
   InputTitle,
   Input,
   SubmitButton,
   SubmitButtonText,
+  SubmitPayButton,
+  SubmitPayButtonText,
+  ChoiceText,
   Cards,
   Card,
   CardInfo,
@@ -40,6 +44,8 @@ import {
 
 import Placeholder from './Placeholder';
 import CustonModal from './CustonModal';
+
+import CheckBox from '../../../components/CheckBox';
 
 import api from '../../../services/api';
 
@@ -65,6 +71,8 @@ export default function OrderServiceDetail({ navigation }) {
   const [add_order_product, setAddOrderProduct] = useState(false);
   const [id_prod_acq, setIdProdAcq] = useState();
 
+  const [add_payment, setAddPayment] = useState(false);
+
   const [id_provider, setIdProvider] = useState();
   const [unity_cost, setUnityCost] = useState('');
   const [unit_sale, setUnitSale] = useState('');
@@ -72,6 +80,14 @@ export default function OrderServiceDetail({ navigation }) {
   const [qtd, setQtd] = useState(1);
   const [acquisition, setAcquisition] = useState('');
   const [total_price, setTotalPrice] = useState(0);
+
+  const [id_serv, setIdServ] = useState();
+  const [value, setValue] = useState('');
+  const [products_value, setProductsValue] = useState(0);
+
+  const [total_value, setTotalValue] = useState(0);
+  const [options, setOptions] = useState('');
+  const [status, setStatus] = useState(false);
 
   const [date, setDate] = useState('');
   const [loading, setLoading] = useState(false);
@@ -171,6 +187,52 @@ export default function OrderServiceDetail({ navigation }) {
     setTotalPrice(total);
   }, [unit_sale, qtd, discount]);
 
+  useEffect(() => {
+    if (id_serv) {
+      async function loadOrderProducts() {
+        try {
+          const res_serv = await api.get(`/order/order-service/${id_serv}`);
+          const { order_service } = res_serv.data;
+
+          setValue(order_service.price);
+
+          const res_prods = await api.get('/order/order-products', {
+            params: { id_os: order_service.id }
+          });
+          const { order_products } = res_prods.data;
+
+          if (order_products.length === 0) {
+            setProductsValue(0);
+
+            return;
+          } else {
+            const soma = (acumulador, total) => Number(total) + Number(acumulador);
+
+            const total = order_products
+              .map(prod => prod.total_sale)
+              .reduce(soma);
+
+            setProductsValue(total);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      loadOrderProducts();
+    }
+  }, [id_serv]);
+
+  useEffect(() => {
+    getTotalValue();
+  }, [value, products_value]);
+
+  function getTotalValue() {
+    const total = Number(value) + products_value;
+
+    setTotalValue(total);
+  }
+
   async function reloadOrderServiceDetails() {
     try {
       setRefreshing(true);
@@ -238,6 +300,35 @@ export default function OrderServiceDetail({ navigation }) {
     order_service
   ]);
 
+  // const handleSavePayment = useCallback(async () => {
+  //   Keyboard.dismiss();
+
+  //   try {
+  //     setLoading(true);
+
+  //     // await api.post(`/order/payment/${id_order}`, {
+  //     //   status,
+  //     //   parcels
+  //     // });
+
+  //     Alert.alert('Sucesso!', 'Produto registrado com sucesso.');
+
+  //   } catch (err) {
+  //     const message =
+  //       err.response && err.response.data && err.response.data.error;
+  //     console.log(err)
+  //     Alert.alert(
+  //       'Ooopsss',
+  //       message || 'Falha no registro do produto, confira seus dados.'
+  //     );
+  //   } finally {
+  //     setLoading(false);
+  //     reloadOrderServiceDetails();
+  //   }
+  // }, [
+
+  // ]);
+
   function ViewButton() {
     if (add_order_product) {
       return (
@@ -254,6 +345,14 @@ export default function OrderServiceDetail({ navigation }) {
           </CancelarButton>
         </>
       );
+    } else if (add_payment) {
+      return (
+        <>
+          <CancelarButton onPress={() => setAddPayment(false)}>
+            <CancelarButtonText>Voltar</CancelarButtonText>
+          </CancelarButton>
+        </>
+      )
     } else {
       return (
         <>
@@ -274,6 +373,9 @@ export default function OrderServiceDetail({ navigation }) {
           <SubmitButton onPress={() => setAddOrderProduct(true)}>
             <SubmitButtonText>Adicionar Produto</SubmitButtonText>
           </SubmitButton>
+          <SubmitPayButton onPress={() => setAddPayment(true)}>
+            <SubmitPayButtonText>Realizar Pagamento</SubmitPayButtonText>
+          </SubmitPayButton>
         </>
       );
     }
@@ -454,6 +556,99 @@ export default function OrderServiceDetail({ navigation }) {
                         />
                         <MaterialIcons name="info" size={20} color="#999" />
                       </InputContainer>
+                    </>
+                  }
+                </>
+              }
+
+              {add_payment &&
+                <>
+                  <InputTitle>Serviço Referente</InputTitle>
+                  <InputPicker>
+                    <Picker
+                      selectedValue={id_serv}
+                      style={{
+                        flex: 1,
+                        color: '#f8a920',
+                        backgroundColor: 'transparent',
+                        fontSize: 17
+                      }}
+                      onValueChange={(itemValue, itemIndex) => setIdServ(itemValue)}
+                    >
+                      <Picker.Item label="Selecione o Serviço" value="" />
+                      {order_service_details && order_service_details.map(serv => <Picker.Item key={serv.id} label={`Serviço - ${serv.id}`} value={serv.id} />)}
+                    </Picker>
+                    <MaterialIcons name="unfold-more" size={20} color="#999" />
+                  </InputPicker>
+
+                  {id_serv &&
+                    <>
+                      <InputTitle>Valor Total</InputTitle>
+                      <InputContainer>
+                        <Input
+                          name='value'
+                          editable={false}
+                          style={{ color: '#f8a920' }}
+                          value={String(total_value)}
+                        />
+                        <MaterialIcons name="info" size={20} color="#999" />
+                      </InputContainer>
+
+                      <InputTitle>Valor do Serviço</InputTitle>
+                      <InputContainer>
+                        <Input
+                          name='value'
+                          editable={false}
+                          style={{ color: '#f8a920' }}
+                          value={String(value)}
+                        />
+                        <MaterialIcons name="info" size={20} color="#999" />
+                      </InputContainer>
+
+                      <InputTitle>Valor dos Produtos</InputTitle>
+                      <InputContainer>
+                        <Input
+                          name='value'
+                          editable={false}
+                          style={{ color: '#f8a920' }}
+                          value={products_value ? String(products_value) : 'Não possui produtos'}
+                        />
+                        <MaterialIcons name="info" size={20} color="#999" />
+                      </InputContainer>
+
+                      <SwitchContainer>
+                        <ChoiceText>Pagamento Realizado?</ChoiceText>
+
+                        <CheckBox
+                          iconColor="#f8a920"
+                          checkColor="#f8a920"
+                          value={status}
+                          onChange={() => setStatus(!status)}
+                        />
+                      </SwitchContainer>
+
+                      <InputTitle>Opções</InputTitle>
+                      <InputPicker>
+                        <Picker
+                          selectedValue={options}
+                          style={{
+                            flex: 1,
+                            color: '#f8a920',
+                            backgroundColor: 'transparent',
+                            fontSize: 17
+                          }}
+                          onValueChange={(itemValue, itemIndex) => setOptions(itemValue)}
+                        >
+                          <Picker.Item label="Selecione a Opção de Pagamento" value="á Vista" />
+                          <Picker.Item label="á Vista" value="á Vista" />
+                          <Picker.Item label="Parcelada" value="Parcelada" />
+                        </Picker>
+                        <MaterialIcons name="unfold-more" size={20} color="#999" />
+                      </InputPicker>
+
+                      {/* {options !== '' &&
+                        <PaymentDetail options={options} total_value={total_value} handleSavePayment={handleSavePayment} loading={loading} />
+                      } */}
                     </>
                   }
                 </>

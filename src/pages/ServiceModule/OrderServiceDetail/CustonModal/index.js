@@ -81,8 +81,7 @@ export default function CustonModal({ order_service_detail, setIsVisible, reload
     });
     const { order_products } = response.data;
 
-    // TODO Resolver depois o array vazio.
-    if (!order_products) {
+    if (order_products.length === 0) {
       return;
     } else {
       const soma = (acumulador, total) => Number(total) + Number(acumulador);
