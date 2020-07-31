@@ -36,7 +36,7 @@ import api from '../../../../services/api';
 import CheckBox from '../../../../components/CheckBox';
 import LoadGif from '../../../../assets/loading.gif';
 
-export default function CustonModal({ expense_detail, setIsVisible, reloadExpenseDetails, id_expense }) {
+export default function CustonModal({ expense_detail, setIsVisible, reloadExpenseDetails }) {
 
   const taxaAjusteInputRef = useRef();
   const observationInputRef = useRef();
@@ -97,17 +97,15 @@ export default function CustonModal({ expense_detail, setIsVisible, reloadExpens
       const taxa_ant = expense_detail.taxa_ajuste;
 
       await api.put(`/finance/expense-detail/${expense_detail.id}`, {
-        value: Number(value) + ((Number(taxa_ajuste) - Number(taxa_ant)) || 0),
+        value,
         document_number,
-        taxa_ajuste,
+        taxa_ajuste: taxa_ajuste || taxa_ant,
         vencimento,
         paid_out,
         observations: observation,
         id_payment_method: payment_method,
         id_account_destiny: account_destiny,
         taxa_ant
-      }, {
-        params: { id_expense }
       });
 
       Alert.alert('Sucesso!', 'Parcela atualizada com sucesso.');

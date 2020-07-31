@@ -158,7 +158,7 @@ export default function RecipeDetail({ navigation }) {
         visible={is_visible}
         onRequestClose={() => setIsVisible(false)}
       >
-        <CustonModal recipe_detail={recipe_detail} setIsVisible={setIsVisible} reloadRecipeDetails={reloadRecipeDetails} id_recipe={recipe.id} />
+        <CustonModal recipe_detail={recipe_detail} setIsVisible={setIsVisible} reloadRecipeDetails={reloadRecipeDetails} />
       </Modal>
     </>
   );

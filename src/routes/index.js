@@ -60,6 +60,8 @@ import Schedules from '../pages/ServiceModule/Schedules';
 import Orders from '../pages/ServiceModule/Orders';
 import OrderServiceDetail from '../pages/ServiceModule/OrderServiceDetail';
 import OrderProductDetail from '../pages/ServiceModule/OrderProductDetail';
+import Payments from '../pages/ServiceModule/Payments';
+import Parcels from '../pages/ServiceModule/Parcels';
 import Dashboard from '../pages/ServiceModule/Dashboard';
 
 const SignRoutes = createAnimatedSwitchNavigator(
@@ -297,6 +299,8 @@ const ServiceRoutes = createStackNavigator(
     Timeline,
     OrderServiceDetail,
     OrderProductDetail,
+    Payments,
+    Parcels
   },
   {
     headerMode: 'none',

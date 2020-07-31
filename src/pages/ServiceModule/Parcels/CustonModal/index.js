@@ -36,23 +36,23 @@ import api from '../../../../services/api';
 import CheckBox from '../../../../components/CheckBox';
 import LoadGif from '../../../../assets/loading.gif';
 
-export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeDetails }) {
+export default function CustonModal({ parcel, setIsVisible, reloadParcels, id_payment }) {
 
   const taxaAjusteInputRef = useRef();
   const observationInputRef = useRef();
 
-  const [payment_method, setPayment_method] = useState(recipe_detail.id_payment_method);
-  const [account_destiny, setAccount_destiny] = useState(recipe_detail.id_account_destiny);
+  const [payment_method, setPaymentMethod] = useState(parcel.id_payment_method);
+  const [bank_account, setBankAccount] = useState(parcel.id_bank_account);
 
   const [methods, setMethods] = useState([]);
   const [accounts, setAccounts] = useState([]);
 
-  const [value, setValue] = useState(recipe_detail.value);
-  const [document_number, setDocument_number] = useState(recipe_detail.document_number);
+  const [value, setValue] = useState(parcel.value);
+  const [document_number, setDocument_number] = useState(parcel.document_number);
   const [taxa_ajuste, setTaxa_ajuste] = useState();
-  const [observation, setObservation] = useState(recipe_detail.observations);
-  const [vencimento, setVencimento] = useState(recipe_detail.vencimento);
-  const [paid_out, setPaidOut] = useState(recipe_detail.paid_out);
+  const [observation, setObservation] = useState(parcel.observations);
+  const [vencimento, setVencimento] = useState(parcel.vencimento);
+  const [paid_out, setPaidOut] = useState(parcel.paid_out);
 
   const [date, setDate] = useState(() => vencimento ? moment(vencimento).format('DD-MM-YYYY') : '');
   const [loading, setLoading] = useState(false);
@@ -88,15 +88,15 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
     setVencimento(momentObj);
   };
 
-  const handleUpdateRecipeDetail = useCallback(async () => {
+  const handleUpdateParcel = useCallback(async () => {
     Keyboard.dismiss();
 
     try {
       setLoading(true);
 
-      const taxa_ant = recipe_detail.taxa_ajuste;
+      const taxa_ant = parcel.taxa_ajuste;
 
-      await api.put(`/finance/recipe-detail/${recipe_detail.id}`, {
+      await api.put(`/order/parcel/${parcel.id}`, {
         value,
         document_number,
         taxa_ajuste: taxa_ajuste || taxa_ant,
@@ -104,7 +104,7 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
         paid_out,
         observations: observation,
         id_payment_method: payment_method,
-        id_account_destiny: account_destiny,
+        id_bank_account: bank_account,
         taxa_ant
       });
 
@@ -119,7 +119,7 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
       );
     } finally {
       setLoading(false);
-      reloadRecipeDetails();
+      reloadParcels();
     }
   }, [
     value,
@@ -129,13 +129,14 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
     paid_out,
     observation,
     payment_method,
-    account_destiny
+    bank_account
   ]);
 
+  // FIXME Botão de Page no Dashboard para listar todas as parcelas(por ter algumas que não tem o id do pagamento, por ter sido excluído).
   if (first_loading) {
     return (
       <LinearGradient
-        colors={['#2b5b2e', '#000']}
+        colors={['#2b475c', '#000']}
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
       >
         <Image source={LoadGif} resizeMode='contain' style={{ height: 75, width: 75 }} />
@@ -144,13 +145,13 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
   } else {
     return (
       <LinearGradient
-        colors={['#2b5b2e', '#000']}
+        colors={['#2b475c', '#000']}
         style={{ flex: 1 }}
       >
         <Container>
           <Content keyboardShouldPersistTaps="handled">
             <FormContainer>
-              <Title>Parcela - {recipe_detail.document_number}</Title>
+              <Title>Parcela - {parcel.document_number}</Title>
               <Description>
                 Edite essa parcela como quiser.
             </Description>
@@ -165,7 +166,7 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
                     backgroundColor: 'transparent',
                     fontSize: 17
                   }}
-                  onValueChange={(itemValue, itemIndex) => setPayment_method(itemValue)}
+                  onValueChange={(itemValue, itemIndex) => setPaymentMethod(itemValue)}
                 >
                   <Picker.Item label="Selecione o Método de Pagamento" value="" />
                   {methods && methods.map(method => <Picker.Item key={method.id} label={method.method} value={method.id} />)}
@@ -176,14 +177,14 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
               <InputTitle>Conta de Destino</InputTitle>
               <InputPicker>
                 <Picker
-                  selectedValue={account_destiny}
+                  selectedValue={bank_account}
                   style={{
                     flex: 1,
                     color: '#f8a920',
                     backgroundColor: 'transparent',
                     fontSize: 17
                   }}
-                  onValueChange={(itemValue, itemIndex) => setAccount_destiny(itemValue)}
+                  onValueChange={(itemValue, itemIndex) => setBankAccount(itemValue)}
                 >
                   <Picker.Item label="Selecione a Conta de Destino" value="" />
                   {accounts && accounts.map(account => <Picker.Item key={account.id} label={account.title} value={account.id} />)}
@@ -243,7 +244,7 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
               <InputTitle>Taxa de Ajuste</InputTitle>
               <InputContainer>
                 <Input
-                  placeholder={`Taxa de ajuste atual: ${recipe_detail.taxa_ajuste}`}
+                  placeholder={`Taxa de ajuste atual: ${parcel.taxa_ajuste}`}
                   autoCapitalize="none"
                   autoCorrect={false}
                   keyboardType="numeric"
@@ -284,7 +285,7 @@ export default function CustonModal({ recipe_detail, setIsVisible, reloadRecipeD
                 />
               </SwitchContainer>
 
-              <SubmitButton onPress={handleUpdateRecipeDetail}>
+              <SubmitButton onPress={handleUpdateParcel}>
                 {loading ? (
                   <ActivityIndicator size="small" color="#333" />
                 ) : (

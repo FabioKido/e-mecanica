@@ -116,7 +116,6 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
 
       await api.put(`/finance/recipe/${recipe.id}`, {
         id_category,
-        total_value,
         description,
         date_recipe,
         observations
@@ -137,7 +136,6 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
     }
   }, [
     id_category,
-    total_value,
     description,
     date_recipe,
     observations
@@ -187,17 +185,11 @@ export default function CustonModal({ recipe, setIsVisible, reloadRecipes }) {
               <InputTitle>Valor Total</InputTitle>
               <InputContainer>
                 <Input
-                  placeholder="Valor total da receita"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  keyboardType="numeric"
-                  maxLength={60}
-                  onChangeText={setTotalValue}
+                  editable={false}
+                  style={{ color: '#f8a920' }}
                   value={total_value}
-                  returnKeyType="next"
-                  onSubmitEditing={() => descriptionInputRef.current.focus()}
                 />
-                <MaterialIcons name="edit" size={18} color="#999" />
+                <MaterialIcons name="info" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Descrição</InputTitle>

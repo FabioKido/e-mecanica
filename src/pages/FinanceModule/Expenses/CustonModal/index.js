@@ -116,7 +116,6 @@ export default function CustonModal({ expense, setIsVisible, reloadExpenses }) {
 
       await api.put(`/finance/expense/${expense.id}`, {
         id_category,
-        total_value,
         description,
         date_expense,
         classification,
@@ -138,7 +137,6 @@ export default function CustonModal({ expense, setIsVisible, reloadExpenses }) {
     }
   }, [
     id_category,
-    total_value,
     description,
     date_expense,
     classification,
@@ -189,17 +187,11 @@ export default function CustonModal({ expense, setIsVisible, reloadExpenses }) {
               <InputTitle>Valor Total</InputTitle>
               <InputContainer>
                 <Input
-                  placeholder="Valor total da receita"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  keyboardType="numeric"
-                  maxLength={60}
-                  onChangeText={setTotalValue}
+                  editable={false}
+                  style={{ color: '#f8a920' }}
                   value={total_value}
-                  returnKeyType="next"
-                  onSubmitEditing={() => descriptionInputRef.current.focus()}
                 />
-                <MaterialIcons name="edit" size={18} color="#999" />
+                <MaterialIcons name="info" size={18} color="#999" />
               </InputContainer>
 
               <InputTitle>Descrição</InputTitle>

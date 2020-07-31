@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Alert,
   View,
@@ -33,28 +33,28 @@ import CustonModal from './CustonModal';
 import api from '../../../services/api';
 import NavigationService from '../../../services/navigation';
 
-export default function ExpenseDetail({ navigation }) {
+export default function Parcel({ navigation }) {
 
-  const [expense_details, setExpenseDetails] = useState([]);
-  const [expense_detail, setExpenseDetail] = useState({});
+  const [parcels, setParcels] = useState([]);
+  const [parcel, setParcel] = useState({});
 
-  const [expense, setExpense] = useState(navigation.state.params);
+  const [payment, setPayment] = useState(navigation.state.params);
 
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [is_visible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    async function loadExpenseDetails() {
+    async function loadParcels() {
       try {
         setLoading(true);
 
-        const response = await api.get('/finance/expense-details', {
-          params: { id_expense: expense.id }
+        const response = await api.get('/order/parcels/', {
+          params: { id_payment: payment.id }
         });
-        const { expense_details } = response.data;
+        const { parcels } = response.data;
 
-        setExpenseDetails(expense_details);
+        setParcels(parcels);
       } catch (err) {
         console.log(err);
       } finally {
@@ -62,50 +62,50 @@ export default function ExpenseDetail({ navigation }) {
       }
     }
 
-    loadExpenseDetails();
+    loadParcels();
   }, []);
 
-  async function reloadExpenseDetails() {
+  async function reloadParcels() {
     try {
       setRefreshing(true);
 
-      const response = await api.get('/finance/expense-details', {
-        params: { id_expense: expense.id }
+      const response = await api.get('/order/parcels/', {
+        params: { id_payment: payment.id }
       });
-      const { expense_details } = response.data;
+      const { parcels } = response.data;
 
-      setExpenseDetails(expense_details);
+      setParcels(parcels);
     } catch (err) {
       Alert.alert(
-        'Erro ao obter lista de receitas, tente novamente mais tarde!'
+        'Erro ao obter lista de parcelas, tente novamente mais tarde!'
       );
     } finally {
       setRefreshing(false);
     }
   }
 
-  function getExpenseDetail(expense_detail) {
-    setExpenseDetail(expense_detail);
+  function getParcel(parcel) {
+    setParcel(parcel);
 
     setIsVisible(true);
   }
 
-  function renderExpenseDetails({ item: expense_detail }) {
-    const datail_date = moment(expense_detail.vencimento).format('DD-MM-YYYY');
+  function renderParcels({ item: parcel }) {
+    const parcel_date = moment(parcel.vencimento).format('DD-MM-YYYY');
 
     return (
       <Card
-        onPress={() => getExpenseDetail(expense_detail)}
+        onPress={() => getParcel(parcel)}
       >
         <CardInfo>
-          <CardTitle numberOfLines={2}>R$ {expense_detail.value}</CardTitle>
+          <CardTitle numberOfLines={2}>R$ {parcel.value}</CardTitle>
           <CardContainer>
             <CardName>
               Vencimento: {' '}
-              <CardSubName>({datail_date})</CardSubName>
+              <CardSubName>({parcel_date})</CardSubName>
             </CardName>
 
-            <CardStatus>{expense_detail.paid_out ? 'Já recebi' : 'á Receber'}</CardStatus>
+            <CardStatus>{parcel.paid_out ? 'Paga' : 'á Pagar'}</CardStatus>
 
           </CardContainer>
         </CardInfo>
@@ -113,33 +113,29 @@ export default function ExpenseDetail({ navigation }) {
     );
   }
 
-  // TODO O id_payment(e a categoria de serviço) vem do pagamento de um serviço... resolverei com o redux.
-  // TODO Resolver as casa depois da virgula, podendo apenas duas.
-  // FIXME Botão de Page no Dashboard para listar todas as parcelas(por ter algumas que não tem o id da receita).
-
   return (
     <>
       <LinearGradient
-        colors={['#592f2a', '#000']}
+        colors={['#2b475c', '#000']}
         style={{ flex: 1 }}
       >
         <Container>
           <Content keyboardShouldPersistTaps="handled">
             <FormContainer>
-              <Title>{expense.description}</Title>
+              <Title>Pagamento - {payment.id}</Title>
               <Description>
-                Veja os detalhes da(s) parcela(s) desta despesa. Atualize como quiser.
+                Veja os detalhes da(s) parcela(s) deste pagamento. Atualize como quiser.
               </Description>
 
               {loading ? (
                 <Placeholder />
               ) : (
                   <Cards
-                    data={expense_details}
-                    renderItem={renderExpenseDetails}
-                    keyExtractor={expense_details => `details-${expense_details.id}`}
+                    data={parcels}
+                    renderItem={renderParcels}
+                    keyExtractor={parcels => `details-${parcels.id}`}
                     showsVerticalScrollIndicator={false}
-                    onRefresh={reloadExpenseDetails}
+                    onRefresh={reloadParcels}
                     refreshing={refreshing}
                     ListFooterComponent={<View style={{ height: 20 }} />}
                     ListEmptyComponent={<Empty>Não foi possivel encontrar parcelas</Empty>}
@@ -162,7 +158,7 @@ export default function ExpenseDetail({ navigation }) {
         visible={is_visible}
         onRequestClose={() => setIsVisible(false)}
       >
-        <CustonModal expense_detail={expense_detail} setIsVisible={setIsVisible} reloadExpenseDetails={reloadExpenseDetails} />
+        <CustonModal parcel={parcel} setIsVisible={setIsVisible} reloadParcels={reloadParcels} id_payment={payment.id} />
       </Modal>
     </>
   );
